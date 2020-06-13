@@ -5,6 +5,6 @@ const Factory = {
     constructor() {}
   },
   eth,
-}
+};
 
-Object.assign(module.exports, Factory);
+export = Factory;
