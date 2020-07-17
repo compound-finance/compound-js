@@ -1,8 +1,8 @@
 import * as eth from './eth';
-declare const Factory: {
-    Compound: {
-        new (): {};
-    };
+import * as util from './util';
+declare const Compound: {
+    (provider?: any, options?: any): any;
     eth: typeof eth;
+    util: typeof util;
 };
-export = Factory;
+export = Compound;

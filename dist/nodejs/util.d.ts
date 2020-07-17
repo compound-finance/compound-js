@@ -1,2 +1,1 @@
-declare let request: any;
-export { request, };
+export declare function getAddress(contract: any, network?: string): any;
