@@ -28,7 +28,6 @@ Simple methods for using the Compound protocol.
 
 ```js
 const Compound = require('compound-js');
-
 const compound = new Compound('mainnet', { privateKey: process.env.pk });
 
 (async function() {
