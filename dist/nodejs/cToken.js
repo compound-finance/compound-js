@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.supply = void 0;
+exports.redeem = exports.supply = void 0;
 var ethers_1 = require("ethers");
 var eth = require("./eth");
 var helpers_1 = require("./helpers");
@@ -66,9 +66,7 @@ function supply(asset, amount, options) {
                         amount = amount * Math.pow(10, constants_1.decimals[asset]);
                     }
                     amount = ethers_1.ethers.BigNumber.from(amount.toString());
-                    trxOptions = {
-                        _compoundProvider: this._provider
-                    };
+                    trxOptions = { _compoundProvider: this._provider };
                     parameters = [];
                     if (cTokenName === constants_1.constants.cETH) {
                         trxOptions.value = amount;
@@ -84,4 +82,47 @@ function supply(asset, amount, options) {
     });
 }
 exports.supply = supply;
+function redeem(asset, amount, options) {
+    if (options === void 0) { options = {}; }
+    return __awaiter(this, void 0, void 0, function () {
+        var errorPrefix, passedCToken, cTokenName, cTokenAddress, underlyingName, underlyingAddress, trxOptions, parameters, method;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, helpers_1.netId(this)];
+                case 1:
+                    _a.sent();
+                    errorPrefix = 'Compound [redeem] | ';
+                    if (typeof asset !== 'string' || asset.length < 1) {
+                        throw Error(errorPrefix + 'Argument `asset` must be a non-empty string.');
+                    }
+                    passedCToken = asset[0] === 'c';
+                    cTokenName = passedCToken ? asset : 'c' + asset;
+                    cTokenAddress = constants_1.address[this._network.name][cTokenName];
+                    underlyingName = passedCToken ? asset.slice(1, asset.length) : asset;
+                    underlyingAddress = constants_1.address[this._network.name][underlyingName];
+                    if (!constants_1.cTokens.includes(cTokenName) || !constants_1.underlyings.includes(underlyingName)) {
+                        throw Error(errorPrefix + 'Argument `asset` is not supported.');
+                    }
+                    if (typeof amount !== 'number' &&
+                        typeof amount !== 'string' &&
+                        !ethers_1.ethers.BigNumber.isBigNumber(amount)) {
+                        throw Error(errorPrefix + 'Argument `amount` must be a string, number, or BigNumber.');
+                    }
+                    if (!options.mantissa) {
+                        amount = +amount;
+                        amount = amount * Math.pow(10, constants_1.decimals[asset]);
+                    }
+                    amount = ethers_1.ethers.BigNumber.from(amount.toString());
+                    trxOptions = {
+                        _compoundProvider: this._provider,
+                        abi: cTokenName === constants_1.constants.cETH ? constants_1.abi.cEther : constants_1.abi.cErc20
+                    };
+                    parameters = [amount];
+                    method = passedCToken ? 'redeem' : 'redeemUnderlying';
+                    return [2 /*return*/, eth.trx(cTokenAddress, method, parameters, trxOptions)];
+            }
+        });
+    });
+}
+exports.redeem = redeem;
 //# sourceMappingURL=cToken.js.map
