@@ -54,9 +54,117 @@ export declare const address: {
         WBTC: string;
         ZRX: string;
     };
+    rinkeby: {
+        PriceOracle: string;
+        PriceOracleProxy: string;
+        Maximillion: string;
+        CompoundLens: string;
+        GovernorAlpha: string;
+        Comptroller: string;
+        Reservoir: string;
+        COMP: string;
+        cBAT: string;
+        cDAI: string;
+        cETH: string;
+        cREP: string;
+        cSAI: string;
+        cUSDC: string;
+        cUSDT: string;
+        cWBTC: string;
+        cZRX: string;
+        BAT: string;
+        DAI: string;
+        REP: string;
+        SAI: string;
+        USDC: string;
+        USDT: string;
+        WBTC: string;
+        ZRX: string;
+    };
+    goerli: {
+        PriceOracle: string;
+        PriceOracleProxy: string;
+        Maximillion: string;
+        CompoundLens: string;
+        GovernorAlpha: string;
+        Comptroller: string;
+        Reservoir: string;
+        COMP: string;
+        cBAT: string;
+        cDAI: string;
+        cETH: string;
+        cREP: string;
+        cSAI: string;
+        cUSDC: string;
+        cUSDT: string;
+        cWBTC: string;
+        cZRX: string;
+        BAT: string;
+        DAI: string;
+        REP: string;
+        SAI: string;
+        USDC: string;
+        USDT: string;
+        WBTC: string;
+        ZRX: string;
+    };
+    kovan: {
+        PriceOracle: string;
+        PriceOracleProxy: string;
+        Maximillion: string;
+        CompoundLens: string;
+        GovernorAlpha: string;
+        Comptroller: string;
+        Reservoir: string;
+        COMP: string;
+        cBAT: string;
+        cDAI: string;
+        cETH: string;
+        cREP: string;
+        cSAI: string;
+        cUSDC: string;
+        cUSDT: string;
+        cWBTC: string;
+        cZRX: string;
+        BAT: string;
+        DAI: string;
+        REP: string;
+        SAI: string;
+        USDC: string;
+        USDT: string;
+        WBTC: string;
+        ZRX: string;
+    };
+    ropsten: {
+        PriceOracle: string;
+        PriceOracleProxy: string;
+        Maximillion: string;
+        CompoundLens: string;
+        GovernorAlpha: string;
+        Comptroller: string;
+        Reservoir: string;
+        COMP: string;
+        cBAT: string;
+        cDAI: string;
+        cETH: string;
+        cREP: string;
+        cSAI: string;
+        cUSDC: string;
+        cUSDT: string;
+        cWBTC: string;
+        cZRX: string;
+        BAT: string;
+        DAI: string;
+        REP: string;
+        SAI: string;
+        USDC: string;
+        USDT: string;
+        WBTC: string;
+        ZRX: string;
+    };
 };
 export declare const abi: {
-    erc20: ({
+    Erc20: ({
         constant: boolean;
         inputs: {
             name: string;
@@ -188,6 +296,90 @@ export declare const abi: {
         outputs?: undefined;
         payable?: undefined;
         stateMutability?: undefined;
+    })[];
+    Comptroller: ({
+        constant: boolean;
+        inputs: {
+            name: string;
+            type: string;
+        }[];
+        name: string;
+        outputs: {
+            name: string;
+            type: string;
+        }[];
+        payable: boolean;
+        stateMutability: string;
+        type: string;
+        signature: string;
+        anonymous?: undefined;
+    } | {
+        inputs: any[];
+        payable: boolean;
+        stateMutability: string;
+        type: string;
+        signature: string;
+        constant?: undefined;
+        name?: undefined;
+        outputs?: undefined;
+        anonymous?: undefined;
+    } | {
+        payable: boolean;
+        stateMutability: string;
+        type: string;
+        constant?: undefined;
+        inputs?: undefined;
+        name?: undefined;
+        outputs?: undefined;
+        signature?: undefined;
+        anonymous?: undefined;
+    } | {
+        anonymous: boolean;
+        inputs: {
+            indexed: boolean;
+            name: string;
+            type: string;
+        }[];
+        name: string;
+        type: string;
+        signature: string;
+        constant?: undefined;
+        outputs?: undefined;
+        payable?: undefined;
+        stateMutability?: undefined;
+    } | {
+        anonymous: boolean;
+        inputs: {
+            indexed: boolean;
+            internalType: string;
+            name: string;
+            type: string;
+        }[];
+        name: string;
+        type: string;
+        signature: string;
+        constant?: undefined;
+        outputs?: undefined;
+        payable?: undefined;
+        stateMutability?: undefined;
+    } | {
+        constant: boolean;
+        inputs: {
+            internalType: string;
+            name: string;
+            type: string;
+        }[];
+        name: string;
+        outputs: {
+            internalType: string;
+            name: string;
+            type: string;
+        }[];
+        payable: boolean;
+        stateMutability: string;
+        type: string;
+        signature: string;
+        anonymous?: undefined;
     })[];
 };
 export declare const cTokens: string[];
