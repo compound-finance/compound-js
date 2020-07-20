@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import * as eth from './eth';
 import * as util from './util';
+import * as comptroller from './comptroller';
 import * as cToken from './cToken';
 import { constants } from './constants';
 
@@ -11,7 +12,8 @@ const Compound = function(provider: any='mainnet', options: any={}) {
   const instance: any = {
     _ethers: ethers,
     _provider: provider,
-    ...cToken
+    ...comptroller,
+    ...cToken,
   };
 
   // Instance needs to know which network the provider connects to, so it can
