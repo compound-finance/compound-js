@@ -150,7 +150,13 @@ export async function getProviderNetwork(provider) {
     provider = provider.provider;
   }
 
-  let networkId = await provider.send('net_version');
+  let networkId;
+  if (provider.send) {
+    networkId = await provider.send('net_version');
+  } else {
+    networkId = provider._network.chainId;
+  }
+
   networkId = isNaN(networkId) ? 0 : +networkId;
 
   const network: any = ethers.providers.getNetwork(networkId) || {};
