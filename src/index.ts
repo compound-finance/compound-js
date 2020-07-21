@@ -11,7 +11,6 @@ const Compound = function(provider: any='mainnet', options: any={}) {
 
   const instance: any = {
     _provider: provider,
-    getBalance: provider.getBalance,
     ...comptroller,
     ...cToken,
   };
