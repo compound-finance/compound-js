@@ -405,3 +405,196 @@ export declare const decimals: {
     WBTC: number;
     ZRX: number;
 };
+export declare const errorCodes: {
+    comptroller: {
+        codes: {
+            0: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            1: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            2: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            3: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            4: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            5: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            6: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            7: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            8: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            9: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            10: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            11: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            12: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            13: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            14: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            15: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            16: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            17: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+        };
+        info: {
+            0: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            1: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            2: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            3: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            4: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            5: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            6: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            7: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            8: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            9: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            10: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            11: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            12: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            13: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            14: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            15: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            16: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            17: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+            18: {
+                error: string;
+                description: string;
+                hint: string;
+            };
+        };
+    };
+};

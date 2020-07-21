@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -36,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.redeem = exports.supply = void 0;
+exports.borrow = exports.redeem = exports.supply = void 0;
 var ethers_1 = require("ethers");
 var eth = require("./eth");
 var helpers_1 = require("./helpers");
@@ -54,7 +65,7 @@ function supply(asset, amount, options) {
                     cTokenName = 'c' + asset;
                     cTokenAddress = constants_1.address[this._network.name][cTokenName];
                     if (!cTokenAddress || !constants_1.underlyings.includes(asset)) {
-                        throw Error(errorPrefix + 'Argument `asset` is not a recognized cToken address.');
+                        throw Error(errorPrefix + 'Argument `asset` cannot be supplied.');
                     }
                     if (typeof amount !== 'number' &&
                         typeof amount !== 'string' &&
@@ -125,4 +136,38 @@ function redeem(asset, amount, options) {
     });
 }
 exports.redeem = redeem;
+function borrow(asset, amount, options) {
+    if (options === void 0) { options = {}; }
+    return __awaiter(this, void 0, void 0, function () {
+        var errorPrefix, cTokenName, cTokenAddress, trxOptions, parameters;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, helpers_1.netId(this)];
+                case 1:
+                    _a.sent();
+                    errorPrefix = 'Compound [borrow] | ';
+                    cTokenName = 'c' + asset;
+                    cTokenAddress = constants_1.address[this._network.name][cTokenName];
+                    if (!cTokenAddress || !constants_1.underlyings.includes(asset)) {
+                        throw Error(errorPrefix + 'Argument `asset` cannot be borrowed.');
+                    }
+                    if (typeof amount !== 'number' &&
+                        typeof amount !== 'string' &&
+                        !ethers_1.ethers.BigNumber.isBigNumber(amount)) {
+                        throw Error(errorPrefix + 'Argument `amount` must be a string, number, or BigNumber.');
+                    }
+                    if (!options.mantissa) {
+                        amount = +amount;
+                        amount = amount * Math.pow(10, constants_1.decimals[asset]);
+                    }
+                    amount = ethers_1.ethers.BigNumber.from(amount.toString());
+                    trxOptions = __assign({ _compoundProvider: this._provider }, options);
+                    parameters = [amount];
+                    trxOptions.abi = cTokenName === constants_1.constants.cETH ? constants_1.abi.cEther : constants_1.abi.cErc20;
+                    return [2 /*return*/, eth.trx(cTokenAddress, 'borrow', parameters, trxOptions)];
+            }
+        });
+    });
+}
+exports.borrow = borrow;
 //# sourceMappingURL=cToken.js.map

@@ -54,5 +54,6 @@ export declare function getProviderNetwork(provider: any): Promise<{
     id: any;
     name: any;
 }>;
-export declare function createProvider(options?: CallOptions): object;
+export declare function getBalance(address: string, provider: any): Promise<any>;
+export declare function createProvider(options?: CallOptions): any;
 export {};

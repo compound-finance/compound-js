@@ -21,7 +21,7 @@ var Compound = function (provider, options) {
     if (options === void 0) { options = {}; }
     options.provider = provider || options.provider;
     provider = eth.createProvider(options);
-    var instance = __assign(__assign({ _ethers: ethers_1.ethers, _provider: provider }, comptroller), cToken);
+    var instance = __assign(__assign({ _provider: provider }, comptroller), cToken);
     // Instance needs to know which network the provider connects to, so it can
     //     use the correct contract addresses.
     instance._networkPromise = eth.getProviderNetwork(provider).then(function (network) {
@@ -32,6 +32,7 @@ var Compound = function (provider, options) {
 };
 Compound.eth = eth;
 Compound.util = util;
+Compound._ethers = ethers_1.ethers;
 Object.assign(Compound, constants_1.constants);
 module.exports = Compound;
 //# sourceMappingURL=index.js.map

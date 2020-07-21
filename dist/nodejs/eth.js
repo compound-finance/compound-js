@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.createProvider = exports.getProviderNetwork = exports.trx = exports.read = void 0;
+exports.createProvider = exports.getBalance = exports.getProviderNetwork = exports.trx = exports.read = void 0;
 var ethers_1 = require("ethers");
 var JsonRpc;
 (function (JsonRpc) {
@@ -160,9 +160,15 @@ function getProviderNetwork(provider) {
                     if (provider._isSigner) {
                         provider = provider.provider;
                     }
+                    if (!provider.send) return [3 /*break*/, 2];
                     return [4 /*yield*/, provider.send('net_version')];
                 case 1:
                     networkId = _a.sent();
+                    return [3 /*break*/, 3];
+                case 2:
+                    networkId = provider._network.chainId;
+                    _a.label = 3;
+                case 3:
                     networkId = isNaN(networkId) ? 0 : +networkId;
                     network = ethers_1.ethers.providers.getNetwork(networkId) || {};
                     return [2 /*return*/, {
@@ -174,6 +180,29 @@ function getProviderNetwork(provider) {
     });
 }
 exports.getProviderNetwork = getProviderNetwork;
+function getBalance(address, provider) {
+    return __awaiter(this, void 0, void 0, function () {
+        var providerInstance, url, balance;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (typeof provider === 'object' && provider._isSigner) {
+                        provider = provider.provider;
+                    }
+                    providerInstance = createProvider({ provider: provider });
+                    if (!providerInstance.send) {
+                        url = providerInstance.providerConfigs[0].provider.connection.url;
+                        providerInstance = new ethers_1.ethers.providers.JsonRpcProvider(url);
+                    }
+                    return [4 /*yield*/, providerInstance.send('eth_getBalance', [address, 'latest'])];
+                case 1:
+                    balance = _a.sent();
+                    return [2 /*return*/, balance];
+            }
+        });
+    });
+}
+exports.getBalance = getBalance;
 function createProvider(options) {
     if (options === void 0) { options = {}; }
     var provider = options.provider || (options.network || 'mainnet');
