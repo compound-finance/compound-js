@@ -167,7 +167,24 @@ export async function getProviderNetwork(provider) {
   };
 }
 
-export function createProvider(options: CallOptions = {}) : object {
+export async function getBalance(address: string, provider: any) {
+  if (typeof provider === 'object' && provider._isSigner) {
+    provider = provider.provider;
+  }
+
+  let providerInstance = createProvider({ provider });
+  if (!providerInstance.send) {
+    const url = providerInstance.providerConfigs[0].provider.connection.url;
+    providerInstance = new ethers.providers.JsonRpcProvider(url);
+  }
+
+  const balance = await providerInstance.send(
+    'eth_getBalance', [ address, 'latest' ]
+  );
+  return balance;
+}
+
+export function createProvider(options: CallOptions = {}) : any {
   let provider = options.provider || (options.network || 'mainnet');
   const isADefaultProvider = !!ethers.providers.getNetwork(provider.toString());
 
