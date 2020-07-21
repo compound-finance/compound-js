@@ -10,8 +10,8 @@ const Compound = function(provider: any='mainnet', options: any={}) {
   provider = eth.createProvider(options);
 
   const instance: any = {
-    _ethers: ethers,
     _provider: provider,
+    getBalance: provider.getBalance,
     ...comptroller,
     ...cToken,
   };
@@ -28,6 +28,7 @@ const Compound = function(provider: any='mainnet', options: any={}) {
 
 Compound.eth = eth;
 Compound.util = util;
+Compound._ethers = ethers;
 Object.assign(Compound, constants);
 
 export = Compound;
