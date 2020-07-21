@@ -11,7 +11,7 @@ export async function supply(asset: string, amount: any, options: any = {}) {
   const cTokenAddress = address[this._network.name][cTokenName];
 
   if (!cTokenAddress || !underlyings.includes(asset)) {
-    throw Error(errorPrefix + 'Argument `asset` is not a recognized cToken address.');
+    throw Error(errorPrefix + 'Argument `asset` cannot be supplied.');
   }
 
   if (
@@ -85,4 +85,37 @@ export async function redeem(asset: string, amount: any, options: any = {}) {
   const method = passedCToken ? 'redeem' : 'redeemUnderlying';
 
   return eth.trx(cTokenAddress, method, parameters, trxOptions);
+}
+
+export async function borrow(asset: string, amount: any, options: any = {}) {
+  await netId(this);
+  const errorPrefix = 'Compound [borrow] | ';
+
+  const cTokenName = 'c' + asset;
+  const cTokenAddress = address[this._network.name][cTokenName];
+
+  if (!cTokenAddress || !underlyings.includes(asset)) {
+    throw Error(errorPrefix + 'Argument `asset` cannot be borrowed.');
+  }
+
+  if (
+    typeof amount !== 'number' &&
+    typeof amount !== 'string' &&
+    !ethers.BigNumber.isBigNumber(amount)
+  ) {
+    throw Error(errorPrefix + 'Argument `amount` must be a string, number, or BigNumber.');
+  }
+
+  if (!options.mantissa) {
+    amount = +amount;
+    amount = amount * Math.pow(10, decimals[asset]);
+  }
+
+  amount = ethers.BigNumber.from(amount.toString());
+
+  const trxOptions: any = { _compoundProvider: this._provider, ...options };
+  const parameters = [ amount ];
+  trxOptions.abi = cTokenName === constants.cETH ? abi.cEther : abi.cErc20;
+
+  return eth.trx(cTokenAddress, 'borrow', parameters, trxOptions);
 }
