@@ -119,3 +119,56 @@ export async function borrow(asset: string, amount: any, options: any = {}) {
 
   return eth.trx(cTokenAddress, 'borrow', parameters, trxOptions);
 }
+
+export async function repayBorrow(asset: string, amount: any, borrower: string, options: any = {}) {
+  await netId(this);
+  const errorPrefix = 'Compound [repayBorrow] | ';
+
+  const cTokenName = 'c' + asset;
+  const cTokenAddress = address[this._network.name][cTokenName];
+
+  if (!cTokenAddress || !underlyings.includes(asset)) {
+    throw Error(errorPrefix + 'Argument `asset` is not supported.');
+  }
+
+  if (
+    typeof amount !== 'number' &&
+    typeof amount !== 'string' &&
+    !ethers.BigNumber.isBigNumber(amount)
+  ) {
+    throw Error(errorPrefix + 'Argument `amount` must be a string, number, or BigNumber.');
+  }
+
+  let method = ethers.utils.isAddress(borrower) ? 'repayBorrowBehalf' : 'repayBorrow';
+  if (borrower && method === 'repayBorrow') {
+    throw Error(errorPrefix + 'Invalid `borrower` address.');
+  }
+
+  if (!options.mantissa) {
+    amount = +amount;
+    amount = amount * Math.pow(10, decimals[asset]);
+  }
+
+  amount = ethers.BigNumber.from(amount.toString());
+
+  const trxOptions: any = { _compoundProvider: this._provider, ...options };
+  const parameters = method === 'repayBorrowBehalf' ? [ borrower ] : [];
+  if (cTokenName === constants.cETH) {
+    trxOptions.value = amount;
+    trxOptions.abi = abi.cEther;
+  } else {
+    parameters.push(amount);
+    trxOptions.abi = abi.cErc20;
+
+    // ERC-20 approve transaction
+    const underlyingAddress = address[this._network.name][asset];
+    await eth.trx(
+      underlyingAddress,
+      'approve',
+      [ cTokenAddress, amount ],
+      { _compoundProvider: this._provider, abi: abi.cErc20 }
+    );
+  }
+
+  return eth.trx(cTokenAddress, method, parameters, trxOptions);
+}

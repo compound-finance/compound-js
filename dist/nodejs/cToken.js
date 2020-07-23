@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.borrow = exports.redeem = exports.supply = void 0;
+exports.repayBorrow = exports.borrow = exports.redeem = exports.supply = void 0;
 var ethers_1 = require("ethers");
 var eth = require("./eth");
 var helpers_1 = require("./helpers");
@@ -170,4 +170,53 @@ function borrow(asset, amount, options) {
     });
 }
 exports.borrow = borrow;
+function repayBorrow(asset, amount, borrower, options) {
+    if (options === void 0) { options = {}; }
+    return __awaiter(this, void 0, void 0, function () {
+        var errorPrefix, cTokenName, cTokenAddress, method, trxOptions, parameters, underlyingAddress;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, helpers_1.netId(this)];
+                case 1:
+                    _a.sent();
+                    errorPrefix = 'Compound [repayBorrow] | ';
+                    cTokenName = 'c' + asset;
+                    cTokenAddress = constants_1.address[this._network.name][cTokenName];
+                    if (!cTokenAddress || !constants_1.underlyings.includes(asset)) {
+                        throw Error(errorPrefix + 'Argument `asset` is not supported.');
+                    }
+                    if (typeof amount !== 'number' &&
+                        typeof amount !== 'string' &&
+                        !ethers_1.ethers.BigNumber.isBigNumber(amount)) {
+                        throw Error(errorPrefix + 'Argument `amount` must be a string, number, or BigNumber.');
+                    }
+                    method = ethers_1.ethers.utils.isAddress(borrower) ? 'repayBorrowBehalf' : 'repayBorrow';
+                    if (borrower && method === 'repayBorrow') {
+                        throw Error(errorPrefix + 'Invalid `borrower` address.');
+                    }
+                    if (!options.mantissa) {
+                        amount = +amount;
+                        amount = amount * Math.pow(10, constants_1.decimals[asset]);
+                    }
+                    amount = ethers_1.ethers.BigNumber.from(amount.toString());
+                    trxOptions = __assign({ _compoundProvider: this._provider }, options);
+                    parameters = method === 'repayBorrowBehalf' ? [borrower] : [];
+                    if (!(cTokenName === constants_1.constants.cETH)) return [3 /*break*/, 2];
+                    trxOptions.value = amount;
+                    trxOptions.abi = constants_1.abi.cEther;
+                    return [3 /*break*/, 4];
+                case 2:
+                    parameters.push(amount);
+                    trxOptions.abi = constants_1.abi.cErc20;
+                    underlyingAddress = constants_1.address[this._network.name][asset];
+                    return [4 /*yield*/, eth.trx(underlyingAddress, 'approve', [cTokenAddress, amount], { _compoundProvider: this._provider, abi: constants_1.abi.cErc20 })];
+                case 3:
+                    _a.sent();
+                    _a.label = 4;
+                case 4: return [2 /*return*/, eth.trx(cTokenAddress, method, parameters, trxOptions)];
+            }
+        });
+    });
+}
+exports.repayBorrow = repayBorrow;
 //# sourceMappingURL=cToken.js.map
