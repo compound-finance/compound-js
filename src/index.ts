@@ -3,6 +3,7 @@ import * as eth from './eth';
 import * as util from './util';
 import * as comptroller from './comptroller';
 import * as cToken from './cToken';
+import * as priceOracle from './priceOracle';
 import { constants } from './constants';
 
 const Compound = function(provider: any='mainnet', options: any={}) {
@@ -13,6 +14,7 @@ const Compound = function(provider: any='mainnet', options: any={}) {
     _provider: provider,
     ...comptroller,
     ...cToken,
+    ...priceOracle,
   };
 
   // Instance needs to know which network the provider connects to, so it can

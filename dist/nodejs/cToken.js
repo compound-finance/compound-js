@@ -96,7 +96,7 @@ exports.supply = supply;
 function redeem(asset, amount, options) {
     if (options === void 0) { options = {}; }
     return __awaiter(this, void 0, void 0, function () {
-        var errorPrefix, passedCToken, cTokenName, cTokenAddress, underlyingName, underlyingAddress, trxOptions, parameters, method;
+        var errorPrefix, assetIsCToken, cTokenName, cTokenAddress, underlyingName, underlyingAddress, trxOptions, parameters, method;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, helpers_1.netId(this)];
@@ -106,10 +106,10 @@ function redeem(asset, amount, options) {
                     if (typeof asset !== 'string' || asset.length < 1) {
                         throw Error(errorPrefix + 'Argument `asset` must be a non-empty string.');
                     }
-                    passedCToken = asset[0] === 'c';
-                    cTokenName = passedCToken ? asset : 'c' + asset;
+                    assetIsCToken = asset[0] === 'c';
+                    cTokenName = assetIsCToken ? asset : 'c' + asset;
                     cTokenAddress = constants_1.address[this._network.name][cTokenName];
-                    underlyingName = passedCToken ? asset.slice(1, asset.length) : asset;
+                    underlyingName = assetIsCToken ? asset.slice(1, asset.length) : asset;
                     underlyingAddress = constants_1.address[this._network.name][underlyingName];
                     if (!constants_1.cTokens.includes(cTokenName) || !constants_1.underlyings.includes(underlyingName)) {
                         throw Error(errorPrefix + 'Argument `asset` is not supported.');
@@ -129,7 +129,7 @@ function redeem(asset, amount, options) {
                         abi: cTokenName === constants_1.constants.cETH ? constants_1.abi.cEther : constants_1.abi.cErc20
                     };
                     parameters = [amount];
-                    method = passedCToken ? 'redeem' : 'redeemUnderlying';
+                    method = assetIsCToken ? 'redeem' : 'redeemUnderlying';
                     return [2 /*return*/, eth.trx(cTokenAddress, method, parameters, trxOptions)];
             }
         });

@@ -50,12 +50,12 @@ export async function redeem(asset: string, amount: any, options: any = {}) {
     throw Error(errorPrefix + 'Argument `asset` must be a non-empty string.');
   }
 
-  const passedCToken = asset[0] === 'c';
+  const assetIsCToken = asset[0] === 'c';
 
-  const cTokenName = passedCToken ? asset : 'c' + asset;
+  const cTokenName = assetIsCToken ? asset : 'c' + asset;
   const cTokenAddress = address[this._network.name][cTokenName];
 
-  const underlyingName = passedCToken ? asset.slice(1 ,asset.length) : asset;
+  const underlyingName = assetIsCToken ? asset.slice(1, asset.length) : asset;
   const underlyingAddress = address[this._network.name][underlyingName];
 
   if (!cTokens.includes(cTokenName) || !underlyings.includes(underlyingName)) {
@@ -82,7 +82,7 @@ export async function redeem(asset: string, amount: any, options: any = {}) {
     abi: cTokenName === constants.cETH ? abi.cEther : abi.cErc20,
   };
   const parameters = [ amount ];
-  const method = passedCToken ? 'redeem' : 'redeemUnderlying';
+  const method = assetIsCToken ? 'redeem' : 'redeemUnderlying';
 
   return eth.trx(cTokenAddress, method, parameters, trxOptions);
 }

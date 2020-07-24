@@ -81,13 +81,23 @@ function _ethJsonRpc(
       contract[method].apply(null, parameters).then((result) => {
         resolve(result);
       }).catch((error) => {
-        reject(error);
+        reject({
+          message: 'Error occurred during [eth_sendTransaction]. See {error}.',
+          error,
+          method,
+          parameters,
+        });
       });
     } else if (jsonRpcMethod === JsonRpc.EthCall) {
       contract.callStatic[method].apply(null, parameters).then((result) => {
         resolve(result);
       }).catch((error) => {
-        reject(error);
+        reject({
+          message: 'Error occurred during [eth_call]. See {error}.',
+          error,
+          method,
+          parameters,
+        });
       });
     }
   });
