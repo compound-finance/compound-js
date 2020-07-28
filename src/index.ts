@@ -6,7 +6,7 @@ import * as cToken from './cToken';
 import * as priceOracle from './priceOracle';
 import { constants } from './constants';
 
-// ethers.utils.Logger.setLogLevel('off'); // turn off warnings
+ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR); // turn off warnings
 
 const Compound = function(provider: any='mainnet', options: any={}) {
   options.provider = provider || options.provider;
