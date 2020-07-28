@@ -17,6 +17,7 @@ var comptroller = require("./comptroller");
 var cToken = require("./cToken");
 var priceOracle = require("./priceOracle");
 var constants_1 = require("./constants");
+// ethers.utils.Logger.setLogLevel('off'); // turn off warnings
 var Compound = function (provider, options) {
     if (provider === void 0) { provider = 'mainnet'; }
     if (options === void 0) { options = {}; }
