@@ -9,7 +9,7 @@ A JavaScript SDK for Ethereum and the Compound Protocol. A wrapper around [Ether
 JSON RPC based **read** and **write**.
 
 ```js
-const Compound = require('compound-js');
+const Compound = require('compound-js'); // in Node.js
 const cUsdtAddress = '0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9';
 
 (async function() {
@@ -33,7 +33,7 @@ const cUsdtAddress = '0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9';
 Simple methods for using the Compound protocol.
 
 ```js
-const compound = new Compound(window.ethereum);
+const compound = new Compound(window.ethereum); // in a web browser
 
 // Ethers.js overrides are an optional 3rd parameter for `supply`
 // const trxOptions = { gasLimit: 250000, mantissa: false };
@@ -87,8 +87,10 @@ const trxOptions = {
 };
 ```
 
-## Build for Node.js & Browser
+## Build for Node.js & Web Browser
 
 ```
+git clone git@github.com:compound-developers/compound-js.git && cd compound-js
+npm install
 npm run build
 ```
