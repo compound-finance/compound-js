@@ -76,9 +76,26 @@ const compound = new Compound(window.ethereum); // in a web browser
 - [Node.js](https://github.com/compound-developers/compound-js/tree/master/examples/nodejs)
 - [Web Browser](https://compound-developers.github.io/compound-js/examples/web/)
 
+## Instance Creation
+
+The following are valid Ethereum providers for initialization of the SDK.
+
+```js
+var compound = new Compound(window.ethereum); // web browser
+var compound = new Compound('http://127.0.0.1:8545'); // HTTP provider
+var compound = new Compound(); // Uses Ethers.js fallback mainnet (for testing only)
+var compound = new Compound('ropsten'); // Uses Ethers.js fallback (for testing only)
+
+// Init with private key
+var compound = new Compound('https://mainnet.infura.io/v3/_your_project_id_' {
+  privateKey: '0x_your_private_key_'
+});
+```
+
 ## Constants
 
 Names of contracts, their addresses, ABIs, token decimals, and more can be found in `/src/constants.ts`.
+
 ```js
 console.log(Compound.DAI, Compound.ETH, Compound.cETH);
 // DAI, ETH, cETH
