@@ -169,6 +169,16 @@ function trx(address, method, parameters, options) {
     return _ethJsonRpc(JsonRpc.EthSendTransaction, address, method, parameters, options);
 }
 exports.trx = trx;
+/**
+ * This helps the Compound.js constructor discover which Ethereum network the
+ *     developer wants to use.
+ *
+ * @param {any{} | string} provider Optional Ethereum network provider.
+ *     Defaults to Ethers.js fallback mainnet provider.
+ *
+ * @returns {object} Returns a metadata object containing the Ethereum network
+ *     name and ID.
+ */
 function getProviderNetwork(provider) {
     return __awaiter(this, void 0, void 0, function () {
         var networkId, network;
@@ -198,6 +208,16 @@ function getProviderNetwork(provider) {
     });
 }
 exports.getProviderNetwork = getProviderNetwork;
+/**
+ * Fetches the current Ether balance of a provided Ethereum address.
+ *
+ * @param {string} address The Ethereum address in which to get the ETH balance.
+ * @param {any{} | string} [provider] Optional Ethereum network provider.
+ *     Defaults to Ethers.js fallback mainnet provider.
+ *
+ * @returns {BigNumber} Returns a BigNumber hexidecimal value of the ETH balance
+ *     of the address.
+ */
 function getBalance(address, provider) {
     return __awaiter(this, void 0, void 0, function () {
         var providerInstance, url, balance;
@@ -221,6 +241,14 @@ function getBalance(address, provider) {
     });
 }
 exports.getBalance = getBalance;
+/**
+ * Creates an Ethereum network provider object.
+ *
+ * @param {CallOptions} options The call options of a pending Ethereum
+ *     transaction.
+ *
+ * @returns {object} Returns a valid Ethereum network provider object.
+ */
 function createProvider(options) {
     if (options === void 0) { options = {}; }
     var provider = options.provider || (options.network || 'mainnet');

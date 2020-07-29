@@ -49,10 +49,38 @@ export declare function read(address: string, method: string, parameters?: any[]
  *     object if the transaction failed.
  */
 export declare function trx(address: string, method: string, parameters?: any[], options?: CallOptions): Promise<any>;
+/**
+ * This helps the Compound.js constructor discover which Ethereum network the
+ *     developer wants to use.
+ *
+ * @param {any{} | string} provider Optional Ethereum network provider.
+ *     Defaults to Ethers.js fallback mainnet provider.
+ *
+ * @returns {object} Returns a metadata object containing the Ethereum network
+ *     name and ID.
+ */
 export declare function getProviderNetwork(provider: any): Promise<{
     id: any;
     name: any;
 }>;
+/**
+ * Fetches the current Ether balance of a provided Ethereum address.
+ *
+ * @param {string} address The Ethereum address in which to get the ETH balance.
+ * @param {any{} | string} [provider] Optional Ethereum network provider.
+ *     Defaults to Ethers.js fallback mainnet provider.
+ *
+ * @returns {BigNumber} Returns a BigNumber hexidecimal value of the ETH balance
+ *     of the address.
+ */
 export declare function getBalance(address: string, provider: any): Promise<any>;
+/**
+ * Creates an Ethereum network provider object.
+ *
+ * @param {CallOptions} options The call options of a pending Ethereum
+ *     transaction.
+ *
+ * @returns {object} Returns a valid Ethereum network provider object.
+ */
 export declare function createProvider(options?: CallOptions): any;
 export {};

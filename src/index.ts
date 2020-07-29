@@ -6,8 +6,18 @@ import * as cToken from './cToken';
 import * as priceOracle from './priceOracle';
 import { constants } from './constants';
 
-ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR); // turn off warnings
+// Turn off Ethers.js warnings
+ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
 
+/**
+ * Creates an instance of the Compound.js SDK.
+ *
+ * @param {any{} | string} [provider] Optional Ethereum network provider.
+ *     Defaults to Ethers.js fallback mainnet provider.
+ * @param {any{}} [options] Optional provider options.
+ *
+ * @returns {object} Returns an instance of Compound.js SDK.
+ */
 const Compound = function(provider: any='mainnet', options: any={}) {
   options.provider = provider || options.provider;
   provider = eth.createProvider(options);

@@ -52,6 +52,20 @@ var ethers_1 = require("ethers");
 var eth = require("./eth");
 var helpers_1 = require("./helpers");
 var constants_1 = require("./constants");
+/**
+ * Supplies the user's Ethereum asset to the Compound protocol.
+ *
+ * @param {string} asset A string of the asset to supply.
+ * @param {number | string | BigNumber} amount A string, number, or BigNumber
+ *     object of the amount of an asset to supply. Use the `mantissa` boolean in
+ *     the `options` parameter to indicate if this value is scaled up (so there
+ *     are no decimals) or in its natural scale.
+ * @param {object} options Call options and Ethers.js overrides for the
+ *     transaction.
+ *
+ * @returns {object} Returns an Ethers.js transaction object of the supply
+ *     transaction.
+ */
 function supply(asset, amount, options) {
     if (options === void 0) { options = {}; }
     return __awaiter(this, void 0, void 0, function () {
@@ -93,6 +107,21 @@ function supply(asset, amount, options) {
     });
 }
 exports.supply = supply;
+/**
+ * Redeems the user's Ethereum asset from the Compound protocol.
+ *
+ * @param {string} asset A string of the asset to redeem, or its cToken name.
+ * @param {number | string | BigNumber} amount A string, number, or BigNumber
+ *     object of the amount of an asset to redeem. Use the `mantissa` boolean in
+ *     the `options` parameter to indicate if this value is scaled up (so there
+ *     are no decimals) or in its natural scale. This can be an amount of
+ *     cTokens or underlying asset (use the `asset` parameter to specify).
+ * @param {object} options Call options and Ethers.js overrides for the
+ *     transaction.
+ *
+ * @returns {object} Returns an Ethers.js transaction object of the redeem
+ *     transaction.
+ */
 function redeem(asset, amount, options) {
     if (options === void 0) { options = {}; }
     return __awaiter(this, void 0, void 0, function () {
@@ -136,6 +165,23 @@ function redeem(asset, amount, options) {
     });
 }
 exports.redeem = redeem;
+/**
+ * Borrows an Ethereum asset from the Compound protocol for the user. The user's
+ *     address must first have supplied collateral and entered a corresponding
+ *     market.
+ *
+ * @param {string} asset A string of the asset to borrow (must be a supported
+ *     underlying asset).
+ * @param {number | string | BigNumber} amount A string, number, or BigNumber
+ *     object of the amount of an asset to borrow. Use the `mantissa` boolean in
+ *     the `options` parameter to indicate if this value is scaled up (so there
+ *     are no decimals) or in its natural scale.
+ * @param {object} options Call options and Ethers.js overrides for the
+ *     transaction.
+ *
+ * @returns {object} Returns an Ethers.js transaction object of the borrow
+ *     transaction.
+ */
 function borrow(asset, amount, options) {
     if (options === void 0) { options = {}; }
     return __awaiter(this, void 0, void 0, function () {
@@ -170,6 +216,25 @@ function borrow(asset, amount, options) {
     });
 }
 exports.borrow = borrow;
+/**
+ * Repays a borrowed Ethereum asset for the user or on behalf of another
+ *     Ethereum address.
+ *
+ * @param {string} asset A string of the asset that was borrowed (must be a
+ *     supported underlying asset).
+ * @param {number | string | BigNumber} amount A string, number, or BigNumber
+ *     object of the amount of an asset to borrow. Use the `mantissa` boolean in
+ *     the `options` parameter to indicate if this value is scaled up (so there
+ *     are no decimals) or in its natural scale.
+ * @param {string | null} [borrower] The Ethereum address of the borrower to
+ *     repay an open borrow for. Set this to `null` if the user is repaying
+ *     their own borrow.
+ * @param {object} options Call options and Ethers.js overrides for the
+ *     transaction.
+ *
+ * @returns {object} Returns an Ethers.js transaction object of the repayBorrow
+ *     or repayBorrowBehalf transaction.
+ */
 function repayBorrow(asset, amount, borrower, options) {
     if (options === void 0) { options = {}; }
     return __awaiter(this, void 0, void 0, function () {

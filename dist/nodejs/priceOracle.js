@@ -77,6 +77,18 @@ function cTokenExchangeRate(cTokenAddress, cTokenName, underlyingDecimals) {
         });
     });
 }
+/**
+ * Gets an asset's price from the Compound protocol open price feed. The price
+ *    of the asset can be returned in any other supported asset value, including
+ *    cTokens and underlyings.
+ *
+ * @param {string} asset A string of a supported asset in which to find the
+ *    current price.
+ * @param {string} [inAsset] A string of a supported asset in which to express
+ *    the `asset` parameter's price. This defaults to Ether.
+ *
+ * @returns {string} Returns a string of the numerical value of the asset.
+ */
 function getPrice(asset, inAsset) {
     if (inAsset === void 0) { inAsset = constants_1.constants.ETH; }
     return __awaiter(this, void 0, void 0, function () {

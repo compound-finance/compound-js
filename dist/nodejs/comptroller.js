@@ -40,6 +40,15 @@ exports.exitMarket = exports.enterMarkets = void 0;
 var eth = require("./eth");
 var helpers_1 = require("./helpers");
 var constants_1 = require("./constants");
+/**
+ * Enters the user's address into Compound protocol markets.
+ *
+ * @param {any[]} markets An array of strings of markets to enter, meaning use
+ *     those supplied assets as collateral.
+ *
+ * @returns {object} Returns an Ethers.js transaction object of the enterMarkets
+ *     transaction.
+ */
 function enterMarkets(markets) {
     if (markets === void 0) { markets = []; }
     return __awaiter(this, void 0, void 0, function () {
@@ -78,6 +87,14 @@ function enterMarkets(markets) {
     });
 }
 exports.enterMarkets = enterMarkets;
+/**
+ * Exits the user's address from a Compound protocol market.
+ *
+ * @param {string} market An string of the market to exit.
+ *
+ * @returns {object} Returns an Ethers.js transaction object of the exitMarket
+ *     transaction.
+ */
 function exitMarket(market) {
     return __awaiter(this, void 0, void 0, function () {
         var errorPrefix, cTokenAddress, comptrollerAddress, parameters, trxOptions;
