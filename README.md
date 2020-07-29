@@ -70,20 +70,19 @@ Each method that interacts with the blockchain accepts a final optional paramete
 ```js
 // The options object itself and all options are optional
 const trxOptions = {
-  mantissa,          // Boolean, parameters array arg of 1 ETH would be '1000000000000000000' (true) vs 1 (false)
-  _compoundProvider, // Ethereum provider from a Compound.js instance
-  abi,               // Definition string or an ABI array from a solc build
-  provider,          // JSON RPC string, Web3 object, or Ethers.js fallback network (string)
-  network,           // Ethers.js fallback network provider, "provider" has precedence over "network"
-  from,              // Address that the Ethereum transaction is send from
-  gasPrice,          // Ethers.js override `Compound_ethers.utils.parseUnits('10.0', 'gwei')`
-  gasLimit,          // Ethers.js override - see https://docs.ethers.io/ethers.js/v5-beta/api-contract.html#overrides
-  value,             // Number or string
-  data,              // Number or string
-  chainId,           // Number
-  nonce,             // Number
-  privateKey,        // String, meant to be used with `Compound.eth.trx` (server side)
-  mnemonic,          // String, meant to be used with `Compound.eth.trx` (server side)
+  mantissa,   // Boolean, parameters array arg of 1 ETH would be '1000000000000000000' (true) vs 1 (false)
+  abi,        // Definition string or an ABI array from a solc build
+  provider,   // JSON RPC string, Web3 object, or Ethers.js fallback network (string)
+  network,    // Ethers.js fallback network provider, "provider" has precedence over "network"
+  from,       // Address that the Ethereum transaction is send from
+  gasPrice,   // Ethers.js override `Compound_ethers.utils.parseUnits('10.0', 'gwei')`
+  gasLimit,   // Ethers.js override - see https://docs.ethers.io/ethers.js/v5-beta/api-contract.html#overrides
+  value,      // Number or string
+  data,       // Number or string
+  chainId,    // Number
+  nonce,      // Number
+  privateKey, // String, meant to be used with `Compound.eth.trx` (server side)
+  mnemonic,   // String, meant to be used with `Compound.eth.trx` (server side)
 };
 ```
 
