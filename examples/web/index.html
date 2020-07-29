@@ -549,6 +549,11 @@ const getAddressExample = () => {
 };
 
 window.addEventListener('load', (event) => {
+  // syntax highlight code snippets
+  document.querySelectorAll('pre code').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+
   window.ethereum.enable().then(() => {
 
     ethCallButton.onclick = ethCallExample;
@@ -560,11 +565,6 @@ window.addEventListener('load', (event) => {
     repayBorrowButton.onclick = repayBorrowExample;
     getPriceButton.onclick = getPriceExample;
     getAddressButton.onclick = getAddressExample;
-
-    // syntax highlight code snippets
-    document.querySelectorAll('pre code').forEach((block) => {
-      hljs.highlightBlock(block);
-    });
 
   });
 });
