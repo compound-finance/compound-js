@@ -93,6 +93,10 @@ function _ethJsonRpc(jsonRpcMethod, address, method, parameters, options) {
             contract[method].apply(null, parameters).then(function (result) {
                 resolve(result);
             })["catch"](function (error) {
+                try {
+                    delete parameters[parameters.length - 1].privateKey;
+                }
+                catch (e) { }
                 reject({
                     message: 'Error occurred during [eth_sendTransaction]. See {error}.',
                     error: error,
@@ -105,6 +109,10 @@ function _ethJsonRpc(jsonRpcMethod, address, method, parameters, options) {
             contract.callStatic[method].apply(null, parameters).then(function (result) {
                 resolve(result);
             })["catch"](function (error) {
+                try {
+                    delete parameters[parameters.length - 1].privateKey;
+                }
+                catch (e) { }
                 reject({
                     message: 'Error occurred during [eth_call]. See {error}.',
                     error: error,
