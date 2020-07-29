@@ -4,7 +4,6 @@ interface CallOptions {
     provider?: any;
     network?: string;
     from?: number | string;
-    gas?: number;
     gasPrice?: number;
     gasLimit?: number;
     value?: number | string;
