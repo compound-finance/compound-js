@@ -69,7 +69,7 @@ const cEthAddress = '0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5';
     cEthAddress,
     'function supplyRatePerBlock() returns (uint256)',
     // [], // [optional] parameters
-    // {}  // [optional] call options, provider, network, plus ethers "overrides"
+    // {}  // [optional] call options, provider, network, plus Ethers.js "overrides"
   );
 
   console.log('cETH market supply rate per block:', srpb.toString());
@@ -294,7 +294,7 @@ const ethCallExample = () => {
       cEthAddress,
       'function supplyRatePerBlock() returns (uint256)',
       // [], // [optional] parameters
-      // {}  // [optional] call options, provider, network, plus ethers "overrides"
+      // {}  // [optional] call options, provider, network, plus Ethers.js "overrides"
     );
 
     ethCallContent.innerText = srpb.toString();
