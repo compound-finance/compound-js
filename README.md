@@ -76,6 +76,14 @@ const compound = new Compound(window.ethereum); // in a web browser
 - [Node.js](https://github.com/compound-developers/compound-js/tree/master/examples/nodejs)
 - [Web Browser](https://compound-developers.github.io/compound-js/examples/web/)
 
+## Constants
+
+Names of contracts, their addresses, ABIs, token decimals, and more can be found in `/src/constants.ts`.
+```js
+console.log(Compound.DAI, Compound.ETH, Compound.cETH);
+// DAI, ETH, cETH
+```
+
 ## Mantissas
 
 Parameters of number values can be plain numbers or their scaled up mantissa values. There is a transaction option boolean to tell the SDK what the developer is passing.
