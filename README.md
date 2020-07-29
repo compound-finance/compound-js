@@ -142,3 +142,13 @@ git clone git@github.com:compound-developers/compound-js.git && cd compound-js
 npm install
 npm run build
 ```
+
+### Web Browser Build
+```html
+<script type="text/javascript" src="./dist/browser/compound.min.js"></script>
+```
+
+### Node.js Build
+```js
+const Compound = require('./dist/nodejs/index.js');
+```
