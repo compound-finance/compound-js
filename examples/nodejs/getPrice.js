@@ -4,7 +4,7 @@ const Compound = require('../../dist/nodejs/index.js');
 const compound = new Compound();
 
 let price;
-const main = async () => {
+(async function() {
 
   price = await compound.getPrice(Compound.BAT, Compound.USDC);
   console.log('BAT in USDC', price);
@@ -18,8 +18,4 @@ const main = async () => {
   price = await compound.getPrice(Compound.BAT);
   console.log('BAT in ETH', price);
 
-}
-
-main().catch((err) => {
-  console.error(err)
-});
+})().catch(console.error);

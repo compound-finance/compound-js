@@ -29,7 +29,7 @@ const getDaiBalance = (address) => {
   );
 };
 
-const main = async () => {
+(async function() {
 
   let myDaiBalance = await getDaiBalance(myAddress);
   console.log(`My Dai Balance: ${ (myDaiBalance / 1e18).toString() }`);
@@ -38,7 +38,7 @@ const main = async () => {
   const trx1 = await compound.supply(Compound.ETH, 10);
 
   console.log('Entering ETH market (use as collateral)...');
-  const trx2 = await compound.enterMarkets(Compound.ETH);
+  const trx2 = await compound.enterMarkets(Compound.ETH); // also accepts []
 
   console.log('Borrowing Dai against ETH...');
   const trx3 = await compound.borrow(Compound.DAI, 32, { gasLimit: 500000 });
@@ -46,8 +46,7 @@ const main = async () => {
   myDaiBalance = await getDaiBalance(myAddress);
   console.log(`My Dai Balance: ${ (myDaiBalance / 1e18).toString() }`);
 
-}
+  // Exit a market (string argument of only 1 market at a time)
+  // const trx = await compound.exitMarket(Compound.ETH);
 
-main().catch((err) => {
-  console.error(err)
-});
+})().catch(console.error);

@@ -37,6 +37,4 @@ const privateKey = '0xb8c1b5c1d81f9475fdf2e334517d29f733bdfa40682207571b12fc1142
   // const result = await trx.wait(1); // JSON object of trx info, once mined
 
   console.log('Ethers.js transaction object', trx);
-})().catch((err) => {
-  console.error(err);
-});
+})().catch(console.error);

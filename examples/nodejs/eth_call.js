@@ -15,6 +15,4 @@ const cEthAddress = '0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5';
 
   console.log('cETH market supply rate per block:', srpb.toString());
 
-})().catch((err) => {
-  console.error(err);
-});
+})().catch(console.error);

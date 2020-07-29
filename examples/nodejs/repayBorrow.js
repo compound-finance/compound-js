@@ -29,7 +29,7 @@ const getDaiBalance = (address) => {
   );
 };
 
-const main = async () => {
+(async function() {
 
   let myDaiBalance = await getDaiBalance(myAddress);
   console.log(`My Dai Balance: ${ (myDaiBalance / 1e18).toString() }`);
@@ -53,8 +53,4 @@ const main = async () => {
   myDaiBalance = await getDaiBalance(myAddress);
   console.log(`My Dai Balance: ${ (myDaiBalance / 1e18).toString() }`);
 
-}
-
-main().catch((err) => {
-  console.error(err)
-});
+})().catch(console.error);

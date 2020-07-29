@@ -19,14 +19,10 @@ const compound = new Compound('http://localhost:8545', { privateKey });
 // Ethers.js overrides are an optional 3rd parameter for `supply`
 const trxOptions = { gasLimit: 250000, mantissa: false };
 
-const main = async () => {
+(async function() {
 
   console.log('Supplying ETH to the Compound protocol...');
   const trx = await compound.supply(Compound.ETH, 1);
   console.log('Ethers.js transaction object', trx);
 
-}
-
-main().catch((err) => {
-  console.error(err)
-});
+})().catch(console.error);

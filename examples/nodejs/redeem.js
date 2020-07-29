@@ -19,7 +19,8 @@ const compound = new Compound('http://localhost:8545', { privateKey });
 // Ethers.js overrides are an optional 3rd parameter for `supply` or `redeem`
 const trxOptions = { gasLimit: 250000, mantissa: false };
 
-const main = async () => {
+(async function() {
+
   console.log('Supplying ETH to the Compound protocol...');
   const trx1 = await compound.supply(Compound.ETH, 1);
   console.log('Supply transaction: ', trx1);
@@ -27,8 +28,5 @@ const main = async () => {
   console.log('Redeeming ETH...');
   const trx2 = await compound.redeem(Compound.ETH, 1); // also accepts cToken args
   console.log('Redeem transaction: ', trx2);
-}
 
-main().catch((err) => {
-  console.error(err)
-});
+})().catch(console.error);
