@@ -6,7 +6,9 @@ A JavaScript SDK for Ethereum and the Compound Protocol. A wrapper around [Ether
 
 ## Ethereum Read & Write
 
-JSON RPC based **read** and **write**.
+JSON RPC based Ethereum **read** and **write**.
+
+### Read
 
 ```js
 const Compound = require('compound-js'); // in Node.js
@@ -26,6 +28,28 @@ const cUsdtAddress = '0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9';
 })().catch((err) => {
   console.error(err);
 });
+```
+
+### Write
+
+```js
+const toAddress = '0xa0df350d2637096571F7A701CBc1C5fdE30dF76A';
+
+(async function() {
+
+  const trx = await Compound.eth.trx(
+    toAddress,
+    'function send() external payable',
+    [],
+    {
+      value: Compound._ethers.utils.parseEther('1.0'), // 1 ETH
+      provider: window.ethereum, // in a web browser
+    }
+  );
+
+  const toAddressEthBalance = await Compound.eth.getBalance(toAddress);
+
+})().catch(console.error);
 ```
 
 ## Compound Protocol
