@@ -19,7 +19,7 @@
     "ethereum"
   ],
   "author": "Compound Labs, Inc.",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
