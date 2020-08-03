@@ -73,8 +73,10 @@ const compound = new Compound(window.ethereum); // in a web browser
 
 ## More Code Examples
 
-- [Node.js](https://github.com/compound-developers/compound-js/tree/master/examples/nodejs)
-- [Web Browser](https://compound-developers.github.io/compound-js/examples/web/)
+- [Node.js](https://github.com/compound-developers/compound-js/tree/master/examples)
+- [Web Browser](https://github.com/compound-developers/compound-js/tree/master/examples)
+
+[To run, boot Ganache fork of mainnet locally](https://github.com/compound-developers/compound-js/tree/master/examples)
 
 ## Instance Creation
 
