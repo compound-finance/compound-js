@@ -1,8 +1,8 @@
 # Compound.js [Alpha]
 
-A JavaScript SDK for Ethereum and the Compound Protocol. A wrapper around [Ethers.js](https://github.com/ethers-io/ethers.js/). Works in the web browser and Node.js.
+A JavaScript SDK for Ethereum and the Compound Protocol. Wraps around [Ethers.js](https://github.com/ethers-io/ethers.js/). Works in the **web browser** and **Node.js**.
 
-**This SDK is in Alpha, and is constantly under development. Use at your own risk.**
+**This SDK is in Alpha, and is constantly under development. USE AT YOUR OWN RISK.**
 
 ## Ethereum Read & Write
 
@@ -86,9 +86,14 @@ var compound = new Compound('http://127.0.0.1:8545'); // HTTP provider
 var compound = new Compound(); // Uses Ethers.js fallback mainnet (for testing only)
 var compound = new Compound('ropsten'); // Uses Ethers.js fallback (for testing only)
 
-// Init with private key
+// Init with private key (server side)
 var compound = new Compound('https://mainnet.infura.io/v3/_your_project_id_' {
-  privateKey: '0x_your_private_key_'
+  privateKey: '0x_your_private_key_', // preferably with environment variable
+});
+
+// Init with HD mnemonic (server side)
+var compound = new Compound('mainnet' {
+  mnemonic: 'clutch captain shoe...', // preferably with environment variable
 });
 ```
 
@@ -115,7 +120,7 @@ await compound.borrow(Compound.DAI, 1, { mantissa: false });
 
 ## Transaction Options
 
-Each method that interacts with the blockchain accepts a final optional parameter for overrides, much like Ethers.js.
+Each method that interacts with the blockchain accepts a final optional parameter for overrides, much like [Ethers.js overrides](https://docs.ethers.io/ethers.js/v5-beta/api-contract.html#overrides).
 ```js
 // The options object itself and all options are optional
 const trxOptions = {
@@ -138,7 +143,8 @@ const trxOptions = {
 ## Build for Node.js & Web Browser
 
 ```
-git clone git@github.com:compound-developers/compound-js.git && cd compound-js
+git clone git@github.com:compound-developers/compound-js.git
+cd compound-js/
 npm install
 npm run build
 ```
