@@ -10,7 +10,7 @@
     "publish_patch": "npm version patch && npm publish",
     "publish_minor": "npm version minor && npm publish",
     "publish_major": "npm version major && npm publish",
-    "rollup": "rollup -c",
+    "rollup": "rollup -c rollup.config.ts",
     "test": "jest"
   },
   "keywords": [
