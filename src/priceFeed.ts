@@ -42,16 +42,16 @@ async function cTokenExchangeRate(cTokenAddress, cTokenName, underlyingDecimals)
 /**
  * Gets an asset's price from the Compound protocol open price feed. The price
  *    of the asset can be returned in any other supported asset value, including
- *    cTokens and underlyings.
+ *    all cTokens and underlyings.
  *
  * @param {string} asset A string of a supported asset in which to find the
  *    current price.
  * @param {string} [inAsset] A string of a supported asset in which to express
- *    the `asset` parameter's price. This defaults to Ether.
+ *    the `asset` parameter's price. This defaults to USDC.
  *
  * @returns {string} Returns a string of the numerical value of the asset.
  */
-export async function getPrice(asset: string, inAsset: string=constants.ETH) {
+export async function getPrice(asset: string, inAsset: string=constants.USDC) {
   await netId(this);
   const errorPrefix = 'Compound [getPrice] | ';
 
@@ -63,17 +63,17 @@ export async function getPrice(asset: string, inAsset: string=constants.ETH) {
     inAssetIsCToken, inAssetCTokenName, inAssetCTokenAddress, inAssetUnderlyingName, inAssetUnderlyingAddress, inAssetUnderlyingDecimals
   ] = validateAsset.bind(this)(inAsset, 'inAsset', errorPrefix);
 
-  const priceOracleAddress = address[this._network.name].PriceOracle;
+  const priceFeedAddress = address[this._network.name].PriceFeed;
   const trxOptions: any = {
     _compoundProvider: this._provider,
-    abi: abi.PriceOracle,
+    abi: abi.PriceFeed,
   };
 
-  const priceMantissa = await eth.read(priceOracleAddress, 'getUnderlyingPrice', [ cTokenAddress ], trxOptions);
+  const priceMantissa = await eth.read(priceFeedAddress, 'getUnderlyingPrice', [ cTokenAddress ], trxOptions);
 
   let inAssetPriceMantissa = 1e18;
   if (inAssetUnderlyingName !== constants.ETH) {
-    inAssetPriceMantissa = await eth.read(priceOracleAddress, 'getUnderlyingPrice', [ inAssetCTokenAddress ], trxOptions);
+    inAssetPriceMantissa = await eth.read(priceFeedAddress, 'getUnderlyingPrice', [ inAssetCTokenAddress ], trxOptions);
   }
 
   const assetUnderlyingPrice = priceMantissa / (1e18 / (Math.pow(10, underlyingDecimals - 18)));

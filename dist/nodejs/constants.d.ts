@@ -1,6 +1,5 @@
 export declare const constants: {
-    PriceOracle: string;
-    PriceOracleProxy: string;
+    PriceFeed: string;
     Maximillion: string;
     CompoundLens: string;
     GovernorAlpha: string;
@@ -28,7 +27,7 @@ export declare const constants: {
 };
 export declare const address: {
     mainnet: {
-        PriceOracle: string;
+        PriceFeed: string;
         Maximillion: string;
         CompoundLens: string;
         GovernorAlpha: string;
@@ -54,7 +53,7 @@ export declare const address: {
         ZRX: string;
     };
     rinkeby: {
-        PriceOracle: string;
+        PriceFeed: string;
         Maximillion: string;
         CompoundLens: string;
         GovernorAlpha: string;
@@ -80,7 +79,7 @@ export declare const address: {
         ZRX: string;
     };
     goerli: {
-        PriceOracle: string;
+        PriceFeed: string;
         Maximillion: string;
         CompoundLens: string;
         GovernorAlpha: string;
@@ -106,7 +105,7 @@ export declare const address: {
         ZRX: string;
     };
     kovan: {
-        PriceOracle: string;
+        PriceFeed: string;
         Maximillion: string;
         CompoundLens: string;
         GovernorAlpha: string;
@@ -132,7 +131,7 @@ export declare const address: {
         ZRX: string;
     };
     ropsten: {
-        PriceOracle: string;
+        PriceFeed: string;
         Maximillion: string;
         CompoundLens: string;
         GovernorAlpha: string;
@@ -376,7 +375,7 @@ export declare const abi: {
         signature: string;
         anonymous?: undefined;
     })[];
-    PriceOracle: string[];
+    PriceFeed: string[];
 };
 export declare const cTokens: string[];
 export declare const underlyings: string[];

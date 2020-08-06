@@ -6,16 +6,16 @@ const compound = new Compound();
 let price;
 (async function() {
 
-  price = await compound.getPrice(Compound.BAT, Compound.USDC);
+  price = await compound.getPrice(Compound.BAT);
   console.log('BAT in USDC', price);
 
-  price = await compound.getPrice(Compound.cBAT, Compound.USDC);
+  price = await compound.getPrice(Compound.cBAT);
   console.log('cBAT in USDC', price);
 
   price = await compound.getPrice(Compound.BAT, Compound.cUSDC);
   console.log('BAT in cUSDC', price);
 
-  price = await compound.getPrice(Compound.BAT);
+  price = await compound.getPrice(Compound.BAT, Compound.ETH);
   console.log('BAT in ETH', price);
 
 })().catch(console.error);

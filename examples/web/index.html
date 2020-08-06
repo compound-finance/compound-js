@@ -228,8 +228,8 @@ const provider = window.ethereum;
       <div id="get-price-content"></div>
       <pre><code class="js">(async function() {
 
-  // Accepts cTokens or underlyings. Second arg defaults to ETH.
-  const price = await compound.getPrice(Compound.BAT, Compound.USDC);
+  // Accepts cTokens or underlyings. Second arg defaults to USDC.
+  const price = await compound.getPrice(Compound.BAT);
   console.log('BAT in USDC', price);
 
 })().catch(console.error);</code></pre>
@@ -514,8 +514,8 @@ const getPriceExample = () => {
 
   (async function() {
 
-    // Accepts cTokens or underlyings. Second arg defaults to ETH.
-    const price = await compound.getPrice(Compound.BAT, Compound.USDC);
+    // Accepts cTokens or underlyings. Second arg defaults to USDC.
+    const price = await compound.getPrice(Compound.BAT);
     console.log('BAT in USDC', price);
 
     getPriceContent.innerText = price.toString();

@@ -15,7 +15,7 @@ var eth = require("./eth");
 var util = require("./util");
 var comptroller = require("./comptroller");
 var cToken = require("./cToken");
-var priceOracle = require("./priceOracle");
+var priceFeed = require("./priceFeed");
 var constants_1 = require("./constants");
 // Turn off Ethers.js warnings
 ethers_1.ethers.utils.Logger.setLogLevel(ethers_1.ethers.utils.Logger.levels.ERROR);
@@ -33,7 +33,7 @@ var Compound = function (provider, options) {
     if (options === void 0) { options = {}; }
     options.provider = provider || options.provider;
     provider = eth.createProvider(options);
-    var instance = __assign(__assign(__assign({ _provider: provider }, comptroller), cToken), priceOracle);
+    var instance = __assign(__assign(__assign({ _provider: provider }, comptroller), cToken), priceFeed);
     // Instance needs to know which network the provider connects to, so it can
     //     use the correct contract addresses.
     instance._networkPromise = eth.getProviderNetwork(provider).then(function (network) {
