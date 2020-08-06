@@ -228,7 +228,7 @@ const provider = window.ethereum;
       <div id="get-price-content"></div>
       <pre><code class="js">(async function() {
 
-  // Accepts cTokens or underlyings. Second arg defaults to USDC.
+  // Accepts 2 args, cTokens or underlyings. Second arg defaults to USDC.
   const price = await compound.getPrice(Compound.BAT);
   console.log('BAT in USDC', price);
 
@@ -514,7 +514,7 @@ const getPriceExample = () => {
 
   (async function() {
 
-    // Accepts cTokens or underlyings. Second arg defaults to USDC.
+    // Accepts 2 args, cTokens or underlyings. Second arg defaults to USDC.
     const price = await compound.getPrice(Compound.BAT);
     console.log('BAT in USDC', price);
 
