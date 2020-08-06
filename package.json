@@ -6,6 +6,10 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "npx tsc && npm run rollup",
+    "prepublish": "npm run build",
+    "publish_patch": "npm version patch && npm publish",
+    "publish_minor": "npm version minor && npm publish",
+    "publish_major": "npm version major && npm publish",
     "rollup": "rollup -c",
     "test": "jest"
   },
