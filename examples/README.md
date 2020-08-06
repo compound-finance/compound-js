@@ -1,7 +1,7 @@
 # Code Examples
 
 - [Node.js](https://github.com/compound-developers/compound-js/tree/master/examples/nodejs) Source code files.
-- [Web Browser](https://compound-developers.github.io/compound-js/examples/web/) Easiest to surf in the GitHub Pages webpage.
+- [Web Browser](https://compound-finance.github.io/compound-js/examples/web/) Easiest to surf in the GitHub Pages webpage.
 
 ## Use Ganache
 Run [ganache-cli](https://www.npmjs.com/package/ganache-cli) or [Ganache](https://www.trufflesuite.com/ganache) in another command line window before running the `eth_sendTransaction` type examples. Be sure to fork mainnet.

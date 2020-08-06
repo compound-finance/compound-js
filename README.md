@@ -73,10 +73,10 @@ const compound = new Compound(window.ethereum); // in a web browser
 
 ## More Code Examples
 
-- [Node.js](https://github.com/compound-developers/compound-js/tree/master/examples)
-- [Web Browser](https://compound-developers.github.io/compound-js/examples/web/)
+- [Node.js](https://github.com/compound-finance/compound-js/tree/master/examples)
+- [Web Browser](https://compound-finance.github.io/compound-js/examples/web/)
 
-[To run, boot Ganache fork of mainnet locally](https://github.com/compound-developers/compound-js/tree/master/examples)
+[To run, boot Ganache fork of mainnet locally](https://github.com/compound-finance/compound-js/tree/master/examples)
 
 ## Instance Creation
 
@@ -145,7 +145,7 @@ const trxOptions = {
 ## Build for Node.js & Web Browser
 
 ```
-git clone git@github.com:compound-developers/compound-js.git
+git clone git@github.com:compound-finance/compound-js.git
 cd compound-js/
 npm install
 npm run build
