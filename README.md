@@ -154,7 +154,7 @@ npm run build
 ### Web Browser Build
 ```html
 <!-- Public NPM -> jsdeliver build -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@compound-finance/compound-js@latest/dist/compound.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@compound-finance/compound-js@latest/dist/browser/compound.min.js"></script>
 
 <!-- Local build (do `npm install` first) -->
 <script type="text/javascript" src="./dist/browser/compound.min.js"></script>
