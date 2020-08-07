@@ -7,9 +7,9 @@
   "scripts": {
     "build": "npx tsc && npm run rollup",
     "prepare": "npm run build",
-    "publish_patch": "npm version patch && npm publish",
-    "publish_minor": "npm version minor && npm publish",
-    "publish_major": "npm version major && npm publish",
+    "publish_patch": "npm version patch && npm publish --access public",
+    "publish_minor": "npm version minor && npm publish --access public",
+    "publish_major": "npm version major && npm publish --access public",
     "rollup": "rollup -c rollup.config.ts",
     "test": "jest"
   },
