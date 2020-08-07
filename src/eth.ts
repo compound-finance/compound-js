@@ -81,6 +81,7 @@ function _ethJsonRpc(
         resolve(result);
       }).catch((error) => {
         try { delete parameters[parameters.length-1].privateKey } catch(e) {}
+        try { delete parameters[parameters.length-1].mnemonic   } catch(e) {}
         reject({
           message: 'Error occurred during [eth_sendTransaction]. See {error}.',
           error,
@@ -93,6 +94,7 @@ function _ethJsonRpc(
         resolve(result);
       }).catch((error) => {
         try { delete parameters[parameters.length-1].privateKey } catch(e) {}
+        try { delete parameters[parameters.length-1].mnemonic   } catch(e) {}
         reject({
           message: 'Error occurred during [eth_call]. See {error}.',
           error,
