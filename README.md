@@ -71,6 +71,29 @@ const compound = new Compound(window.ethereum); // in a web browser
 })().catch(console.error);
 ```
 
+## Install / Import
+
+Web Browser
+
+```html
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@compound-finance/compound-js@latest/dist/browser/compound.min.js"></script>
+
+<script type="text/javascript">
+  window.Compound; // or `Compound`
+</script>
+```
+
+Node.js
+
+```
+# Install with NPM for Node.js
+npm install @compound-finance/compound-js
+```
+
+```js
+const Compound = require('@compound-finance/compound-js');
+```
+
 ## More Code Examples
 
 - [Node.js](https://github.com/compound-finance/compound-js/tree/master/examples)
