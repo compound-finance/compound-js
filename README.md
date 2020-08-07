@@ -86,7 +86,6 @@ Web Browser
 Node.js
 
 ```
-# Install with NPM for Node.js
 npm install @compound-finance/compound-js
 ```
 
