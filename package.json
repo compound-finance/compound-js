@@ -3,7 +3,7 @@
   "browser": "dist/browser/compound.min.js",
   "version": "0.0.8",
   "description": "A JavaScript SDK for Ethereum and the Compound Protocol.",
-  "main": "dist/index.js",
+  "main": "dist/nodejs/index.js",
   "scripts": {
     "build": "npx tsc && npm run rollup",
     "prepare": "npm run build",
