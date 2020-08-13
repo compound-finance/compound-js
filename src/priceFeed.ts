@@ -13,7 +13,7 @@ function validateAsset(asset: string, argument: string, errorPrefix: string) {
   const cTokenName = assetIsCToken ? asset : 'c' + asset;
   const cTokenAddress = address[this._network.name][cTokenName];
 
-  const underlyingName = assetIsCToken ? asset.slice(1, asset.length) : asset;
+  let underlyingName = assetIsCToken ? asset.slice(1, asset.length) : asset;
   const underlyingAddress = address[this._network.name][underlyingName];
 
   if (!cTokens.includes(cTokenName) || !underlyings.includes(underlyingName)) {
@@ -21,6 +21,9 @@ function validateAsset(asset: string, argument: string, errorPrefix: string) {
   }
 
   const underlyingDecimals = decimals[underlyingName];
+
+  // The open price feed only reveals the BTC price
+  underlyingName = underlyingName === 'WBTC' ? 'BTC' : underlyingName;
 
   return [assetIsCToken, cTokenName, cTokenAddress, underlyingName, underlyingAddress, underlyingDecimals];
 }
@@ -69,15 +72,8 @@ export async function getPrice(asset: string, inAsset: string=constants.USDC) {
     abi: abi.PriceFeed,
   };
 
-  const priceMantissa = await eth.read(priceFeedAddress, 'getUnderlyingPrice', [ cTokenAddress ], trxOptions);
-
-  let inAssetPriceMantissa = 1e18;
-  if (inAssetUnderlyingName !== constants.ETH) {
-    inAssetPriceMantissa = await eth.read(priceFeedAddress, 'getUnderlyingPrice', [ inAssetCTokenAddress ], trxOptions);
-  }
-
-  const assetUnderlyingPrice = priceMantissa / (1e18 / (Math.pow(10, underlyingDecimals - 18)));
-  const inAssetUnderlyingPrice = inAssetPriceMantissa / (1e18 / (Math.pow(10, inAssetUnderlyingDecimals - 18)));
+  const assetUnderlyingPrice = await eth.read(priceFeedAddress, 'price', [ underlyingName ], trxOptions);
+  const inAssetUnderlyingPrice =  await eth.read(priceFeedAddress, 'price', [ inAssetUnderlyingName ], trxOptions);
 
   let assetCTokensInUnderlying, inAssetCTokensInUnderlying;
 
