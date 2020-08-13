@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';
-import { constants, address, abi, cTokens, underlyings, decimals } from './constants';
+import { constants, address, abi, cTokens, underlyings, decimals, opfAssets } from './constants';
 
 function validateAsset(asset: string, argument: string, errorPrefix: string) {
   if (typeof asset !== 'string' || asset.length < 1) {
@@ -16,7 +16,10 @@ function validateAsset(asset: string, argument: string, errorPrefix: string) {
   let underlyingName = assetIsCToken ? asset.slice(1, asset.length) : asset;
   const underlyingAddress = address[this._network.name][underlyingName];
 
-  if (!cTokens.includes(cTokenName) || !underlyings.includes(underlyingName)) {
+  if (
+    (!cTokens.includes(cTokenName) || !underlyings.includes(underlyingName)) &&
+    !opfAssets.includes(underlyingName)
+  ) {
     throw Error(errorPrefix + 'Argument `' + argument + '` is not supported.');
   }
 

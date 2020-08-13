@@ -7,6 +7,9 @@ export const constants = {
   'Comptroller': 'Comptroller',
   'Reservoir': 'Reservoir',
   'COMP': 'COMP',
+  'KNC': 'KNC',
+  'LINK': 'LINK',
+  'BTC': 'BTC',
   'cBAT': 'cBAT',
   'cDAI': 'cDAI',
   'cETH': 'cETH',
@@ -168,8 +171,11 @@ export const abi = {
   PriceFeed: ["function price(string symbol) returns (uint256)"],
 };
 
-export const cTokens = ['cBAT', 'cDAI', 'cETH', 'cREP', 'cSAI', 'cUSDC', 'cUSDT', 'cWBTC', 'cZRX']
-export const underlyings = ['BAT', 'DAI', 'ETH', 'REP', 'SAI', 'USDC', 'USDT', 'WBTC', 'ZRX']
+export const cTokens = ['cBAT', 'cDAI', 'cETH', 'cREP', 'cSAI', 'cUSDC', 'cUSDT', 'cWBTC', 'cZRX'];
+export const underlyings = ['BAT', 'DAI', 'ETH', 'REP', 'SAI', 'USDC', 'USDT', 'WBTC', 'ZRX'];
+
+// additional assets supported by the open price feed
+export const opfAssets = ['COMP', 'KNC', 'LINK', 'BTC'];
 
 export const decimals = {
   'COMP': 18,
