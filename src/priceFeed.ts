@@ -25,7 +25,7 @@ function validateAsset(asset: string, argument: string, errorPrefix: string) {
 
   const underlyingDecimals = decimals[underlyingName];
 
-  // The open price feed only reveals the BTC price
+  // The open price feed reveals BTC, not WBTC.
   underlyingName = underlyingName === 'WBTC' ? 'BTC' : underlyingName;
 
   return [assetIsCToken, cTokenName, cTokenAddress, underlyingName, underlyingAddress, underlyingDecimals];
@@ -53,7 +53,7 @@ async function cTokenExchangeRate(cTokenAddress, cTokenName, underlyingDecimals)
  * @param {string} asset A string of a supported asset in which to find the
  *    current price.
  * @param {string} [inAsset] A string of a supported asset in which to express
- *    the `asset` parameter's price. This defaults to USDC.
+ *    the `asset` parameter's price. This defaults to USD.
  *
  * @returns {string} Returns a string of the numerical value of the asset.
  */
