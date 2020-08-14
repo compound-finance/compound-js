@@ -4,7 +4,7 @@ import * as util from './util';
 import * as comptroller from './comptroller';
 import * as cToken from './cToken';
 import * as priceFeed from './priceFeed';
-import { constants } from './constants';
+import { constants, decimals } from './constants';
 
 // Turn off Ethers.js warnings
 ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
@@ -42,6 +42,7 @@ const Compound = function(provider: any='mainnet', options: any={}) {
 Compound.eth = eth;
 Compound.util = util;
 Compound._ethers = ethers;
+Compound.decimals = decimals;
 Object.assign(Compound, constants);
 
 export = Compound;
