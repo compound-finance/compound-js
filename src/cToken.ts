@@ -43,6 +43,17 @@ export async function supply(asset: string, amount: any, options: any = {}) {
 
   amount = ethers.BigNumber.from(amount.toString());
 
+  if (cTokenName !== constants.cETH) {
+    // ERC-20 approve transaction
+    const underlyingAddress = address[this._network.name][asset];
+    await eth.trx(
+      underlyingAddress,
+      'approve',
+      [ cTokenAddress, amount ],
+      { _compoundProvider: this._provider, abi: abi.cErc20 }
+    );
+  }
+
   const trxOptions: any = { _compoundProvider: this._provider };
   const parameters = [];
   if (cTokenName === constants.cETH) {
