@@ -12,7 +12,7 @@ JSON RPC based Ethereum **read** and **write**.
 
 ```js
 const Compound = require('@compound-finance/compound-js'); // in Node.js
-const cUsdtAddress = '0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9';
+const cUsdtAddress = Compound.util.getAddress(Compound.cUSDT);
 
 (async function() {
 
