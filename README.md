@@ -25,9 +25,7 @@ const cUsdtAddress = '0xf650c3d88d12db855b8bf7d11be6c55a4e07dcc9';
 
   console.log('USDT supplyRatePerBlock:', supplyRatePerBlock.toString());
 
-})().catch((err) => {
-  console.error(err);
-});
+})().catch(console.error);
 ```
 
 ### Write
@@ -106,12 +104,15 @@ The following are valid Ethereum providers for initialization of the SDK.
 
 ```js
 var compound = new Compound(window.ethereum); // web browser
+
 var compound = new Compound('http://127.0.0.1:8545'); // HTTP provider
+
 var compound = new Compound(); // Uses Ethers.js fallback mainnet (for testing only)
+
 var compound = new Compound('ropsten'); // Uses Ethers.js fallback (for testing only)
 
 // Init with private key (server side)
-var compound = new Compound('https://mainnet.infura.io/v3/_your_project_id_' {
+var compound = new Compound('https://mainnet.infura.io/v3/_your_project_id_', {
   privateKey: '0x_your_private_key_', // preferably with environment variable
 });
 

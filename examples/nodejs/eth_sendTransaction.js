@@ -14,7 +14,7 @@ ganache-cli \
 const Compound = require('../../dist/nodejs/index.js');
 
 const oneEthInWei = '1000000000000000000';
-const cEthAddress = '0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5';
+const cEthAddress = Compound.util.getAddress(Compound.cETH);
 const provider = 'http://localhost:8545';
 const privateKey = '0xb8c1b5c1d81f9475fdf2e334517d29f733bdfa40682207571b12fc1142cbf329';
 // const mnemonic = 'clutch captain shoe salt awake harvest setup primary inmate ugly among become';

@@ -1,5 +1,7 @@
 # Code Examples
 
+Be sure to **build the SDK** from the root directory before running the Node.js examples: `npm run build`.
+
 - [Node.js](https://github.com/compound-developers/compound-js/tree/master/examples/nodejs) Source code files.
 - [Web Browser](https://compound-finance.github.io/compound-js/examples/web/) Easiest to surf in the GitHub Pages webpage.
 
