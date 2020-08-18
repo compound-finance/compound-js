@@ -10,6 +10,6 @@ import { address } from './constants';
  *
  * @returns {string} Returns the address of the contract.
  */
-export function getAddress(contract, network='mainnet') {
+export function getAddress(contract: string, network: string='mainnet') {
   return address[network][contract];
 }

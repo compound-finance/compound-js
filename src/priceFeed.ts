@@ -55,7 +55,7 @@ async function cTokenExchangeRate(cTokenAddress, cTokenName, underlyingDecimals)
  * @param {string} [inAsset] A string of a supported asset in which to express
  *    the `asset` parameter's price. This defaults to USD.
  *
- * @returns {string} Returns a string of the numerical value of the asset.
+ * @returns {string} Returns a string of the numeric value of the asset.
  */
 export async function getPrice(asset: string, inAsset: string=constants.USDC) {
   await netId(this);
