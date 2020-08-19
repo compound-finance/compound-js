@@ -7,13 +7,14 @@ const keccak256 = ethers.utils.keccak256;
 /**
  * Applies the EIP-55 checksum to an Ethereum address.
  *
- * @param {String} _address The Ethereum address to apply the checksum.
+ * @param {string} _address The Ethereum address to apply the checksum.
  *
  * @returns {string} Returns a string of the Ethereum address.
  */
 function toChecksumAddress(_address) {
   const chars = _address.toLowerCase().substring(2).split('');
   const expanded = new Uint8Array(40);
+
   for (let i = 0; i < 40; i++) {
     expanded[i] = chars[i].charCodeAt(0);
   }
@@ -35,7 +36,8 @@ function toChecksumAddress(_address) {
 /**
  * Get the balance of COMP tokens held by an address.
  *
- * @param {String} _address The address in which to find the COMP balance.
+ * @param {string} _address The address in which to find the COMP balance.
+ * @param {string} _provider A valid Ethereum provider string.
  *
  * @returns {string} Returns a string of the numeric balance of COMP. The value
  *     is scaled up by 18 decimal places.
@@ -70,7 +72,8 @@ export async function getCompBalance(_address: string, _provider: string='mainne
 /**
  * Get the amount of COMP tokens accrued but not yet claimed by an address.
  *
- * @param {String} _address The address in which to find the COMP accrued.
+ * @param {string} _address The address in which to find the COMP accrued.
+ * @param {string} _provider A valid Ethereum provider string.
  *
  * @returns {string} Returns a string of the numeric accruement of COMP. The
  *     value is scaled up by 18 decimal places.
