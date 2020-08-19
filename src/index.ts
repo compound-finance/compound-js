@@ -5,6 +5,7 @@ import * as comptroller from './comptroller';
 import * as cToken from './cToken';
 import * as priceFeed from './priceFeed';
 import * as comp from './comp';
+import * as gov from './gov';
 import { constants, decimals } from './constants';
 
 // Turn off Ethers.js warnings
@@ -28,7 +29,7 @@ const Compound = function(provider: any='mainnet', options: any={}) {
     ...comptroller,
     ...cToken,
     ...priceFeed,
-    ...comp,
+    ...gov,
   };
 
   // Instance needs to know which network the provider connects to, so it can
@@ -45,7 +46,10 @@ Compound.eth = eth;
 Compound.util = util;
 Compound._ethers = ethers;
 Compound.decimals = decimals;
-Compound.getCompBalance = comp.getCompBalance;
+Compound.comp = {
+  getCompBalance: comp.getCompBalance,
+  getCompAccrued: comp.getCompAccrued,
+};
 Object.assign(Compound, constants);
 
 export = Compound;
