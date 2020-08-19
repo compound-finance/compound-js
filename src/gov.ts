@@ -26,10 +26,9 @@ export async function castVote(proposalId: number, support: boolean, options: an
   }
 
   const governorAddress = address[this._network.name].GovernorAlpha;
-  const trxOptions: any = {
-    _compoundProvider: this._provider,
-    abi: abi.GovernorAlpha,
-  };
+  const trxOptions: any = options;
+  trxOptions._compoundProvider =  this._provider;
+  trxOptions.abi =  abi.GovernorAlpha;
   const parameters = [ proposalId, support ];
   const method = 'castVote';
 
@@ -82,10 +81,9 @@ export async function castVoteBySig(
   }
 
   const governorAddress = address[this._network.name].GovernorAlpha;
-  const trxOptions: any = {
-    _compoundProvider: this._provider,
-    abi: abi.GovernorAlpha,
-  };
+  const trxOptions: any = options;
+  trxOptions._compoundProvider = this._provider;
+  trxOptions.abi = abi.GovernorAlpha;
   const { v, r, s } = signature;
   const parameters = [ proposalId, support, v, r, s ];
   const method = 'castVoteBySig';

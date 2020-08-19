@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import * as eth from './eth';
+import { netId } from './helpers';
 import { address, abi } from './constants';
 
 const keccak256 = ethers.utils.keccak256;
@@ -105,4 +106,27 @@ export async function getCompAccrued(_address: string, _provider: string='mainne
 
   const result = await eth.read(lensAddress, 'getCompBalanceMetadataExt', parameters, trxOptions);
   return result.allocated.toString();
+}
+
+/**
+ * Create a transaction to claim accrued COMP tokens for the user.
+ *
+ * @returns {object} Returns an Ethers.js transaction object of the vote
+ *     transaction.
+ */
+export async function claimComp(options: any = {}) {
+  await netId(this);
+
+  const errorPrefix = 'Compound [claimComp] | ';
+
+  const userAddress = this._provider.address;
+  const comptrollerAddress = address[this._network.name].Comptroller;
+  const trxOptions: any = options;
+  trxOptions._compoundProvider = this._provider;
+  // trxOptions.abi = [ 'function claimComp(address)' ]; // Ethers does not like the Comptroller ABI for some reason.
+  trxOptions.abi = abi.Comptroller;
+  const parameters = [ userAddress ];
+  const method = 'claimComp(address)';
+
+  return eth.trx(comptrollerAddress, method, parameters, trxOptions);
 }

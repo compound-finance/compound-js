@@ -30,6 +30,7 @@ const Compound = function(provider: any='mainnet', options: any={}) {
     ...cToken,
     ...priceFeed,
     ...gov,
+    claimComp: comp.claimComp,
   };
 
   // Instance needs to know which network the provider connects to, so it can
