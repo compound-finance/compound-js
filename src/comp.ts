@@ -123,7 +123,6 @@ export async function claimComp(options: any = {}) {
   const comptrollerAddress = address[this._network.name].Comptroller;
   const trxOptions: any = options;
   trxOptions._compoundProvider = this._provider;
-  // trxOptions.abi = [ 'function claimComp(address)' ]; // Ethers does not like the Comptroller ABI for some reason.
   trxOptions.abi = abi.Comptroller;
   const parameters = [ userAddress ];
   const method = 'claimComp(address)';
