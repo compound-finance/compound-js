@@ -6,7 +6,7 @@ import { address, abi } from './constants';
 /**
  * Submit a vote on a Compound Governance proposal.
  *
- * @param {String} proposalId The ID of the proposal to vote on. This is an
+ * @param {string} proposalId The ID of the proposal to vote on. This is an
  *     auto-incrementing integer in the Governor Alpha contract.
  *
  * @returns {object} Returns an Ethers.js transaction object of the vote
@@ -36,13 +36,13 @@ export async function castVote(proposalId: number, support: boolean, options: an
 }
 
 /**
- * Submit a vote on a Compound Governance proposal using a EIP-712 signature.
+ * Submit a vote on a Compound Governance proposal using an EIP-712 signature.
  *
- * @param {String} proposalId The ID of the proposal to vote on. This is an
+ * @param {string} proposalId The ID of the proposal to vote on. This is an
  *     auto-incrementing integer in the Governor Alpha contract.
- * @param {Boolean} support A boolean of true for 'yes' or false for 'no' on the
+ * @param {boolean} support A boolean of true for 'yes' or false for 'no' on the
  *     proposal vote.
- * @param {Object} signature An object that contains the v, r, and, s values of
+ * @param {object} signature An object that contains the v, r, and, s values of
  *     an EIP-712 signature.
  * @param {CallOptions} [options] Options to set for `eth_call`, optional ABI
  *     (as JSON object), and ethers.js method overrides. The ABI can be a string

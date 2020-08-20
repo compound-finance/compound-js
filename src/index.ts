@@ -31,6 +31,8 @@ const Compound = function(provider: any='mainnet', options: any={}) {
     ...priceFeed,
     ...gov,
     claimComp: comp.claimComp,
+    delegate: comp.delegate,
+    delegateBySig: comp.delegateBySig,
   };
 
   // Instance needs to know which network the provider connects to, so it can
