@@ -40,6 +40,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
+    "@rollup/plugin-json": "^4.1.0",
     "ethers": "^5.0.7"
   }
 }

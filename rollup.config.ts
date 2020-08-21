@@ -2,10 +2,11 @@
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import minify from 'rollup-plugin-babel-minify';
+import json from '@rollup/plugin-json';
 import pkg from './package.json';
 
 export default [{
-  input: './dist/nodejs/index.js',
+  input: './dist/nodejs/src/index.js',
   onwarn: (message) => {
     if (message.code === 'MISSING_NODE_BUILTINS') return;
   },
@@ -26,6 +27,7 @@ export default [{
     }),
     commonjs(),
     minify({ comments: false }),
+    json(),
   ],
   external: [
     'http',

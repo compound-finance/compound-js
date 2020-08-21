@@ -6,6 +6,7 @@ import * as cToken from './cToken';
 import * as priceFeed from './priceFeed';
 import * as comp from './comp';
 import * as gov from './gov';
+import * as api from './api';
 import { constants, decimals } from './constants';
 
 // Turn off Ethers.js warnings
@@ -46,6 +47,7 @@ const Compound = function(provider: any='mainnet', options: any={}) {
 };
 
 Compound.eth = eth;
+Compound.api = api;
 Compound.util = util;
 Compound._ethers = ethers;
 Compound.decimals = decimals;

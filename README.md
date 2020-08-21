@@ -165,6 +165,47 @@ const trxOptions = {
 };
 ```
 
+## API
+
+The [Compound API](https://compound.finance/docs/api) is accessible from Compound.js. The corresponding services are defined in the `api` namespace on the class.
+
+- `Compound.api.account`
+- `Compound.api.cToken`
+- `Compound.api.marketHistory`
+- `Compound.api.governance`
+
+The governance method requires a second parameter (string) for the corresponding endpoint shown in the [documentation](https://compound.finance/docs/api#GovernanceService).
+
+- `proposals`
+- `voteReceipts`
+- `accounts`
+
+Here is an example for using the `account` endpoint. The `network` parameter in the request body is optional and defaults to `mainnet`.
+
+```js
+const main = async () => {
+  const account = await Compound.api.account({
+    "addresses": "0xB61C5971d9c0472befceFfbE662555B78284c307",
+    "network": "ropsten"
+  });
+
+  let daiBorrowBalance = 0;
+  if (Object.isExtensible(account) && account.accounts) {
+    account.accounts.forEach((acc) => {
+      acc.tokens.forEach((tok) => {
+        if (tok.symbol === Compound.cDAI) {
+          daiBorrowBalance = +tok.borrow_balance_underlying.value;
+        }
+      });
+    });
+  }
+
+  console.log('daiBorrowBalance', daiBorrowBalance);
+}
+
+main().catch(console.error);
+```
+
 ## Build for Node.js & Web Browser
 
 ```
