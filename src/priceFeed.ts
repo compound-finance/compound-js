@@ -1,7 +1,10 @@
 import { ethers } from 'ethers';
+import { BigNumber } from 'bignumber.js';
 import * as eth from './eth';
 import { netId } from './helpers';
 import { constants, address, abi, cTokens, underlyings, decimals, opfAssets } from './constants';
+
+const bn = (number: any) => new BigNumber(number);
 
 function validateAsset(asset: string, argument: string, errorPrefix: string) {
   if (typeof asset !== 'string' || asset.length < 1) {
@@ -38,9 +41,10 @@ async function cTokenExchangeRate(cTokenAddress, cTokenName, underlyingDecimals)
     _compoundProvider: this._provider,
     abi: cTokenName === constants.cETH ? abi.cEther : abi.cErc20,
   };
-  const exchangeRateCurrent = await eth.read(address, method, [], options);
+  const exchangeRateCurrent = bn((await eth.read(address, method, [], options)).toString());
   const mantissa = 18 + parseInt(underlyingDecimals) - 8; // cToken always 8 decimals
-  const oneCTokenInUnderlying = exchangeRateCurrent / Math.pow(10, mantissa);
+  const scaledUp = bn(10).exponentiatedBy(mantissa);
+  const oneCTokenInUnderlying = (exchangeRateCurrent.dividedBy(scaledUp)).toFixed();
 
   return oneCTokenInUnderlying;
 }
@@ -75,8 +79,8 @@ export async function getPrice(asset: string, inAsset: string=constants.USDC) {
     abi: abi.PriceFeed,
   };
 
-  const assetUnderlyingPrice = await eth.read(priceFeedAddress, 'price', [ underlyingName ], trxOptions);
-  const inAssetUnderlyingPrice =  await eth.read(priceFeedAddress, 'price', [ inAssetUnderlyingName ], trxOptions);
+  const assetUnderlyingPrice = (await eth.read(priceFeedAddress, 'price', [ underlyingName ], trxOptions)).toString();
+  const inAssetUnderlyingPrice =  (await eth.read(priceFeedAddress, 'price', [ inAssetUnderlyingName ], trxOptions)).toString();
 
   let assetCTokensInUnderlying, inAssetCTokensInUnderlying;
 
@@ -88,19 +92,24 @@ export async function getPrice(asset: string, inAsset: string=constants.USDC) {
     inAssetCTokensInUnderlying = await cTokenExchangeRate.bind(this)(inAssetCTokenAddress, inAssetCTokenName, inAssetUnderlyingDecimals);
   }
 
+  // console.log('assetUnderlyingPrice', assetUnderlyingPrice);
+  // console.log('inAssetUnderlyingPrice', inAssetUnderlyingPrice);
+  // console.log('inAssetCTokensInUnderlying', inAssetCTokensInUnderlying);
+  // console.log('assetCTokensInUnderlying', assetCTokensInUnderlying);
+
   let result;
   if (!assetIsCToken && !inAssetIsCToken) {
-    result = assetUnderlyingPrice / inAssetUnderlyingPrice;
+    result = (bn(assetUnderlyingPrice).dividedBy(bn(inAssetUnderlyingPrice))).toFixed();
   } else if (assetIsCToken && !inAssetIsCToken) {
-    const assetInOther = assetUnderlyingPrice / inAssetUnderlyingPrice;
-    result = assetInOther * assetCTokensInUnderlying;
+    const assetInOther = (bn(assetUnderlyingPrice).dividedBy(bn(inAssetUnderlyingPrice))).toFixed();
+    result = (bn(assetInOther).multipliedBy(bn(assetCTokensInUnderlying))).toFixed();
   } else if (!assetIsCToken && inAssetIsCToken) {
-    const assetInOther = assetUnderlyingPrice / inAssetUnderlyingPrice;
-    result = assetInOther / inAssetCTokensInUnderlying;
+    const assetInOther = (bn(assetUnderlyingPrice).dividedBy(bn(inAssetUnderlyingPrice))).toFixed();
+    result = (bn(assetInOther).dividedBy(bn(inAssetCTokensInUnderlying))).toFixed();
   } else {
-    const assetInOther = assetUnderlyingPrice / inAssetUnderlyingPrice;
-    const cTokensInUnderlying = assetInOther / assetCTokensInUnderlying;
-    result = inAssetCTokensInUnderlying * cTokensInUnderlying;
+    const assetInOther = (bn(assetUnderlyingPrice).dividedBy(bn(inAssetUnderlyingPrice))).toFixed();
+    const cTokensInUnderlying = (bn(assetInOther).dividedBy(bn(assetCTokensInUnderlying))).toFixed();
+    result = (bn(inAssetCTokensInUnderlying).multipliedBy(bn(cTokensInUnderlying))).toFixed();
   }
 
   return result;
