@@ -144,6 +144,8 @@ try {
  * @param {object} options HTTP request options. See Node.js http.request
  *     documentation for details.
  *
+ * @hidden
+ *
  * @returns {Promise} Returns a promise and eventually an HTTP response
  *     (JavaScript object).
  */
@@ -160,6 +162,11 @@ export function request(options: any) {
  * all the popular public test nets are supported.
  *
  * @returns {string} Returns the address of the contract.
+ *
+ * @example
+ * ```
+ * console.log('cETH Address: ', Compound.getAddress(Compound.cETH));
+ * ```
  */
 export function getAddress(contract: string, network: string='mainnet') {
   return address[network][contract];

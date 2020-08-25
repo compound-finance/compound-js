@@ -16,6 +16,23 @@ import { constants, address, abi, decimals, underlyings, cTokens } from './const
  *
  * @returns {object} Returns an Ethers.js transaction object of the supply
  *     transaction.
+ *
+ * @example
+ *
+ * ```
+ * const compound = new Compound(window.ethereum);
+ *
+ * // Ethers.js overrides are an optional 3rd parameter for `supply`
+ * // const trxOptions = { gasLimit: 250000, mantissa: false };
+ * 
+ * (async function() {
+ * 
+ *   console.log('Supplying ETH to the Compound protocol...');
+ *   const trx = await compound.supply(Compound.ETH, 1);
+ *   console.log('Ethers.js transaction object', trx);
+ * 
+ * })().catch(console.error);
+ * ```
  */
 export async function supply(asset: string, amount: any, options: any = {}) {
   await netId(this);
@@ -81,6 +98,20 @@ export async function supply(asset: string, amount: any, options: any = {}) {
  *
  * @returns {object} Returns an Ethers.js transaction object of the redeem
  *     transaction.
+ *
+ * @example
+ *
+ * ```
+ * const compound = new Compound(window.ethereum);
+ * 
+ * (async function() {
+ * 
+ *   console.log('Redeeming ETH...');
+ *   const trx = await compound.redeem(Compound.ETH, 1); // also accepts cToken args
+ *   console.log('Ethers.js transaction object', trx);
+ * 
+ * })().catch(console.error);
+ * ```
  */
 export async function redeem(asset: string, amount: any, options: any = {}) {
   await netId(this);
@@ -143,6 +174,24 @@ export async function redeem(asset: string, amount: any, options: any = {}) {
  *
  * @returns {object} Returns an Ethers.js transaction object of the borrow
  *     transaction.
+ *
+ * @example
+ *
+ * ```
+ * const compound = new Compound(window.ethereum);
+ * 
+ * (async function() {
+ * 
+ *   const daiScaledUp = '32000000000000000000';
+ *   const trxOptions = { mantissa: true };
+ * 
+ *   console.log('Borrowing 32 Dai...');
+ *   const trx = await compound.borrow(Compound.DAI, daiScaledUp, trxOptions);
+ * 
+ *   console.log('Ethers.js transaction object', trx);
+ * 
+ * })().catch(console.error);
+ * ```
  */
 export async function borrow(asset: string, amount: any, options: any = {}) {
   await netId(this);
@@ -195,6 +244,22 @@ export async function borrow(asset: string, amount: any, options: any = {}) {
  *
  * @returns {object} Returns an Ethers.js transaction object of the repayBorrow
  *     or repayBorrowBehalf transaction.
+ *
+ * @example
+ *
+ * ```
+ * const compound = new Compound(window.ethereum);
+ * 
+ * (async function() {
+ * 
+ *   console.log('Repaying Dai borrow...');
+ *   const address = null; // set this to any address to repayBorrowBehalf
+ *   const trx = await compound.repayBorrow(Compound.DAI, 32, address);
+ * 
+ *   console.log('Ethers.js transaction object', trx);
+ * 
+ * })().catch(console.error);
+ * ```
  */
 export async function repayBorrow(asset: string, amount: any, borrower: string, options: any = {}) {
   await netId(this);

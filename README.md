@@ -2,6 +2,8 @@
 
 A JavaScript SDK for Ethereum and the Compound Protocol. Wraps around [Ethers.js](https://github.com/ethers-io/ethers.js/). Works in the **web browser** and **Node.js**.
 
+[Compound.js Documentation](https://compound-finance.github.io/compound-js/docs/)
+
 **This SDK is in Alpha, and is constantly under development. USE AT YOUR OWN RISK.**
 
 ## Ethereum Read & Write

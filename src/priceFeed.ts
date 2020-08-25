@@ -56,6 +56,22 @@ async function cTokenExchangeRate(cTokenAddress, cTokenName, underlyingDecimals)
  *    the `asset` parameter's price. This defaults to USD.
  *
  * @returns {string} Returns a string of the numeric value of the asset.
+ *
+ * @example
+ * ```
+ * const compound = new Compound(window.ethereum);
+ * let price;
+ * 
+ * (async function () {
+ * 
+ *   price = await compound.getPrice(Compound.WBTC);
+ *   console.log('WBTC in USD', price); // 6 decimals, see Open Price Feed docs
+ * 
+ *   price = await compound.getPrice(Compound.BAT, Compound.USDC); // supports cTokens too
+ *   console.log('BAT in USDC', price);
+ * 
+ * })().catch(console.error);
+ * ```
  */
 export async function getPrice(asset: string, inAsset: string=constants.USDC) {
   await netId(this);
