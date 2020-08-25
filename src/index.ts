@@ -19,11 +19,32 @@ ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
  *     Defaults to Ethers.js fallback mainnet provider.
  * @param {any{}} [options] Optional provider options.
  *
+ * @example
+ * ```
+ * var compound = new Compound(window.ethereum); // web browser
+ * 
+ * var compound = new Compound('http://127.0.0.1:8545'); // HTTP provider
+ * 
+ * var compound = new Compound(); // Uses Ethers.js fallback mainnet (for testing only)
+ * 
+ * var compound = new Compound('ropsten'); // Uses Ethers.js fallback (for testing only)
+ * 
+ * // Init with private key (server side)
+ * var compound = new Compound('https://mainnet.infura.io/v3/_your_project_id_', {
+ *   privateKey: '0x_your_private_key_', // preferably with environment variable
+ * });
+ * 
+ * // Init with HD mnemonic (server side)
+ * var compound = new Compound('mainnet' {
+ *   mnemonic: 'clutch captain shoe...', // preferably with environment variable
+ * });
+ * ```
+ *
  * @returns {object} Returns an instance of Compound.js SDK.
  */
 const Compound = function(provider: any='mainnet', options: any={}) {
   options.provider = provider || options.provider;
-  provider = eth.createProvider(options);
+  provider = eth._createProvider(options);
 
   const instance: any = {
     _provider: provider,

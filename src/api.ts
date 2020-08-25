@@ -32,6 +32,30 @@ try {
  * @param {object} options A JavaScript object of API request parameters.
  *
  * @returns {object} Returns the HTTP response body or error.
+ *
+ * @example
+ *
+ * ```
+ * (async function() {
+ *   const account = await Compound.api.account({
+ *     "addresses": "0xB61C5971d9c0472befceFfbE662555B78284c307",
+ *     "network": "ropsten"
+ *   });
+ * 
+ *   let daiBorrowBalance = 0;
+ *   if (Object.isExtensible(account) && account.accounts) {
+ *     account.accounts.forEach((acc) => {
+ *       acc.tokens.forEach((tok) => {
+ *         if (tok.symbol === Compound.cDAI) {
+ *           daiBorrowBalance = +tok.borrow_balance_underlying.value;
+ *         }
+ *       });
+ *     });
+ *   }
+ * 
+ *   console.log('daiBorrowBalance', daiBorrowBalance);
+ * })().catch(console.error);
+ * ```
  */
 export function account(options: object) {
   return queryApi(options, 'account', '/api/v2/account');
@@ -45,6 +69,18 @@ export function account(options: object) {
  * @param {object} options A JavaScript object of API request parameters.
  *
  * @returns {object} Returns the HTTP response body or error.
+ *
+ * @example
+ *
+ * ```
+ * (async function() {
+ *   const cDaiData = await Compound.api.cToken({
+ *     "addresses": Compound.util.getAddress(Compound.cDAI)
+ *   });
+ * 
+ *   console.log('cDaiData', cDaiData); // JavaScript Object
+ * })().catch(console.error);
+ * ```
  */
 export function cToken(options: object) {
   return queryApi(options, 'cToken', '/api/v2/ctoken');
@@ -58,6 +94,21 @@ export function cToken(options: object) {
  * @param {object} options A JavaScript object of API request parameters.
  *
  * @returns {object} Returns the HTTP response body or error.
+ *
+ * @example
+ *
+ * ```
+ * (async function() {
+ *   const cUsdcMarketData = await Compound.api.marketHistory({
+ *     "asset": Compound.util.getAddress(Compound.cUSDC),
+ *     "min_block_timestamp": 1559339900,
+ *     "max_block_timestamp": 1598320674,
+ *     "num_buckets": 10,
+ *   });
+ * 
+ *   console.log('cUsdcMarketData', cUsdcMarketData); // JavaScript Object
+ * })().catch(console.error);
+ * ```
  */
 export function marketHistory(options: object) {
   return queryApi(options, 'Market History', '/api/v2/market_history/graph');
@@ -74,6 +125,18 @@ export function marketHistory(options: object) {
  *     `accounts`.
  *
  * @returns {object} Returns the HTTP response body or error.
+ *
+ * @example
+ *
+ * ```
+ * (async function() {
+ *   const proposal = await Compound.api.governance(
+ *     { "proposal_ids": [ 20 ] }, 'proposals'
+ *   );
+ * 
+ *   console.log('proposal', proposal); // JavaScript Object
+ * })().catch(console.error);
+ * ```
  */
 export function governance(options: object, endpoint: string) {
   if (endpoint === 'proposals') {

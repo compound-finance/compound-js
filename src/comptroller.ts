@@ -11,6 +11,17 @@ import { constants, address, abi, cTokens } from './constants';
  *
  * @returns {object} Returns an Ethers.js transaction object of the enterMarkets
  *     transaction.
+ *
+ * @example
+ *
+ * ```
+ * const compound = new Compound(window.ethereum);
+ * 
+ * (async function () {
+ *   const trx = await compound.enterMarkets(Compound.ETH); // Use [] for multiple
+ *   console.log('Ethers.js transaction object', trx);
+ * })().catch(console.error);
+ * ```
  */
 export async function enterMarkets(markets: any = []) {
   await netId(this);
@@ -54,6 +65,20 @@ export async function enterMarkets(markets: any = []) {
  *
  * @returns {object} Returns an Ethers.js transaction object of the exitMarket
  *     transaction.
+ *
+ * @returns {object} Returns an Ethers.js transaction object of the enterMarkets
+ *     transaction.
+ *
+ * @example
+ *
+ * ```
+ * const compound = new Compound(window.ethereum);
+ * 
+ * (async function () {
+ *   const trx = await compound.exitMarket(Compound.ETH);
+ *   console.log('Ethers.js transaction object', trx);
+ * })().catch(console.error);
+ * ```
  */
 export async function exitMarket(market: string) {
   await netId(this);

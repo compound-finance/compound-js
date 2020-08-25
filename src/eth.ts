@@ -49,7 +49,7 @@ function _ethJsonRpc(
   options: CallOptions = {}
 ): Promise<any> {
   return new Promise<any>((resolve: Function, reject: Function) => {
-    const provider = options._compoundProvider || createProvider(options);
+    const provider = options._compoundProvider || _createProvider(options);
 
     const overrides = {
       gasPrice: options.gasPrice,
@@ -123,6 +123,24 @@ function _ethJsonRpc(
  *
  * @returns {any} Return value of the invoked smart contract member or an error 
  *     object if the call failed.
+ *
+ * @example
+ * ```
+ * const cEthAddress = Compound.util.getAddress(Compound.cETH);
+ * 
+ * (async function() {
+ * 
+ *   const srpb = await Compound.eth.read(
+ *     cEthAddress,
+ *     'function supplyRatePerBlock() returns (uint256)',
+ *     // [], // [optional] parameters
+ *     // {}  // [optional] call options, provider, network, plus Ethers.js "overrides"
+ *   );
+ * 
+ *   console.log('cETH market supply rate per block:', srpb.toString());
+ * 
+ * })().catch(console.error);
+ * ```
  */
 export function read(
   address: string,
@@ -148,6 +166,32 @@ export function read(
  *
  * @returns {any} Returns an ethers.js `TransactionResponse` object or an error 
  *     object if the transaction failed.
+ *
+ * @example
+ * ```
+ * const oneEthInWei = '1000000000000000000';
+ * const cEthAddress = '0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5';
+ * const provider = window.ethereum;
+ * 
+ * (async function() {
+ *   console.log('Supplying ETH to the Compound Protocol...');
+ * 
+ *   // Mint some cETH by supplying ETH to the Compound Protocol
+ *   const trx = await Compound.eth.trx(
+ *     cEthAddress,
+ *     'function mint() payable',
+ *     [],
+ *     {
+ *       provider,
+ *       value: oneEthInWei
+ *     }
+ *   );
+ * 
+ *   // const result = await trx.wait(1); // JSON object of trx info, once mined
+ * 
+ *   console.log('Ethers.js transaction object', trx);
+ * })().catch(console.error);
+ * ```
  */
 export function trx(
   address: string,
@@ -164,6 +208,8 @@ export function trx(
  *
  * @param {any{} | string} provider Optional Ethereum network provider.
  *     Defaults to Ethers.js fallback mainnet provider.
+ *
+ * @hidden
  *
  * @returns {object} Returns a metadata object containing the Ethereum network
  *     name and ID.
@@ -199,13 +245,23 @@ export async function getProviderNetwork(provider) {
  *
  * @returns {BigNumber} Returns a BigNumber hexidecimal value of the ETH balance
  *     of the address.
+ *
+ * @example
+ * ```
+ * (async function () {
+ * 
+ *   balance = await Compound.eth.getBalance(myAddress, provider);
+ *   console.log('My ETH Balance', +balance);
+ * 
+ * })().catch(console.error);
+ * ```
  */
 export async function getBalance(address: string, provider: any) {
   if (typeof provider === 'object' && provider._isSigner) {
     provider = provider.provider;
   }
 
-  let providerInstance = createProvider({ provider });
+  let providerInstance = _createProvider({ provider });
   if (!providerInstance.send) {
     const url = providerInstance.providerConfigs[0].provider.connection.url;
     providerInstance = new ethers.providers.JsonRpcProvider(url);
@@ -223,9 +279,11 @@ export async function getBalance(address: string, provider: any) {
  * @param {CallOptions} options The call options of a pending Ethereum
  *     transaction.
  *
+ * @hidden
+ *
  * @returns {object} Returns a valid Ethereum network provider object.
  */
-export function createProvider(options: CallOptions = {}) : any {
+export function _createProvider(options: CallOptions = {}) : any {
   let provider = options.provider || (options.network || 'mainnet');
   const isADefaultProvider = !!ethers.providers.getNetwork(provider.toString());
 

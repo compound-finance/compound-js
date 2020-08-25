@@ -1,0 +1,265 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>&quot;gov&quot; | Compound.js - v0.0.18</title>
+	<meta name="description" content="Documentation for Compound.js - v0.0.18">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">Compound.js - v0.0.18</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="_gov_.html">&quot;gov&quot;</a>
+				</li>
+			</ul>
+			<h1>Module &quot;gov&quot;</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_gov_.html#castvote" class="tsd-kind-icon">cast<wbr>Vote</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_gov_.html#castvotebysig" class="tsd-kind-icon">cast<wbr>Vote<wbr>BySig</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="castvote" class="tsd-anchor"></a>
+					<h3>cast<wbr>Vote</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">cast<wbr>Vote<span class="tsd-signature-symbol">(</span>proposalId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, support<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/b3da1fb/src/gov.ts#L26">gov.ts:26</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Submit a vote on a Compound Governance proposal.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code><span class="hljs-keyword">const</span> compound = <span class="hljs-keyword">new</span> Compound(<span class="hljs-built_in">window</span>.ethereum);
+
+(<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> castVoteTx = <span class="hljs-keyword">await</span> compound.castVote(<span class="hljs-number">12</span>, <span class="hljs-literal">true</span>);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Ethers.js transaction object&#x27;</span>, castVoteTx);
+})().catch(<span class="hljs-built_in">console</span>.error);</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>proposalId: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The ID of the proposal to vote on. This is an
+										auto-incrementing integer in the Governor Alpha contract.</p>
+									</div>
+								</li>
+								<li>
+									<h5>support: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = {}</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>Returns an Ethers.js transaction object of the vote
+							transaction.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="castvotebysig" class="tsd-anchor"></a>
+					<h3>cast<wbr>Vote<wbr>BySig</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">cast<wbr>Vote<wbr>BySig<span class="tsd-signature-symbol">(</span>proposalId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, support<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, signature<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/b3da1fb/src/gov.ts#L84">gov.ts:84</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Submit a vote on a Compound Governance proposal using an EIP-712 signature.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code><span class="hljs-keyword">const</span> compound = <span class="hljs-keyword">new</span> Compound(<span class="hljs-built_in">window</span>.ethereum);
+
+(<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">const</span> castVoteTx = <span class="hljs-keyword">await</span> compound.castVoteBySig(
+    <span class="hljs-number">12</span>,
+    <span class="hljs-literal">true</span>,
+    {
+      <span class="hljs-attr">v</span>: <span class="hljs-string">&#x27;0x1b&#x27;</span>,
+      <span class="hljs-attr">r</span>: <span class="hljs-string">&#x27;0x130dbcd2faca07424c033b4479687cc1deeb65f08509e3ab397988cc4c6f2e78&#x27;</span>,
+      <span class="hljs-attr">s</span>: <span class="hljs-string">&#x27;0x1debcb8250262f23906b1177161f0c7c9aa3641e6bff5b6f5c88a6bb78d5d8cd&#x27;</span>
+    }
+  );
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;Ethers.js transaction object&#x27;</span>, castVoteTx);
+})().catch(<span class="hljs-built_in">console</span>.error);</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>proposalId: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The ID of the proposal to vote on. This is an
+										auto-incrementing integer in the Governor Alpha contract.</p>
+									</div>
+								</li>
+								<li>
+									<h5>support: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A boolean of true for &#39;yes&#39; or false for &#39;no&#39; on the
+										proposal vote.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> signature: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = {}</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>An object that contains the v, r, and, s values of
+										an EIP-712 signature.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = {}</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>Returns an Ethers.js transaction object of the vote
+							transaction.</p>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_api_.html">&quot;api&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_ctoken_.html">&quot;c<wbr>Token&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_comp_.html">&quot;comp&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_comptroller_.html">&quot;comptroller&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_eth_.html">&quot;eth&quot;</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="_gov_.html">&quot;gov&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_index_.html">&quot;index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_pricefeed_.html">&quot;price<wbr>Feed&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_util_.html">&quot;util&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_gov_.html#castvote" class="tsd-kind-icon">cast<wbr>Vote</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_gov_.html#castvotebysig" class="tsd-kind-icon">cast<wbr>Vote<wbr>BySig</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer>
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

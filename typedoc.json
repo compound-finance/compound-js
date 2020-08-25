@@ -1,0 +1,9 @@
+{
+  "excludeNotDocumented": true,
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "includeDeclarations": true,
+  "hideGenerator": true,
+  "includeVersion": true,
+  "name": "Compound.js"
+}

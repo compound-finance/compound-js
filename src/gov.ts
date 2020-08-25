@@ -11,6 +11,17 @@ import { address, abi } from './constants';
  *
  * @returns {object} Returns an Ethers.js transaction object of the vote
  *     transaction.
+ *
+ * @example
+ *
+ * ```
+ * const compound = new Compound(window.ethereum);
+ * 
+ * (async function() {
+ *   const castVoteTx = await compound.castVote(12, true);
+ *   console.log('Ethers.js transaction object', castVoteTx);
+ * })().catch(console.error);
+ * ```
  */
 export async function castVote(proposalId: number, support: boolean, options: any = {}) {
   await netId(this);
@@ -51,6 +62,24 @@ export async function castVote(proposalId: number, support: boolean, options: an
  *
  * @returns {object} Returns an Ethers.js transaction object of the vote
  *     transaction.
+ *
+ * @example
+ * ```
+ * const compound = new Compound(window.ethereum);
+ * 
+ * (async function() {
+ *   const castVoteTx = await compound.castVoteBySig(
+ *     12,
+ *     true,
+ *     {
+ *       v: '0x1b',
+ *       r: '0x130dbcd2faca07424c033b4479687cc1deeb65f08509e3ab397988cc4c6f2e78',
+ *       s: '0x1debcb8250262f23906b1177161f0c7c9aa3641e6bff5b6f5c88a6bb78d5d8cd'
+ *     }
+ *   );
+ *   console.log('Ethers.js transaction object', castVoteTx);
+ * })().catch(console.error);
+ * ```
  */
 export async function castVoteBySig(
   proposalId: number,

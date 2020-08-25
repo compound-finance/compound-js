@@ -42,9 +42,18 @@ function toChecksumAddress(_address) {
  *
  * @returns {string} Returns a string of the numeric balance of COMP. The value
  *     is scaled up by 18 decimal places.
+ *
+ * @example
+ *
+ * ```
+ * (async function () {
+ *   const bal = await Compound.comp.getCompBalance('0x2775b1c75658Be0F640272CCb8c72ac986009e38');
+ *   console.log('Balance', bal);
+ * })().catch(console.error);
+ * ```
  */
 export async function getCompBalance(_address: string, _provider: string='mainnet') {
-  const provider = await eth.createProvider({ provider: _provider });
+  const provider = await eth._createProvider({ provider: _provider });
   const net = await eth.getProviderNetwork(provider);
 
   const errorPrefix = 'Compound [getCompBalance] | ';
@@ -78,9 +87,18 @@ export async function getCompBalance(_address: string, _provider: string='mainne
  *
  * @returns {string} Returns a string of the numeric accruement of COMP. The
  *     value is scaled up by 18 decimal places.
+ *
+ * @example
+ *
+ * ```
+ * (async function () {
+ *   const acc = await Compound.comp.getCompAccrued('0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5');
+ *   console.log('Accrued', acc);
+ * })().catch(console.error);
+ * ```
  */
 export async function getCompAccrued(_address: string, _provider: string='mainnet') {
-  const provider = await eth.createProvider({ provider: _provider });
+  const provider = await eth._createProvider({ provider: _provider });
   const net = await eth.getProviderNetwork(provider);
 
   const errorPrefix = 'Compound [getCompAccrued] | ';
@@ -113,6 +131,20 @@ export async function getCompAccrued(_address: string, _provider: string='mainne
  *
  * @returns {object} Returns an Ethers.js transaction object of the vote
  *     transaction.
+ *
+ * @example
+ *
+ * ```
+ * const compound = new Compound(window.ethereum);
+ * 
+ * (async function() {
+ * 
+ *   console.log('Claiming COMP...');
+ *   const trx = await compound.claimComp();
+ *   console.log('Ethers.js transaction object', trx);
+ * 
+ * })().catch(console.error);
+ * ```
  */
 export async function claimComp(options: any = {}) {
   await netId(this);
@@ -142,6 +174,16 @@ export async function claimComp(options: any = {}) {
  *
  * @returns {object} Returns an Ethers.js transaction object of the vote
  *     transaction.
+ * @example
+ *
+ * ```
+ * const compound = new Compound(window.ethereum);
+ * 
+ * (async function() {
+ *   const delegateTx = await compound.delegate('0xa0df350d2637096571F7A701CBc1C5fdE30dF76A');
+ *   console.log('Ethers.js transaction object', delegateTx);
+ * })().catch(console.error);
+ * ```
  */
 export async function delegate(_address: string, options: any = {}) {
   await netId(this);
@@ -185,6 +227,25 @@ export async function delegate(_address: string, options: any = {}) {
  *
  * @returns {object} Returns an Ethers.js transaction object of the vote
  *     transaction.
+ * @example
+ *
+ * ```
+ * const compound = new Compound(window.ethereum);
+ * 
+ * (async function() {
+ *   const delegateTx = await compound.delegateBySig(
+ *     '0xa0df350d2637096571F7A701CBc1C5fdE30dF76A',
+ *     42,
+ *     9999999999,
+ *     {
+ *       v: '0x1b',
+ *       r: '0x130dbca2fafa07424c033b4479687cc1deeb65f08809e3ab397988cc4c6f2e78',
+ *       s: '0x1debeb8250262f23906b1177161f0c7c9aa3641e8bff5b6f5c88a6bb78d5d8cd'
+ *     }
+ *   );
+ *   console.log('Ethers.js transaction object', delegateTx);
+ * })().catch(console.error);
+ * ```
  */
 export async function delegateBySig(
   _address: string,
