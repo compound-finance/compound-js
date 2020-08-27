@@ -124,13 +124,16 @@ var compound = new Compound('mainnet' {
 });
 ```
 
-## Constants
+## Constants and Contract Addresses
 
-Names of contracts, their addresses, ABIs, token decimals, and more can be found in `/src/constants.ts`.
+Names of contracts, their addresses, ABIs, token decimals, and more can be found in `/src/constants.ts`. Addresses, for all networks, can be easily fetched using the `getAddress` function, combined with contract name constants.
 
 ```js
 console.log(Compound.DAI, Compound.ETH, Compound.cETH);
 // DAI, ETH, cETH
+
+const cUsdtAddress = Compound.util.getAddress(Compound.cUSDT);
+// Mainnet cUSDT address. Second parameter can be a network like 'ropsten'.
 ```
 
 ## Mantissas
