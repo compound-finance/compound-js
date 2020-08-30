@@ -1,7 +1,7 @@
 {
   "name": "@compound-finance/compound-js",
   "browser": "dist/browser/compound.min.js",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "A JavaScript SDK for Ethereum and the Compound Protocol.",
   "main": "dist/nodejs/src/index.js",
   "scripts": {
