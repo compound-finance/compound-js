@@ -167,12 +167,15 @@
 <span class="hljs-keyword">var</span> compound = <span class="hljs-keyword">new</span> Compound(<span class="hljs-string">&#x27;mainnet&#x27;</span> {
   <span class="hljs-attr">mnemonic</span>: <span class="hljs-string">&#x27;clutch captain shoe...&#x27;</span>, <span class="hljs-comment">// preferably with environment variable</span>
 });</code></pre>
-				<a href="#constants" id="constants" style="color: inherit; text-decoration: none;">
-					<h2>Constants</h2>
+				<a href="#constants-and-contract-addresses" id="constants-and-contract-addresses" style="color: inherit; text-decoration: none;">
+					<h2>Constants and Contract Addresses</h2>
 				</a>
-				<p>Names of contracts, their addresses, ABIs, token decimals, and more can be found in <code>/src/constants.ts</code>.</p>
+				<p>Names of contracts, their addresses, ABIs, token decimals, and more can be found in <code>/src/constants.ts</code>. Addresses, for all networks, can be easily fetched using the <code>getAddress</code> function, combined with contract name constants.</p>
 				<pre><code class="language-js"><span class="hljs-built_in">console</span>.log(Compound.DAI, Compound.ETH, Compound.cETH);
-<span class="hljs-comment">// DAI, ETH, cETH</span></code></pre>
+<span class="hljs-comment">// DAI, ETH, cETH</span>
+
+<span class="hljs-keyword">const</span> cUsdtAddress = Compound.util.getAddress(Compound.cUSDT);
+<span class="hljs-comment">// Mainnet cUSDT address. Second parameter can be a network like &#x27;ropsten&#x27;.</span></code></pre>
 				<a href="#mantissas" id="mantissas" style="color: inherit; text-decoration: none;">
 					<h2>Mantissas</h2>
 				</a>

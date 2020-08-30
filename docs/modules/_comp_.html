@@ -72,6 +72,7 @@
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_comp_.html#claimcomp" class="tsd-kind-icon">claim<wbr>Comp</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_comp_.html#createdelegatesignature" class="tsd-kind-icon">create<wbr>Delegate<wbr>Signature</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_comp_.html#delegate" class="tsd-kind-icon">delegate</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_comp_.html#delegatebysig" class="tsd-kind-icon">delegate<wbr>BySig</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_comp_.html#getcompaccrued" class="tsd-kind-icon">get<wbr>Comp<wbr>Accrued</a></li>
@@ -94,7 +95,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/88a4d74/src/comp.ts#L149">comp.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/d1292e2/src/comp.ts#L150">comp.ts:150</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -128,6 +129,53 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="createdelegatesignature" class="tsd-anchor"></a>
+					<h3>create<wbr>Delegate<wbr>Signature</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">create<wbr>Delegate<wbr>Signature<span class="tsd-signature-symbol">(</span>delegatee<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, expiry<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/d1292e2/src/comp.ts#L330">comp.ts:330</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create a delegate signature for Compound Governance using EIP-712. The
+										signature can be created without burning gas. Anyone can post it to the
+									blockchain using the <code>delegateBySig</code> method, which does have gas costs.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code><span class="hljs-keyword">const</span> compound = <span class="hljs-keyword">new</span> Compound(<span class="hljs-built_in">window</span>.ethereum);
+
+(<span class="hljs-keyword">async</span> () =&gt; {
+
+  <span class="hljs-keyword">const</span> delegateSignature = <span class="hljs-keyword">await</span> compound.createDelegateSignature(<span class="hljs-string">&#x27;0xa0df350d2637096571F7A701CBc1C5fdE30dF76A&#x27;</span>);
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">&#x27;delegateSignature&#x27;</span>, delegateSignature);
+
+})().<span class="hljs-keyword">catch</span>(<span class="hljs-built_in">console</span>.error);</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>delegatee: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> expiry: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 10000000000</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>Returns an object that contains the <code>v</code>, <code>r</code>, and <code>s</code>
+							components of an Ethereum signature as hexidecimal strings.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 					<a name="delegate" class="tsd-anchor"></a>
 					<h3>delegate</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
@@ -137,7 +185,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/88a4d74/src/comp.ts#L188">comp.ts:188</a></li>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/d1292e2/src/comp.ts#L190">comp.ts:190</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -184,7 +232,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/88a4d74/src/comp.ts#L250">comp.ts:250</a></li>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/d1292e2/src/comp.ts#L253">comp.ts:253</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -260,7 +308,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/88a4d74/src/comp.ts#L100">comp.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/d1292e2/src/comp.ts#L101">comp.ts:101</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -307,7 +355,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/88a4d74/src/comp.ts#L55">comp.ts:55</a></li>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/d1292e2/src/comp.ts#L56">comp.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -354,7 +402,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/88a4d74/src/comp.ts#L15">comp.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/d1292e2/src/comp.ts#L16">comp.ts:16</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -417,6 +465,9 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_comp_.html#claimcomp" class="tsd-kind-icon">claim<wbr>Comp</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_comp_.html#createdelegatesignature" class="tsd-kind-icon">create<wbr>Delegate<wbr>Signature</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_comp_.html#delegate" class="tsd-kind-icon">delegate</a>

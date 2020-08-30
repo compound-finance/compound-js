@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';
 import { address, abi } from './constants';
+import { sign } from './EIP712';
 
 const keccak256 = ethers.utils.keccak256;
 
@@ -174,6 +175,7 @@ export async function claimComp(options: any = {}) {
  *
  * @returns {object} Returns an Ethers.js transaction object of the vote
  *     transaction.
+ *
  * @example
  *
  * ```
@@ -227,6 +229,7 @@ export async function delegate(_address: string, options: any = {}) {
  *
  * @returns {object} Returns an Ethers.js transaction object of the vote
  *     transaction.
+ *
  * @example
  *
  * ```
@@ -295,4 +298,82 @@ export async function delegateBySig(
   const method = 'delegateBySig';
 
   return eth.trx(compAddress, method, parameters, trxOptions);
+}
+
+/**
+ * Create a delegate signature for Compound Governance using EIP-712. The
+ *     signature can be created without burning gas. Anyone can post it to the
+ *     blockchain using the `delegateBySig` method, which does have gas costs.
+ *
+ * @param {string} proposalId The ID of the proposal to vote on. This is an
+ *     auto-incrementing integer in the Governor Alpha contract.
+ * @param {boolean} support A boolean of true for 'yes' or false for 'no' on the
+ *     proposal vote. To create an 'empty ballot' call this method twice using
+ *     `true` and then `false` for this parameter.
+ *
+ * @returns {object} Returns an object that contains the `v`, `r`, and `s` 
+ *     components of an Ethereum signature as hexidecimal strings.
+ *
+ * @example
+ *
+ * ```
+ * const compound = new Compound(window.ethereum);
+ *
+ * (async () => {
+ *
+ *   const delegateSignature = await compound.createDelegateSignature('0xa0df350d2637096571F7A701CBc1C5fdE30dF76A');
+ *   console.log('delegateSignature', delegateSignature);
+ *
+ * })().catch(console.error);
+ * ```
+ */
+export async function createDelegateSignature(delegatee: string, expiry: number = 10e9) {
+  await netId(this);
+
+  const provider = this._provider;
+  const compAddress = address[this._network.name].COMP;
+  const chainId = this._network.id;
+  let userAddress = this._provider.address;
+
+  if (!userAddress && this._provider.getAddress) {
+    userAddress = await this._provider.getAddress();
+  }
+
+  const originalProvider = this._originalProvider;
+
+  const nonce = +(await eth.read(
+    compAddress,
+    'function nonces(address) returns (uint)',
+    [ userAddress ],
+    { provider: originalProvider }
+  )).toString();
+
+  const domain = {
+    name: 'Compound',
+    chainId,
+    verifyingContract: compAddress
+  };
+
+  const primaryType = 'Delegation';
+
+  const message = { delegatee, nonce, expiry };
+
+  const types = {
+    EIP712Domain: [
+      { name: 'name', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' },
+    ],
+    Delegation: [
+      { name: 'delegatee', type: 'address' },
+      { name: 'nonce', type: 'uint256' },
+      { name: 'expiry', type: 'uint256' }
+    ]
+  };
+
+  const signer = provider.getSigner ? provider.getSigner() : provider;
+
+  const signature = await sign(domain, primaryType, message, types, signer);
+
+  return signature;
 }

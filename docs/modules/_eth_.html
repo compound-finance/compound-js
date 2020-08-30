@@ -71,7 +71,6 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-not-exported"><a href="_eth_.html#_ethjsonrpc" class="tsd-kind-icon">_eth<wbr>Json<wbr>Rpc</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_eth_.html#getbalance" class="tsd-kind-icon">get<wbr>Balance</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_eth_.html#read" class="tsd-kind-icon">read</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_eth_.html#trx" class="tsd-kind-icon">trx</a></li>
@@ -82,56 +81,6 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
-					<a name="_ethjsonrpc" class="tsd-anchor"></a>
-					<h3>_eth<wbr>Json<wbr>Rpc</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">_eth<wbr>Json<wbr>Rpc<span class="tsd-signature-symbol">(</span>jsonRpcMethod<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">JsonRpc</span>, address<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, method<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, parameters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">CallOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/88a4d74/src/eth.ts#L44">eth.ts:44</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>This is a generic method for invoking JSON RPC&#39;s <code>eth_call</code> or <code>eth_send</code>
-										with ethers.js. This function supports the public <code>read</code> and <code>trx</code>
-									methods in this module.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>jsonRpcMethod: <span class="tsd-signature-type">JsonRpc</span></h5>
-								</li>
-								<li>
-									<h5>address: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The Ethereum address the transaction is directed to.</p>
-									</div>
-								</li>
-								<li>
-									<h5>method: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The smart contract member in which to invoke.</p>
-									</div>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> parameters: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">CallOptions</span><span class="tsd-signature-symbol"> = {}</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>Return value of the invoked smart contract member
-							or an error object if the call failed.</p>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 					<a name="getbalance" class="tsd-anchor"></a>
 					<h3>get<wbr>Balance</h3>
@@ -142,7 +91,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/88a4d74/src/eth.ts#L259">eth.ts:259</a></li>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/d1292e2/src/eth.ts#L261">eth.ts:261</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -188,7 +137,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/88a4d74/src/eth.ts#L145">eth.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/d1292e2/src/eth.ts#L147">eth.ts:147</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -255,7 +204,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/88a4d74/src/eth.ts#L196">eth.ts:196</a></li>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/d1292e2/src/eth.ts#L198">eth.ts:198</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -357,9 +306,6 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
-						<a href="_eth_.html#_ethjsonrpc" class="tsd-kind-icon">_eth<wbr>Json<wbr>Rpc</a>
-					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_eth_.html#getbalance" class="tsd-kind-icon">get<wbr>Balance</a>
 					</li>

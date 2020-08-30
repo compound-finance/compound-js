@@ -2,6 +2,7 @@ import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';
 import { address, abi } from './constants';
+import { sign } from './EIP712';
 
 /**
  * Submit a vote on a Compound Governance proposal.
@@ -118,4 +119,70 @@ export async function castVoteBySig(
   const method = 'castVoteBySig';
 
   return eth.trx(governorAddress, method, parameters, trxOptions);
+}
+
+/**
+ * Create a vote signature for a Compound Governance proposal using EIP-712.
+ *     This can be used to create an 'empty ballot' without burning gas. The 
+ *     signature can then be sent to someone else to post to the blockchain. 
+ *     The recipient can post one signature using the `castVoteBySig` method.
+ *
+ * @param {string} proposalId The ID of the proposal to vote on. This is an
+ *     auto-incrementing integer in the Governor Alpha contract.
+ * @param {boolean} support A boolean of true for 'yes' or false for 'no' on the
+ *     proposal vote. To create an 'empty ballot' call this method twice using
+ *     `true` and then `false` for this parameter.
+ *
+ * @returns {object} Returns an object that contains the `v`, `r`, and `s` 
+ *     components of an Ethereum signature as hexidecimal strings.
+ *
+ * @example
+ * ```
+ * const compound = new Compound(window.ethereum);
+ *
+ * (async () => {
+ *
+ *   const voteForSignature = await compound.createVoteSignature(20, true);
+ *   console.log('voteForSignature', voteForSignature);
+ *
+ *   const voteAgainstSignature = await compound.createVoteSignature(20, false);
+ *   console.log('voteAgainstSignature', voteAgainstSignature);
+ *
+ * })().catch(console.error);
+ * ```
+ */
+export async function createVoteSignature(proposalId: number, support: boolean) {
+  await netId(this);
+
+  const provider = this._provider;
+  const governorAddress = address[this._network.name].GovernorAlpha;
+  const chainId = this._network.id;
+
+  const domain = {
+    name: 'Compound Governor Alpha',
+    chainId,
+    verifyingContract: governorAddress
+  };
+
+  const primaryType = 'Ballot';
+
+  const message = { proposalId, support };
+
+  const types = {
+    EIP712Domain: [
+      { name: 'name', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' },
+    ],
+    Ballot: [
+      { name: 'proposalId', type: 'uint256' },
+      { name: 'support', type: 'bool' }
+    ]
+  };
+
+  const signer = provider.getSigner ? provider.getSigner() : provider;
+
+  const signature = await sign(domain, primaryType, message, types, signer);
+
+  return signature;
 }

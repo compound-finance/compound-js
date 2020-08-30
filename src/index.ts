@@ -43,10 +43,13 @@ ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
  * @returns {object} Returns an instance of Compound.js SDK.
  */
 const Compound = function(provider: any='mainnet', options: any={}) {
+  const originalProvider = provider;
+
   options.provider = provider || options.provider;
   provider = eth._createProvider(options);
 
   const instance: any = {
+    _originalProvider: originalProvider,
     _provider: provider,
     ...comptroller,
     ...cToken,
@@ -55,6 +58,7 @@ const Compound = function(provider: any='mainnet', options: any={}) {
     claimComp: comp.claimComp,
     delegate: comp.delegate,
     delegateBySig: comp.delegateBySig,
+    createDelegateSignature: comp.createDelegateSignature,
   };
 
   // Instance needs to know which network the provider connects to, so it can
