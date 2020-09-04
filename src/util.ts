@@ -165,7 +165,7 @@ export function request(options: any) {
  *
  * @example
  * ```
- * console.log('cETH Address: ', Compound.getAddress(Compound.cETH));
+ * console.log('cETH Address: ', Compound.util.getAddress(Compound.cETH));
  * ```
  */
 export function getAddress(contract: string, network: string='mainnet') {
@@ -182,9 +182,32 @@ export function getAddress(contract: string, network: string='mainnet') {
  *
  * @example
  * ```
- * console.log('cETH ABI: ', Compound.getAbi(Compound.cETH));
+ * console.log('cETH ABI: ', Compound.util.getAbi(Compound.cETH));
  * ```
  */
 export function getAbi(contract: string) {
   return abi[contract];
+}
+
+/**
+ * Gets the name of an Ethereum network based on its chain ID.
+ *
+ * @param {string} chainId The chain ID of the network.
+ *
+ * @returns {string} Returns the name of the Ethereum network.
+ *
+ * @example
+ * ```
+ * console.log('Ropsten : ', Compound.util.getNetNameWithChainId(3));
+ * ```
+ */
+export function getNetNameWithChainId(chainId: number) {
+  const networks = {
+    1: 'mainnet',
+    3: 'ropsten',
+    4: 'rinkeby',
+    5: 'goerli',
+    42: 'kovan',
+  };
+  return networks[chainId];
 }
