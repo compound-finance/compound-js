@@ -1,4 +1,4 @@
-import { address } from './constants';
+import { address, abi } from './constants';
 
 let _request: any;
 let http: any;
@@ -170,4 +170,21 @@ export function request(options: any) {
  */
 export function getAddress(contract: string, network: string='mainnet') {
   return address[network][contract];
+}
+
+/**
+ * Gets a contract ABI as a JavaScript array. This method supports 
+ *     contracts used by the Compound protocol.
+ *
+ * @param {string} contract The name of the contract.
+ *
+ * @returns {Array} Returns the ABI of the contract as a JavaScript array.
+ *
+ * @example
+ * ```
+ * console.log('cETH ABI: ', Compound.getAbi(Compound.cETH));
+ * ```
+ */
+export function getAbi(contract: string) {
+  return abi[contract];
 }
