@@ -71,6 +71,7 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_util_.html#getabi" class="tsd-kind-icon">get<wbr>Abi</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_util_.html#getaddress" class="tsd-kind-icon">get<wbr>Address</a></li>
 							</ul>
 						</section>
@@ -79,6 +80,44 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="getabi" class="tsd-anchor"></a>
+					<h3>get<wbr>Abi</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Abi<span class="tsd-signature-symbol">(</span>contract<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/c201365/src/util.ts#L188">util.ts:188</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets a contract ABI as a JavaScript array. This method supports
+									contracts used by the Compound protocol.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code>console.log(&#x27;cETH ABI: &#x27;, <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Compound</span>.</span></span>get<span class="hljs-constructor">Abi(Compound.<span class="hljs-params">cETH</span>)</span>);</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>contract: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The name of the contract.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+							<p>Returns the ABI of the contract as a JavaScript array.</p>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 					<a name="getaddress" class="tsd-anchor"></a>
 					<h3>get<wbr>Address</h3>
@@ -89,7 +128,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/fa081a5/src/util.ts#L171">util.ts:171</a></li>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/c201365/src/util.ts#L171">util.ts:171</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -159,6 +198,9 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_util_.html#getabi" class="tsd-kind-icon">get<wbr>Abi</a>
+					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_util_.html#getaddress" class="tsd-kind-icon">get<wbr>Address</a>
 					</li>
