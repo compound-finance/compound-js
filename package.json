@@ -1,8 +1,10 @@
 {
   "name": "@compound-finance/compound-js",
-  "browser": "dist/browser/compound.min.js",
   "version": "0.1.0",
+  "author": "Compound Labs, Inc.",
   "description": "A JavaScript SDK for Ethereum and the Compound Protocol.",
+  "license": "BSD-3-Clause",
+  "browser": "dist/browser/compound.min.js",
   "main": "dist/nodejs/src/index.js",
   "scripts": {
     "build": "npx tsc && npm run rollup && npm run docs",
@@ -14,6 +16,10 @@
     "rollup": "rollup -c rollup.config.ts",
     "test": "jest"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/compound-finance/compound-js.git"
+  },
   "keywords": [
     "compound",
     "compound.js",
@@ -23,8 +29,6 @@
     "defi",
     "ethereum"
   ],
-  "author": "Compound Labs, Inc.",
-  "license": "BSD-3-Clause",
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
