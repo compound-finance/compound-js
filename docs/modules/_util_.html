@@ -73,6 +73,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_util_.html#getabi" class="tsd-kind-icon">get<wbr>Abi</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_util_.html#getaddress" class="tsd-kind-icon">get<wbr>Address</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_util_.html#getnetnamewithchainid" class="tsd-kind-icon">get<wbr>Net<wbr>Name<wbr>With<wbr>Chain<wbr>Id</a></li>
 							</ul>
 						</section>
 					</div>
@@ -90,17 +91,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/8a48d19/src/util.ts#L188">util.ts:188</a></li>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/c06049c/src/util.ts#L188">util.ts:188</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Gets a contract ABI as a JavaScript array. This method supports
-									contracts used by the Compound protocol.</p>
+									contracts used by the Compound Protocol.</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><pre><code>console.log(&#x27;cETH ABI: &#x27;, <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Compound</span>.</span></span>get<span class="hljs-constructor">Abi(Compound.<span class="hljs-params">cETH</span>)</span>);</code></pre>
+									<dd><pre><code>console.log(&#x27;cETH ABI: &#x27;, <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Compound</span>.</span></span>util.get<span class="hljs-constructor">Abi(Compound.<span class="hljs-params">cETH</span>)</span>);</code></pre>
 									</dd>
 								</dl>
 							</div>
@@ -128,17 +129,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/8a48d19/src/util.ts#L171">util.ts:171</a></li>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/c06049c/src/util.ts#L171">util.ts:171</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Gets the contract address of the named contract. This method supports
-									contracts used by the Compound protocol.</p>
+									contracts used by the Compound Protocol.</p>
 								</div>
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
-									<dd><pre><code>console.log(&#x27;cETH Address: &#x27;, <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Compound</span>.</span></span>get<span class="hljs-constructor">Address(Compound.<span class="hljs-params">cETH</span>)</span>);</code></pre>
+									<dd><pre><code>console.log(&#x27;cETH Address: &#x27;, <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Compound</span>.</span></span>util.get<span class="hljs-constructor">Address(Compound.<span class="hljs-params">cETH</span>)</span>);</code></pre>
 									</dd>
 								</dl>
 							</div>
@@ -156,6 +157,43 @@
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 							<p>Returns the address of the contract.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="getnetnamewithchainid" class="tsd-anchor"></a>
+					<h3>get<wbr>Net<wbr>Name<wbr>With<wbr>Chain<wbr>Id</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Net<wbr>Name<wbr>With<wbr>Chain<wbr>Id<span class="tsd-signature-symbol">(</span>chainId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/compound-finance/compound-js/blob/c06049c/src/util.ts#L204">util.ts:204</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gets the name of an Ethereum network based on its chain ID.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code>console.log(&#x27;Ropsten : &#x27;, <span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">Compound</span>.</span></span>util.get<span class="hljs-constructor">NetNameWithChainId(3)</span>);</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>chainId: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The chain ID of the network.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+							<p>Returns the name of the Ethereum network.</p>
 						</li>
 					</ul>
 				</section>
@@ -203,6 +241,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_util_.html#getaddress" class="tsd-kind-icon">get<wbr>Address</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_util_.html#getnetnamewithchainid" class="tsd-kind-icon">get<wbr>Net<wbr>Name<wbr>With<wbr>Chain<wbr>Id</a>
 					</li>
 				</ul>
 			</nav>
