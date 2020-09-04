@@ -4,7 +4,7 @@ import { netId } from './helpers';
 import { constants, address, abi, cTokens } from './constants';
 
 /**
- * Enters the user's address into Compound protocol markets.
+ * Enters the user's address into Compound Protocol markets.
  *
  * @param {any[]} markets An array of strings of markets to enter, meaning use
  *     those supplied assets as collateral.
@@ -59,7 +59,7 @@ export async function enterMarkets(markets: any = []) {
 }
 
 /**
- * Exits the user's address from a Compound protocol market.
+ * Exits the user's address from a Compound Protocol market.
  *
  * @param {string} market An string of the market to exit.
  *

@@ -4,7 +4,7 @@ let https: any;
 
 /**
  * This function acts like a decorator for all methods that interact with the
- *     blockchain. In order to use the correct Compound protocol addresses, the
+ *     blockchain. In order to use the correct Compound Protocol addresses, the
  *     Compound.js SDK must know which network its provider points to. This
  *     function holds up a transaction until the main constructor has determined
  *     the network ID.

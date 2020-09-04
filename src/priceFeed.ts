@@ -46,7 +46,7 @@ async function cTokenExchangeRate(cTokenAddress, cTokenName, underlyingDecimals)
 }
 
 /**
- * Gets an asset's price from the Compound protocol open price feed. The price
+ * Gets an asset's price from the Compound Protocol open price feed. The price
  *    of the asset can be returned in any other supported asset value, including
  *    all cTokens and underlyings.
  *

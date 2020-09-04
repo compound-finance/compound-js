@@ -4,7 +4,7 @@ import { netId } from './helpers';
 import { constants, address, abi, decimals, underlyings, cTokens } from './constants';
 
 /**
- * Supplies the user's Ethereum asset to the Compound protocol.
+ * Supplies the user's Ethereum asset to the Compound Protocol.
  *
  * @param {string} asset A string of the asset to supply.
  * @param {number | string | BigNumber} amount A string, number, or BigNumber
@@ -27,7 +27,7 @@ import { constants, address, abi, decimals, underlyings, cTokens } from './const
  * 
  * (async function() {
  * 
- *   console.log('Supplying ETH to the Compound protocol...');
+ *   console.log('Supplying ETH to the Compound Protocol...');
  *   const trx = await compound.supply(Compound.ETH, 1);
  *   console.log('Ethers.js transaction object', trx);
  * 
@@ -85,7 +85,7 @@ export async function supply(asset: string, amount: any, options: any = {}) {
 }
 
 /**
- * Redeems the user's Ethereum asset from the Compound protocol.
+ * Redeems the user's Ethereum asset from the Compound Protocol.
  *
  * @param {string} asset A string of the asset to redeem, or its cToken name.
  * @param {number | string | BigNumber} amount A string, number, or BigNumber
@@ -159,7 +159,7 @@ export async function redeem(asset: string, amount: any, options: any = {}) {
 }
 
 /**
- * Borrows an Ethereum asset from the Compound protocol for the user. The user's
+ * Borrows an Ethereum asset from the Compound Protocol for the user. The user's
  *     address must first have supplied collateral and entered a corresponding
  *     market.
  *

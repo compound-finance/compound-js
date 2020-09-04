@@ -155,7 +155,7 @@ export function request(options: any) {
 
 /**
  * Gets the contract address of the named contract. This method supports 
- *     contracts used by the Compound protocol.
+ *     contracts used by the Compound Protocol.
  *
  * @param {string} contract The name of the contract.
  * @param {string} [network] Optional name of the Ethereum network. Main net and
@@ -174,7 +174,7 @@ export function getAddress(contract: string, network: string='mainnet') {
 
 /**
  * Gets a contract ABI as a JavaScript array. This method supports 
- *     contracts used by the Compound protocol.
+ *     contracts used by the Compound Protocol.
  *
  * @param {string} contract The name of the contract.
  *
