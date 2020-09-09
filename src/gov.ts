@@ -1,6 +1,6 @@
 /**
  * @file Governance
- * @desc These methods facilitate interaction with the Governor smart contract.
+ * @desc These methods facilitate interactions with the Governor smart contract.
  */
 
 import { ethers } from 'ethers';

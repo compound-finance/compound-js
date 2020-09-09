@@ -1,6 +1,6 @@
 /**
  * @file cToken
- * @desc These methods facilitate interaction with the cToken smart
+ * @desc These methods facilitate interactions with the cToken smart
  *     contracts.
  */
 

@@ -1,6 +1,6 @@
 /**
  * @file Comptroller
- * @desc These methods facilitate interaction with the Comptroller smart
+ * @desc These methods facilitate interactions with the Comptroller smart
  *     contract.
  */
 

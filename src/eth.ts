@@ -1,6 +1,6 @@
 /**
  * @file Ethereum
- * @desc These methods facilitate interaction with the Ethereum blockchain.
+ * @desc These methods facilitate interactions with the Ethereum blockchain.
  */
 
 import { ethers } from 'ethers';
