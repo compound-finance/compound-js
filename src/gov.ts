@@ -1,3 +1,8 @@
+/**
+ * @file Governance
+ * @desc These methods facilitate interaction with the Governor smart contract.
+ */
+
 import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';
@@ -134,7 +139,7 @@ export async function castVoteBySig(
  *     `true` and then `false` for this parameter.
  *
  * @returns {object} Returns an object that contains the `v`, `r`, and `s` 
- *     components of an Ethereum signature as hexidecimal strings.
+ *     components of an Ethereum signature as hexadecimal strings.
  *
  * @example
  * ```

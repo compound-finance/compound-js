@@ -1,3 +1,8 @@
+/**
+ * @file Utility
+ * @desc These methods are helpers for the Compound class.
+ */
+
 import { address, abi } from './constants';
 
 let _request: any;
@@ -159,7 +164,7 @@ export function request(options: any) {
  *
  * @param {string} contract The name of the contract.
  * @param {string} [network] Optional name of the Ethereum network. Main net and
- * all the popular public test nets are supported.
+ *     all the popular public test nets are supported.
  *
  * @returns {string} Returns the address of the contract.
  *

@@ -1,3 +1,9 @@
+/**
+ * @file Comptroller
+ * @desc These methods facilitate interaction with the Comptroller smart
+ *     contract.
+ */
+
 import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';
@@ -61,12 +67,9 @@ export async function enterMarkets(markets: any = []) {
 /**
  * Exits the user's address from a Compound Protocol market.
  *
- * @param {string} market An string of the market to exit.
+ * @param {string} market A string of the symbol of the market to exit.
  *
  * @returns {object} Returns an Ethers.js transaction object of the exitMarket
- *     transaction.
- *
- * @returns {object} Returns an Ethers.js transaction object of the enterMarkets
  *     transaction.
  *
  * @example

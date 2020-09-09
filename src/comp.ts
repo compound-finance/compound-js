@@ -1,3 +1,9 @@
+/**
+ * @file COMP
+ * @desc These methods facilitate interactions with the COMP token smart
+ *     contract.
+ */
+
 import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';
@@ -312,7 +318,7 @@ export async function delegateBySig(
  *     `true` and then `false` for this parameter.
  *
  * @returns {object} Returns an object that contains the `v`, `r`, and `s` 
- *     components of an Ethereum signature as hexidecimal strings.
+ *     components of an Ethereum signature as hexadecimal strings.
  *
  * @example
  *

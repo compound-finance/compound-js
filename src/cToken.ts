@@ -1,3 +1,9 @@
+/**
+ * @file cToken
+ * @desc These methods facilitate interaction with the cToken smart
+ *     contracts.
+ */
+
 import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';

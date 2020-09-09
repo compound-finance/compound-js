@@ -1,3 +1,8 @@
+/**
+ * @file Ethereum
+ * @desc These methods facilitate interaction with the Ethereum blockchain.
+ */
+
 import { ethers } from 'ethers';
 
 enum JsonRpc {
@@ -245,7 +250,7 @@ export async function getProviderNetwork(provider) {
  * @param {any{} | string} [provider] Optional Ethereum network provider.
  *     Defaults to Ethers.js fallback mainnet provider.
  *
- * @returns {BigNumber} Returns a BigNumber hexidecimal value of the ETH balance
+ * @returns {BigNumber} Returns a BigNumber hexadecimal value of the ETH balance
  *     of the address.
  *
  * @example
