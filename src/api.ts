@@ -1,3 +1,8 @@
+/**
+ * @file API
+ * @desc These methods facilitate HTTP requests to the Compound API.
+ */
+
 import { request } from './util';
 import { version } from '../package.json';
 
@@ -26,8 +31,7 @@ try {
 /**
  * Makes a request to the AccountService API. The Account API retrieves
  *     information for various accounts which have interacted with the protocol.
- *     For more details, see the API documentation.
- *     https://compound.finance/docs/api#AccountService
+ *     For more details, see the Compound API documentation.
  *
  * @param {object} options A JavaScript object of API request parameters.
  *
@@ -63,8 +67,8 @@ export function account(options: object) {
 
 /**
  * Makes a request to the CTokenService API. The cToken API retrieves
- *     information about cToken contract interaction. Formore details, see the 
- *     API documentation. https://compound.finance/docs/api#CTokenService
+ *     information about cToken contract interaction. For more details, see the 
+ *     Compound API documentation.
  *
  * @param {object} options A JavaScript object of API request parameters.
  *
@@ -87,9 +91,9 @@ export function cToken(options: object) {
 }
 
 /**
- * Makes a request to the MarketHistoryService API. The market history service 
- *     retrieves information about a market. For more details, see the API
- *     documentation. https://compound.finance/docs/api#MarketHistoryService
+ * Makes a request to the MarketHistoryService API. The market history service
+ *     retrieves information about a market. For more details, see the Compound
+ *     API documentation.
  *
  * @param {object} options A JavaScript object of API request parameters.
  *
@@ -116,8 +120,8 @@ export function marketHistory(options: object) {
 
 /**
  * Makes a request to the GovernanceService API. The Governance Service includes
- *     three endpoints to retrieve information about COMP accounts.
- *     https://compound.finance/docs/api#GovernanceService
+ *     three endpoints to retrieve information about COMP accounts. For more 
+ *     details, see the Compound API documentation.
  *
  * @param {object} options A JavaScript object of API request parameters.
  * @param {string} endpoint A string of the name of the corresponding governance

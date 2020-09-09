@@ -1,3 +1,8 @@
+/**
+ * @file Compound
+ * @desc This file defines the constructor of the `compound` class.
+ */
+
 import { ethers } from 'ethers';
 import * as eth from './eth';
 import * as util from './util';

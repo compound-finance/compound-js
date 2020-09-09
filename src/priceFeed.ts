@@ -1,3 +1,9 @@
+/**
+ * @file Price Feed
+ * @desc These methods facilitate interactions with the Open Price Feed smart
+ *     contracts.
+ */
+
 import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';
@@ -51,9 +57,9 @@ async function cTokenExchangeRate(cTokenAddress, cTokenName, underlyingDecimals)
  *    all cTokens and underlyings.
  *
  * @param {string} asset A string of a supported asset in which to find the
- *    current price.
+ *     current price.
  * @param {string} [inAsset] A string of a supported asset in which to express
- *    the `asset` parameter's price. This defaults to USD.
+ *     the `asset` parameter's price. This defaults to USD.
  *
  * @returns {string} Returns a string of the numeric value of the asset.
  *

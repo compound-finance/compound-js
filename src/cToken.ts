@@ -1,3 +1,9 @@
+/**
+ * @file cToken
+ * @desc These methods facilitate interactions with the cToken smart
+ *     contracts.
+ */
+
 import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';
@@ -11,7 +17,7 @@ import { constants, address, abi, decimals, underlyings, cTokens } from './const
  *     object of the amount of an asset to supply. Use the `mantissa` boolean in
  *     the `options` parameter to indicate if this value is scaled up (so there 
  *     are no decimals) or in its natural scale.
- * @param {object} options Call options and Ethers.js overrides for the 
+ * @param {CallOptions} [options] Call options and Ethers.js overrides for the 
  *     transaction.
  *
  * @returns {object} Returns an Ethers.js transaction object of the supply
@@ -93,7 +99,7 @@ export async function supply(asset: string, amount: any, options: any = {}) {
  *     the `options` parameter to indicate if this value is scaled up (so there 
  *     are no decimals) or in its natural scale. This can be an amount of 
  *     cTokens or underlying asset (use the `asset` parameter to specify).
- * @param {object} options Call options and Ethers.js overrides for the 
+ * @param {CallOptions} [options] Call options and Ethers.js overrides for the 
  *     transaction.
  *
  * @returns {object} Returns an Ethers.js transaction object of the redeem
@@ -169,7 +175,7 @@ export async function redeem(asset: string, amount: any, options: any = {}) {
  *     object of the amount of an asset to borrow. Use the `mantissa` boolean in
  *     the `options` parameter to indicate if this value is scaled up (so there 
  *     are no decimals) or in its natural scale.
- * @param {object} options Call options and Ethers.js overrides for the 
+ * @param {CallOptions} [options] Call options and Ethers.js overrides for the 
  *     transaction.
  *
  * @returns {object} Returns an Ethers.js transaction object of the borrow
@@ -239,7 +245,7 @@ export async function borrow(asset: string, amount: any, options: any = {}) {
  * @param {string | null} [borrower] The Ethereum address of the borrower to 
  *     repay an open borrow for. Set this to `null` if the user is repaying
  *     their own borrow.
- * @param {object} options Call options and Ethers.js overrides for the 
+ * @param {CallOptions} [options] Call options and Ethers.js overrides for the 
  *     transaction.
  *
  * @returns {object} Returns an Ethers.js transaction object of the repayBorrow

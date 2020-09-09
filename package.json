@@ -7,8 +7,9 @@
   "browser": "dist/browser/compound.min.js",
   "main": "dist/nodejs/src/index.js",
   "scripts": {
-    "build": "npx tsc && npm run rollup && npm run docs",
+    "build": "npx tsc && npm run rollup",
     "docs": "./node_modules/typedoc/bin/typedoc --out ./docs/ ./src/",
+    "compound_docs": "node ./scripts/compound-docs.js",
     "prepare": "npm run build",
     "publish_patch": "npm version patch && npm publish --access public",
     "publish_minor": "npm version minor && npm publish --access public",
@@ -36,6 +37,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@types/node": "^14.0.11",
     "babel-jest": "^26.0.1",
+    "docblock-parser": "^1.0.0",
     "jest": "^26.0.1",
     "rollup": "^2.15.0",
     "rollup-plugin-babel-minify": "^10.0.0",
