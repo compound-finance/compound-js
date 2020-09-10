@@ -27,7 +27,11 @@ function unSlashBug(parsed) {
   let keys = Object.keys(parsed.tags);
 
   let str = parsed.tags[keys[keys.length-1]];
-  str = str.replace(/\n\//g, '');
+
+  if (str[str.length-2] === '\n' && str[str.length-1] === '\/') {
+    str = str.slice(0, str.length-2);
+  }
+
   parsed.tags[keys[keys.length-1]] = str;
 
   return parsed;
@@ -116,7 +120,9 @@ function markdownify(block, functionName) {
 
   // example
   if (tags.example) {
-    const example = tags.example.replace('```', "```js");
+    const example = tags.example
+      .replace('```', "```js")
+      .replace(/&/g, '&amp;');
     result += example + '\n\n';
   }
 
@@ -172,14 +178,25 @@ let intro = '';
 intro += '<section id="introduction" name="Introduction">\n\n';
 intro += '# Compound.js\n\n';
 intro += '## Introduction\n\n';
-intro += '[Compound.js](https://github.com/compound-finance/compound-js) is a JavaScript SDK for Ethereum and the Compound Protocol. It wraps around Ethers.js, which is its only dependency. It is designed for both the web browser and Node.js.\n\n';
-intro += 'The SDK is currently in open beta. For bugs reports and feature requests, either create an issue in the GitHub repository or send a message in the Development channel of the Compound Discord.\n\n';
+intro += '[Compound.js](https://github.com/compound-finance/compound-js) is a ';
+intro += 'JavaScript SDK for Ethereum and the Compound Protocol. It wraps ';
+intro += 'around Ethers.js, which is its only dependency. It is designed for ';
+intro += 'both the web browser and Node.js.\n\n';
+intro += 'The SDK is currently in open beta. For bugs reports and feature ';
+intro += 'requests, either create an issue in the GitHub repository or send a';
+intro += ' message in the Development channel of the Compound Discord.\n\n';
 intro += '</section>\n\n';
 
 const srcPath = './src/';
 const outPath = './scripts/out.md';
 
-const srcFileNames = fs.readdirSync(srcPath);
+let srcFileNames = fs.readdirSync(srcPath);
+
+// Move `index.ts` to the front
+const indexTs = 'index.ts';
+const idx = srcFileNames.findIndex((el) => el === indexTs);
+srcFileNames.slice(idx, 1);
+srcFileNames.unshift(indexTs);
 
 let mdResult = '';
 mdResult += intro;

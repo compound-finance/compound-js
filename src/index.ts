@@ -1,6 +1,7 @@
 /**
  * @file Compound
- * @desc This file defines the constructor of the `compound` class.
+ * @desc This file defines the constructor of the `Compound` class.
+ * @hidden
  */
 
 import { ethers } from 'ethers';
