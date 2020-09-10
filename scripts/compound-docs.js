@@ -190,12 +190,12 @@ intro += '</section>\n\n';
 const srcPath = './src/';
 const outPath = './scripts/out.md';
 
-let srcFileNames = fs.readdirSync(srcPath);
+const srcFileNames = fs.readdirSync(srcPath);
 
 // Move `index.ts` to the front
 const indexTs = 'index.ts';
 const idx = srcFileNames.findIndex((el) => el === indexTs);
-srcFileNames.slice(idx, 1);
+srcFileNames.splice(idx, 1);
 srcFileNames.unshift(indexTs);
 
 let mdResult = '';

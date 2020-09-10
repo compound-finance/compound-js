@@ -46,7 +46,7 @@ ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
  * });
  * ```
  *
- * @returns {object} Returns an instance of Compound.js SDK.
+ * @returns {object} Returns an instance of the Compound.js SDK.
  */
 const Compound = function(provider: any='mainnet', options: any={}) {
   const originalProvider = provider;
