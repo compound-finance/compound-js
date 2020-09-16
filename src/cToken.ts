@@ -43,7 +43,7 @@ import { constants, address, abi, decimals, underlyings, cTokens } from './const
  * })().catch(console.error);
  * ```
  */
-export async function supply(asset: string, amount: any, noApprove: boolean=false, options: any = {}) {
+export async function supply(asset: string, amount: any, noApprove: boolean = false, options: any = {}) {
   await netId(this);
   const errorPrefix = 'Compound [supply] | ';
 
@@ -267,8 +267,12 @@ export async function borrow(asset: string, amount: any, options: any = {}) {
  * @param {string | null} [borrower] The Ethereum address of the borrower to 
  *     repay an open borrow for. Set this to `null` if the user is repaying
  *     their own borrow.
- * @param {CallOptions} [options] Call options and Ethers.js overrides for the 
+ * @param {boolean} noApprove Explicitly prevent this method from attempting an 
+ *     ERC-20 `approve` transaction prior to sending the subsequent repayment 
  *     transaction.
+ * @param {CallOptions} [options] Call options and Ethers.js overrides for the 
+ *     transaction. A passed `gasLimit` will be used in both the `approve` (if 
+ *     not supressed) and `repayBorrow` or `repayBorrowBehalf` transactions.
  *
  * @returns {object} Returns an Ethers.js transaction object of the repayBorrow
  *     or repayBorrowBehalf transaction.
@@ -289,7 +293,7 @@ export async function borrow(asset: string, amount: any, options: any = {}) {
  * })().catch(console.error);
  * ```
  */
-export async function repayBorrow(asset: string, amount: any, borrower: string, options: any = {}) {
+export async function repayBorrow(asset: string, amount: any, borrower: string, noApprove: boolean = false, options: any = {}) {
   await netId(this);
   const errorPrefix = 'Compound [repayBorrow] | ';
 
@@ -328,15 +332,31 @@ export async function repayBorrow(asset: string, amount: any, borrower: string, 
   } else {
     parameters.push(amount);
     trxOptions.abi = abi.cErc20;
+  }
 
-    // ERC-20 approve transaction
+  if (cTokenName !== constants.cETH && noApprove !== true) {
     const underlyingAddress = address[this._network.name][asset];
-    await eth.trx(
+    const userAddress = this._provider.address;
+
+    // Check allowance
+    const allowance = await eth.read(
       underlyingAddress,
-      'approve',
-      [ cTokenAddress, amount ],
-      { _compoundProvider: this._provider, abi: abi.cErc20 }
+      'allowance',
+      [ userAddress, cTokenAddress ],
+      trxOptions
     );
+
+    const notEnough = allowance.lt(amount);
+
+    if (notEnough) {
+      // ERC-20 approve transaction
+      await eth.trx(
+        underlyingAddress,
+        'approve',
+        [ cTokenAddress, amount ],
+        trxOptions
+      );
+    }
   }
 
   return eth.trx(cTokenAddress, method, parameters, trxOptions);
