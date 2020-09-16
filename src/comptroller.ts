@@ -60,10 +60,13 @@ export async function enterMarkets(markets: any = [], options: any = {}) {
   const comptrollerAddress = address[this._network.name].Comptroller;
   const parameters = [ addresses ];
 
-  options._compoundProvider = this._provider;
-  options.abi = abi.Comptroller;
+  const trxOptions: any = {
+    _compoundProvider: this._provider,
+    abi: abi.Comptroller,
+    ...options
+  };
 
-  return eth.trx(comptrollerAddress, 'enterMarkets', parameters, options);
+  return eth.trx(comptrollerAddress, 'enterMarkets', parameters, trxOptions);
 }
 
 /**
@@ -109,8 +112,11 @@ export async function exitMarket(market: string, options: any = {}) {
   const comptrollerAddress = address[this._network.name].Comptroller;
   const parameters = [ cTokenAddress ];
 
-  options._compoundProvider = this._provider;
-  options.abi = abi.Comptroller;
+  const trxOptions: any = {
+    _compoundProvider: this._provider,
+    abi: abi.Comptroller,
+    ...options
+  };
 
-  return eth.trx(comptrollerAddress, 'exitMarket', parameters, options);
+  return eth.trx(comptrollerAddress, 'exitMarket', parameters, trxOptions);
 }
