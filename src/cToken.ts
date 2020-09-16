@@ -17,8 +17,11 @@ import { constants, address, abi, decimals, underlyings, cTokens } from './const
  *     object of the amount of an asset to supply. Use the `mantissa` boolean in
  *     the `options` parameter to indicate if this value is scaled up (so there 
  *     are no decimals) or in its natural scale.
+ * @param {boolean} noApprove Explicitly prevent this method from attempting an 
+ *     ERC-20 `approve` transaction prior to sending the `mint` transaction.
  * @param {CallOptions} [options] Call options and Ethers.js overrides for the 
- *     transaction.
+ *     transaction. A passed `gasLimit` will be used in both the `approve` (if 
+ *     not supressed) and `mint` transactions.
  *
  * @returns {object} Returns an Ethers.js transaction object of the supply
  *     transaction.
@@ -40,7 +43,7 @@ import { constants, address, abi, decimals, underlyings, cTokens } from './const
  * })().catch(console.error);
  * ```
  */
-export async function supply(asset: string, amount: any, options: any = {}) {
+export async function supply(asset: string, amount: any, noApprove: boolean=false, options: any = {}) {
   await netId(this);
   const errorPrefix = 'Compound [supply] | ';
 
@@ -66,28 +69,47 @@ export async function supply(asset: string, amount: any, options: any = {}) {
 
   amount = ethers.BigNumber.from(amount.toString());
 
-  if (cTokenName !== constants.cETH) {
-    // ERC-20 approve transaction
-    const underlyingAddress = address[this._network.name][asset];
-    await eth.trx(
-      underlyingAddress,
-      'approve',
-      [ cTokenAddress, amount ],
-      { _compoundProvider: this._provider, abi: abi.cErc20 }
-    );
+  if (cTokenName === constants.cETH) {
+    options.abi = abi.cEther;
+  } else {
+    options.abi = abi.cErc20;
   }
 
-  const trxOptions: any = { _compoundProvider: this._provider };
+  options._compoundProvider = this._provider;
+
+  if (cTokenName !== constants.cETH && noApprove !== true) {
+    const underlyingAddress = address[this._network.name][asset];
+    const userAddress = this._provider.address;
+
+    // Check allowance
+    const allowance = await eth.read(
+      underlyingAddress,
+      'allowance',
+      [ userAddress, cTokenAddress ],
+      options
+    );
+
+    const notEnough = allowance.lt(amount);
+
+    if (notEnough) {
+      // ERC-20 approve transaction
+      await eth.trx(
+        underlyingAddress,
+        'approve',
+        [ cTokenAddress, amount ],
+        options
+      );
+    }
+  }
+
   const parameters = [];
   if (cTokenName === constants.cETH) {
-    trxOptions.value = amount;
-    trxOptions.abi = abi.cEther;
+    options.value = amount;
   } else {
     parameters.push(amount);
-    trxOptions.abi = abi.cErc20;
   }
 
-  return eth.trx(cTokenAddress, 'mint', parameters, trxOptions);
+  return eth.trx(cTokenAddress, 'mint', parameters, options);
 }
 
 /**
