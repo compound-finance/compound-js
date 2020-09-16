@@ -14,6 +14,9 @@ import { constants, address, abi, cTokens } from './constants';
  *
  * @param {any[]} markets An array of strings of markets to enter, meaning use
  *     those supplied assets as collateral.
+ * @param {CallOptions} [options] Call options and Ethers.js overrides for the 
+ *     transaction. A passed `gasLimit` will be used in both the `approve` (if 
+ *     not supressed) and `mint` transactions.
  *
  * @returns {object} Returns an Ethers.js transaction object of the enterMarkets
  *     transaction.
@@ -29,7 +32,7 @@ import { constants, address, abi, cTokens } from './constants';
  * })().catch(console.error);
  * ```
  */
-export async function enterMarkets(markets: any = []) {
+export async function enterMarkets(markets: any = [], options: any = {}) {
   await netId(this);
   const errorPrefix = 'Compound [enterMarkets] | ';
 
@@ -56,18 +59,20 @@ export async function enterMarkets(markets: any = []) {
 
   const comptrollerAddress = address[this._network.name].Comptroller;
   const parameters = [ addresses ];
-  const trxOptions: any = {
-    _compoundProvider: this._provider,
-    abi: abi.Comptroller,
-  };
 
-  return eth.trx(comptrollerAddress, 'enterMarkets', parameters, trxOptions);
+  options._compoundProvider = this._provider;
+  options.abi = abi.Comptroller;
+
+  return eth.trx(comptrollerAddress, 'enterMarkets', parameters, options);
 }
 
 /**
  * Exits the user's address from a Compound Protocol market.
  *
  * @param {string} market A string of the symbol of the market to exit.
+ * @param {CallOptions} [options] Call options and Ethers.js overrides for the 
+ *     transaction. A passed `gasLimit` will be used in both the `approve` (if 
+ *     not supressed) and `mint` transactions.
  *
  * @returns {object} Returns an Ethers.js transaction object of the exitMarket
  *     transaction.
@@ -83,7 +88,7 @@ export async function enterMarkets(markets: any = []) {
  * })().catch(console.error);
  * ```
  */
-export async function exitMarket(market: string) {
+export async function exitMarket(market: string, options: any = {}) {
   await netId(this);
   const errorPrefix = 'Compound [exitMarkets] | ';
 
@@ -103,10 +108,9 @@ export async function exitMarket(market: string) {
 
   const comptrollerAddress = address[this._network.name].Comptroller;
   const parameters = [ cTokenAddress ];
-  const trxOptions: any = {
-    _compoundProvider: this._provider,
-    abi: abi.Comptroller,
-  };
 
-  return eth.trx(comptrollerAddress, 'exitMarket', parameters, trxOptions);
+  options._compoundProvider = this._provider;
+  options.abi = abi.Comptroller;
+
+  return eth.trx(comptrollerAddress, 'exitMarket', parameters, options);
 }
