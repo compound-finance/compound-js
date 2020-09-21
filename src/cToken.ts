@@ -43,7 +43,7 @@ import { constants, address, abi, decimals, underlyings, cTokens } from './const
  * })().catch(console.error);
  * ```
  */
-export async function supply(asset: string, amount: any, noApprove: boolean = false, options: any = {}) {
+export async function supply(asset: string, amount: any, noApprove = false, options: any = {}) {
   await netId(this);
   const errorPrefix = 'Compound [supply] | ';
 
@@ -293,7 +293,7 @@ export async function borrow(asset: string, amount: any, options: any = {}) {
  * })().catch(console.error);
  * ```
  */
-export async function repayBorrow(asset: string, amount: any, borrower: string, noApprove: boolean = false, options: any = {}) {
+export async function repayBorrow(asset: string, amount: any, borrower: string, noApprove = false, options: any = {}) {
   await netId(this);
   const errorPrefix = 'Compound [repayBorrow] | ';
 
@@ -312,7 +312,7 @@ export async function repayBorrow(asset: string, amount: any, borrower: string, 
     throw Error(errorPrefix + 'Argument `amount` must be a string, number, or BigNumber.');
   }
 
-  let method = ethers.utils.isAddress(borrower) ? 'repayBorrowBehalf' : 'repayBorrow';
+  const method = ethers.utils.isAddress(borrower) ? 'repayBorrowBehalf' : 'repayBorrow';
   if (borrower && method === 'repayBorrow') {
     throw Error(errorPrefix + 'Invalid `borrower` address.');
   }

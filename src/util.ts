@@ -10,7 +10,7 @@ let http: any;
 let https: any;
 
 function _nodeJsRequest(options: any) {
-  return new Promise<Object>((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     let url = options.url || options.hostname;
 
     // Use 'https' if the protocol is not specified in 'options.hostname'
@@ -66,7 +66,7 @@ function _nodeJsRequest(options: any) {
 
     req.end();
   });
-};
+}
 
 function _webBrowserRequest(options: any) {
   return new Promise((resolve, reject) => {
@@ -91,9 +91,9 @@ function _webBrowserRequest(options: any) {
 
     xhr.open(method, url);
 
-    for (let header in options.headers) {
+    for (const header in options.headers) {
       if ({}.hasOwnProperty.call(options.headers, header)) {
-        let lcHeader = header.toLowerCase();
+        const lcHeader = header.toLowerCase();
         contentTypeIsSet = lcHeader === "content-type" ? true : contentTypeIsSet;
         xhr.setRequestHeader(header, options.headers[header]);
       }
@@ -132,7 +132,7 @@ function _webBrowserRequest(options: any) {
       xhr.send();
     }
   });
-};
+}
 
 try {
   window;
@@ -173,7 +173,7 @@ export function request(options: any) {
  * console.log('cETH Address: ', Compound.util.getAddress(Compound.cETH));
  * ```
  */
-export function getAddress(contract: string, network: string='mainnet') {
+export function getAddress(contract: string, network='mainnet') {
   return address[network][contract];
 }
 

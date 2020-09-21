@@ -27,7 +27,7 @@ function toChecksumAddress(_address) {
     expanded[i] = chars[i].charCodeAt(0);
   }
 
-  let hash = keccak256(expanded);
+  const hash = keccak256(expanded);
   let ret = '';
 
   for (let i = 0; i < _address.length; i++) {
@@ -59,7 +59,7 @@ function toChecksumAddress(_address) {
  * })().catch(console.error);
  * ```
  */
-export async function getCompBalance(_address: string, _provider: string='mainnet') {
+export async function getCompBalance(_address: string, _provider='mainnet') {
   const provider = await eth._createProvider({ provider: _provider });
   const net = await eth.getProviderNetwork(provider);
 
@@ -104,7 +104,7 @@ export async function getCompBalance(_address: string, _provider: string='mainne
  * })().catch(console.error);
  * ```
  */
-export async function getCompAccrued(_address: string, _provider: string='mainnet') {
+export async function getCompAccrued(_address: string, _provider='mainnet') {
   const provider = await eth._createProvider({ provider: _provider });
   const net = await eth.getProviderNetwork(provider);
 
@@ -335,7 +335,7 @@ export async function delegateBySig(
  * })().catch(console.error);
  * ```
  */
-export async function createDelegateSignature(delegatee: string, expiry: number = 10e9) {
+export async function createDelegateSignature(delegatee: string, expiry = 10e9) {
   await netId(this);
 
   const provider = this._provider;

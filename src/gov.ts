@@ -8,6 +8,11 @@ import * as eth from './eth';
 import { netId } from './helpers';
 import { address, abi } from './constants';
 import { sign } from './EIP712';
+import {
+  VoteSignatureMessage,
+  VoteTypes,
+  EIP712Domain
+} from './types';
 
 /**
  * Submit a vote on a Compound Governance proposal.
@@ -165,7 +170,7 @@ export async function createVoteSignature(proposalId: number, support: boolean) 
   const governorAddress = address[this._network.name].GovernorAlpha;
   const chainId = this._network.id;
 
-  const domain = {
+  const domain: EIP712Domain = {
     name: 'Compound Governor Alpha',
     chainId,
     verifyingContract: governorAddress
@@ -173,9 +178,9 @@ export async function createVoteSignature(proposalId: number, support: boolean) 
 
   const primaryType = 'Ballot';
 
-  const message = { proposalId, support };
+  const message: VoteSignatureMessage = { proposalId, support };
 
-  const types = {
+  const types: VoteTypes = {
     EIP712Domain: [
       { name: 'name', type: 'string' },
       { name: 'chainId', type: 'uint256' },

@@ -2,6 +2,12 @@
 // https://github.com/ethereum/EIPs/blob/master/assets/eip-712/Example.js
 
 import { ethers } from 'ethers';
+import {
+  Signature,
+  EIP712Types,
+  EIP712Message,
+  EIP712Domain
+} from './types';
 
 function abiRawEncode(encTypes, encValues) {
   const hexStr = ethers.utils.defaultAbiCoder.encode(encTypes, encValues);
@@ -22,8 +28,8 @@ function dependencies(primaryType, found = [], types = {}) {
     return found;
   }
   found.push(primaryType);
-  for (let field of types[primaryType]) {
-    for (let dep of dependencies(field.type, found)) {
+  for (const field of types[primaryType]) {
+    for (const dep of dependencies(field.type, found)) {
       if (!found.includes(dep)) {
         found.push(dep);
       }
@@ -40,7 +46,7 @@ function encodeType(primaryType, types = {}) {
 
   // Format as a string with fields
   let result = '';
-  for (let type of deps) {
+  for (const type of deps) {
     if (!types[type])
       throw new Error(`Type '${type}' not defined in types (${JSON.stringify(types)})`);
     result += `${type}(${types[type].map(({ name, type }) => `${type} ${name}`).join(',')})`;
@@ -53,15 +59,15 @@ function typeHash(primaryType, types = {}) {
 }
 
 function encodeData(primaryType, data, types = {}) {
-  let encTypes = [];
-  let encValues = [];
+  const encTypes = [];
+  const encValues = [];
 
   // Add typehash
   encTypes.push('bytes32');
   encValues.push(typeHash(primaryType, types));
 
   // Add field contents
-  for (let field of types[primaryType]) {
+  for (const field of types[primaryType]) {
     let value = data[field.name];
     if (field.type == 'string' || field.type == 'bytes') {
       encTypes.push('bytes32');
@@ -109,7 +115,13 @@ function digestToSign(domain, primaryType, message, types = {}) {
   );
 }
 
-export async function sign(domain, primaryType, message, types, signer) {
+export async function sign(
+  domain: EIP712Domain,
+  primaryType: string,
+  message: EIP712Message,
+  types: EIP712Types,
+  signer: any
+) : Promise<Signature> {
   let signature;
 
   try {
