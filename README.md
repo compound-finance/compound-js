@@ -91,6 +91,10 @@ npm install @compound-finance/compound-js
 
 ```js
 const Compound = require('@compound-finance/compound-js');
+
+// or, when using ES6
+
+import Compound from '@compound-finance/compound-js';
 ```
 
 ## More Code Examples
