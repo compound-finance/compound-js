@@ -22,9 +22,9 @@ ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
 /**
  * Creates an instance of the Compound.js SDK.
  *
- * @param {any{} | string} [provider] Optional Ethereum network provider.
+ * @param {Provider | string} [provider] Optional Ethereum network provider.
  *     Defaults to Ethers.js fallback mainnet provider.
- * @param {any{}} [options] Optional provider options.
+ * @param {object} [options] Optional provider options.
  *
  * @example
  * ```

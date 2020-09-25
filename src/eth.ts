@@ -203,7 +203,7 @@ export function trx(
  * This helps the Compound.js constructor discover which Ethereum network the
  *     developer wants to use.
  *
- * @param {any{} | string} [provider] Optional Ethereum network provider.
+ * @param {Provider | string} [provider] Optional Ethereum network provider.
  *     Defaults to Ethers.js fallback mainnet provider.
  *
  * @hidden
@@ -242,7 +242,7 @@ export async function getProviderNetwork(
  * Fetches the current Ether balance of a provided Ethereum address.
  *
  * @param {string} address The Ethereum address in which to get the ETH balance.
- * @param {any{} | string} [provider] Optional Ethereum network provider.
+ * @param {Provider | string} [provider] Optional Ethereum network provider.
  *     Defaults to Ethers.js fallback mainnet provider.
  *
  * @returns {BigNumber} Returns a BigNumber hexadecimal value of the ETH balance
@@ -258,7 +258,10 @@ export async function getProviderNetwork(
  * })().catch(console.error);
  * ```
  */
-export async function getBalance(address: string, provider: Provider) : Promise<string> {
+export async function getBalance(
+  address: string,
+  provider: Provider | string
+) : Promise<string> {
   let _provider;
   if (typeof provider === 'object' && provider._isSigner) {
     _provider = provider.provider;

@@ -16,6 +16,7 @@ import {
   EIP712Domain,
   DelegateTypes,
   DelegateSignatureMessage,
+  Provider,
 } from './types';
 
 const keccak256 = ethers.utils.keccak256;
@@ -53,7 +54,8 @@ function toChecksumAddress(_address) {
  * Get the balance of COMP tokens held by an address.
  *
  * @param {string} _address The address in which to find the COMP balance.
- * @param {string} [_provider] A valid Ethereum provider string.
+ * @param {Provider | string} [_provider] An Ethers.js provider or valid network
+ *     name string.
  *
  * @returns {string} Returns a string of the numeric balance of COMP. The value
  *     is scaled up by 18 decimal places.
@@ -67,7 +69,10 @@ function toChecksumAddress(_address) {
  * })().catch(console.error);
  * ```
  */
-export async function getCompBalance(_address: string, _provider='mainnet') : Promise<string> {
+export async function getCompBalance(
+  _address: string,
+  _provider : Provider | string='mainnet'
+) : Promise<string> {
   const provider = await eth._createProvider({ provider: _provider });
   const net = await eth.getProviderNetwork(provider);
 
@@ -113,7 +118,10 @@ export async function getCompBalance(_address: string, _provider='mainnet') : Pr
  * })().catch(console.error);
  * ```
  */
-export async function getCompAccrued(_address: string, _provider='mainnet') : Promise<string> {
+export async function getCompAccrued(
+  _address: string,
+  _provider : Provider | string='mainnet'
+) : Promise<string> {
   const provider = await eth._createProvider({ provider: _provider });
   const net = await eth.getProviderNetwork(provider);
 
