@@ -163,7 +163,7 @@ const trxOptions = {
   provider,   // JSON RPC string, Web3 object, or Ethers.js fallback network (string)
   network,    // Ethers.js fallback network provider, "provider" has precedence over "network"
   from,       // Address that the Ethereum transaction is send from
-  gasPrice,   // Ethers.js override `Compound_ethers.utils.parseUnits('10.0', 'gwei')`
+  gasPrice,   // Ethers.js override `Compound._ethers.utils.parseUnits('10.0', 'gwei')`
   gasLimit,   // Ethers.js override - see https://docs.ethers.io/ethers.js/v5-beta/api-contract.html#overrides
   value,      // Number or string
   data,       // Number or string
