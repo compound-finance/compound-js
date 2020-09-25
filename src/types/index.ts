@@ -10,7 +10,7 @@ import {
 import { Deferrable } from '@ethersproject/properties';
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber';
 
-/**** /src/index.ts ****/
+// =-=-=-=-=-= /src/index.ts =-=-=-=-=-=
 
 export interface CompoundInstance {
   _networkPromise: Promise<ProviderNetwork>;
@@ -23,7 +23,7 @@ export interface CompoundOptions {
 }
 
 
-/**** /src/eth.ts ****/
+// =-=-=-=-=-= /src/eth.ts =-=-=-=-=-=
 
 export interface AbiType {
   internalType?: string;
@@ -124,7 +124,7 @@ export interface Provider extends AbstractSigner, FallbackProvider {
 }
 
 
-/**** /src/api.ts ****/
+// =-=-=-=-=-= /src/api.ts =-=-=-=-=-=
 
 export interface APIResponse {
   error?: string;
@@ -177,7 +177,7 @@ export type APIRequest = AccountServiceRequest |
   CTokenServiceRequest | MarketHistoryServiceRequest | GovernanceServiceRequest;
 
 
-/**** /src/EIP712.ts ****/
+// =-=-=-=-=-= /src/EIP712.ts =-=-=-=-=-=
 
 export interface Signature {
   r : string;
