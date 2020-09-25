@@ -98,7 +98,8 @@ export async function getCompBalance(_address: string, _provider='mainnet') : Pr
  * Get the amount of COMP tokens accrued but not yet claimed by an address.
  *
  * @param {string} _address The address in which to find the COMP accrued.
- * @param {string} [_provider] A valid Ethereum provider string.
+ * @param {Provider | string} [_provider] An Ethers.js provider or valid network
+ *     name string.
  *
  * @returns {string} Returns a string of the numeric accruement of COMP. The
  *     value is scaled up by 18 decimal places.
