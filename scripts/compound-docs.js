@@ -49,6 +49,9 @@ function reduceParamString(param) {
 
   param = `- \`${name}\` ${type} ${param.split(toRemove)[1]}`;
 
+  // HTML escape < and >
+  param = param.replace(/\</g, '&lt;').replace(/\>/g, '&gt;');
+
   return param;
 }
 
@@ -114,7 +117,8 @@ function markdownify(block, functionName) {
 
   // return
   if (tags.returns) {
-    const _return = tags.returns.toSingleLine().replace('{', '(').replace('}', ')');
+    let _return = tags.returns.toSingleLine().replace('{', '(').replace('}', ')');
+    _return = _return.replace(/\</g, '&lt;').replace(/\>/g, '&gt;');
     result += '- `RETURN` ' + _return + '\n\n';
   }
 
