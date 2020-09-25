@@ -3,16 +3,18 @@
  * @desc These methods facilitate interactions with the Governor smart contract.
  */
 
-import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';
 import { address, abi } from './constants';
 import { sign } from './EIP712';
 import {
+  CallOptions,
+  TrxResponse,
+  Signature,
   VoteSignatureMessage,
   VoteTypes,
   EIP712Domain
-} from './types';
+ } from './types';
 
 /**
  * Submit a vote on a Compound Governance proposal.
@@ -38,7 +40,11 @@ import {
  * })().catch(console.error);
  * ```
  */
-export async function castVote(proposalId: number, support: boolean, options: any = {}) {
+export async function castVote(
+  proposalId: number,
+  support: boolean,
+  options: CallOptions = {}
+) : Promise<TrxResponse> {
   await netId(this);
 
   const errorPrefix = 'Compound [castVote] | ';
@@ -52,7 +58,7 @@ export async function castVote(proposalId: number, support: boolean, options: an
   }
 
   const governorAddress = address[this._network.name].GovernorAlpha;
-  const trxOptions: any = options;
+  const trxOptions: CallOptions = options;
   trxOptions._compoundProvider =  this._provider;
   trxOptions.abi =  abi.GovernorAlpha;
   const parameters = [ proposalId, support ];
@@ -97,9 +103,9 @@ export async function castVote(proposalId: number, support: boolean, options: an
 export async function castVoteBySig(
   proposalId: number,
   support: boolean,
-  signature: any = {},
-  options: any = {}
-) {
+  signature: Signature,
+  options: CallOptions = {}
+) : Promise<TrxResponse> {
   await netId(this);
 
   const errorPrefix = 'Compound [castVoteBySig] | ';
@@ -123,7 +129,7 @@ export async function castVoteBySig(
   }
 
   const governorAddress = address[this._network.name].GovernorAlpha;
-  const trxOptions: any = options;
+  const trxOptions: CallOptions = options;
   trxOptions._compoundProvider = this._provider;
   trxOptions.abi = abi.GovernorAlpha;
   const { v, r, s } = signature;
@@ -163,7 +169,10 @@ export async function castVoteBySig(
  * })().catch(console.error);
  * ```
  */
-export async function createVoteSignature(proposalId: number, support: boolean) {
+export async function createVoteSignature(
+  proposalId: number,
+  support: boolean
+) : Promise<Signature> {
   await netId(this);
 
   const provider = this._provider;

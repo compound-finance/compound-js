@@ -3,10 +3,11 @@
 
 import { ethers } from 'ethers';
 import {
-  Signature,
-  EIP712Types,
+  SimpleEthersSigner,
+  EIP712Domain,
   EIP712Message,
-  EIP712Domain
+  EIP712Types,
+  Signature,
 } from './types';
 
 function abiRawEncode(encTypes, encValues) {
@@ -120,7 +121,7 @@ export async function sign(
   primaryType: string,
   message: EIP712Message,
   types: EIP712Types,
-  signer: any
+  signer: SimpleEthersSigner
 ) : Promise<Signature> {
   let signature;
 

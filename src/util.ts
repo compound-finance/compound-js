@@ -4,6 +4,9 @@
  */
 
 import { address, abi } from './constants';
+import { AbiType } from './types';
+
+/* eslint-disable */
 
 let _request: any;
 let http: any;
@@ -32,7 +35,7 @@ function _nodeJsRequest(options: any) {
       res.on("data", (bodyBuffer: any) => {
         body += bodyBuffer.toString();
       });
-      res.on("end", (ending: any) => {
+      res.on("end", () => {
         resolve({
           status: res.statusCode,
           statusText: res.statusMessage,
@@ -51,13 +54,14 @@ function _nodeJsRequest(options: any) {
 
     req.on('error', (err: any) => {
       if (req.aborted) return;
-      try {
+
+      if (err !== null && err.toString() === '[object Object]') {
+        console.error(JSON.stringify(err));
+      } else {
         console.error(err);
-        return reject({});
-      } catch (e) {
-        console.error(err, e);
-        return reject();
       }
+
+      return reject();
     });
 
     if (options.body) {
@@ -151,12 +155,14 @@ try {
  *
  * @hidden
  *
- * @returns {Promise} Returns a promise and eventually an HTTP response
+ * @returns {Promise<object>} Returns a promise and eventually an HTTP response
  *     (JavaScript object).
  */
-export function request(options: any) {
+export function request(options: any) : Promise<any> {
   return _request.apply(null, [ options ]);
 }
+
+/* eslint-enable */
 
 /**
  * Gets the contract address of the named contract. This method supports 
@@ -173,7 +179,7 @@ export function request(options: any) {
  * console.log('cETH Address: ', Compound.util.getAddress(Compound.cETH));
  * ```
  */
-export function getAddress(contract: string, network='mainnet') {
+export function getAddress(contract: string, network='mainnet') : string {
   return address[network][contract];
 }
 
@@ -190,7 +196,7 @@ export function getAddress(contract: string, network='mainnet') {
  * console.log('cETH ABI: ', Compound.util.getAbi(Compound.cETH));
  * ```
  */
-export function getAbi(contract: string) {
+export function getAbi(contract: string): AbiType[] {
   return abi[contract];
 }
 
@@ -206,7 +212,7 @@ export function getAbi(contract: string) {
  * console.log('Ropsten : ', Compound.util.getNetNameWithChainId(3));
  * ```
  */
-export function getNetNameWithChainId(chainId: number) {
+export function getNetNameWithChainId(chainId: number) : string {
   const networks = {
     1: 'mainnet',
     3: 'ropsten',

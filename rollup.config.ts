@@ -1,18 +1,19 @@
 // Rollup builds only the browser version using the Node.js build.
-import resolve from 'rollup-plugin-node-resolve';
+import { nodeResolve as resolve } from '@rollup/plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import minify from 'rollup-plugin-babel-minify';
 import json from '@rollup/plugin-json';
-import pkg from './package.json';
+
+const BrowserBuildPath = './dist/browser/compound.min.js';
 
 export default [{
-  input: './dist/nodejs/src/index.js',
+  input: './dist/nodejs/index.js',
   onwarn: (message) => {
     if (message.code === 'MISSING_NODE_BUILTINS') return;
   },
   output: {
     name: 'Compound',
-    file: pkg.browser,
+    file: BrowserBuildPath,
     format: 'iife',
     sourcemap: false,
     globals: {
@@ -23,9 +24,13 @@ export default [{
   plugins: [
     resolve({
       preferBuiltins: true,
-      browser: true
+      jsnext: true,
+      main: true,
+      browser: true,
     }),
-    commonjs(),
+    commonjs({
+      namedExports: { Compound: ['Compound'] },
+    }),
     minify({ comments: false }),
     json(),
   ],

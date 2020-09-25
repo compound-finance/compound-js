@@ -1,22 +1,21 @@
 {
   "name": "@compound-finance/compound-js",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Compound Labs, Inc.",
   "description": "A JavaScript SDK for Ethereum and the Compound Protocol.",
   "license": "BSD-3-Clause",
-  "browser": "dist/browser/compound.min.js",
-  "main": "dist/nodejs/src/index.js",
+  "main": "dist/nodejs/index.js",
   "scripts": {
-    "lint": "npx eslint ./src/**/*.ts",
-    "build": "npx tsc && npm run rollup",
+    "lint": "./node_modules/.bin/eslint ./src/*.ts",
+    "build": "npm run lint && ./node_modules/.bin/tsc && npm run rollup",
     "docs": "./node_modules/typedoc/bin/typedoc --out ./docs/ ./src/",
     "compound_docs": "node ./scripts/compound-docs.js",
     "prepare": "npm run build",
     "publish_patch": "npm version patch && npm publish --access public",
     "publish_minor": "npm version minor && npm publish --access public",
     "publish_major": "npm version major && npm publish --access public",
-    "rollup": "rollup -c rollup.config.ts",
-    "test": "jest"
+    "rollup": "./node_modules/.bin/rollup -c rollup.config.ts",
+    "test": "./node_modules/.bin/jest"
   },
   "repository": {
     "type": "git",
@@ -36,9 +35,10 @@
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-typescript": "^7.10.1",
     "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "@types/node": "^14.0.11",
-    "@typescript-eslint/eslint-plugin": "^4.1.1",
-    "@typescript-eslint/parser": "^4.1.1",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
     "babel-jest": "^26.0.1",
     "docblock-parser": "^1.0.0",
     "eslint": "^7.9.0",
@@ -47,10 +47,8 @@
     "rollup-plugin-babel-minify": "^10.0.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-polyfills": "^0.2.1",
-    "rollup-plugin-node-resolve": "^5.2.0",
     "typedoc": "^0.18.0",
-    "typescript": "^3.9.7",
-    "typescript-eslint": "0.0.1-alpha.0"
+    "typescript": "^3.9.5"
   },
   "dependencies": {
     "ethers": "^5.0.7"

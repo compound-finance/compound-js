@@ -4,12 +4,18 @@
  *     contracts.
  */
 
-import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';
-import { constants, address, abi, cTokens, underlyings, decimals, opfAssets } from './constants';
+import {
+  constants, address, abi, cTokens, underlyings, decimals, opfAssets
+} from './constants';
+import { CallOptions } from './types';
 
-function validateAsset(asset: string, argument: string, errorPrefix: string) {
+function validateAsset(
+  asset: string,
+  argument: string,
+  errorPrefix: string
+) : (boolean | string | number)[] {
   if (typeof asset !== 'string' || asset.length < 1) {
     throw Error(errorPrefix + 'Argument `' + argument + '` must be a non-empty string.');
   }
@@ -37,7 +43,11 @@ function validateAsset(asset: string, argument: string, errorPrefix: string) {
   return [assetIsCToken, cTokenName, cTokenAddress, underlyingName, underlyingAddress, underlyingDecimals];
 }
 
-async function cTokenExchangeRate(cTokenAddress, cTokenName, underlyingDecimals) {
+async function cTokenExchangeRate(
+  cTokenAddress: string,
+  cTokenName: string,
+  underlyingDecimals: number
+) : Promise<number> {
   const address = cTokenAddress;
   const method = 'exchangeRateCurrent';
   const options = {
@@ -45,7 +55,7 @@ async function cTokenExchangeRate(cTokenAddress, cTokenName, underlyingDecimals)
     abi: cTokenName === constants.cETH ? abi.cEther : abi.cErc20,
   };
   const exchangeRateCurrent = await eth.read(address, method, [], options);
-  const mantissa = 18 + parseInt(underlyingDecimals) - 8; // cToken always 8 decimals
+  const mantissa = 18 + underlyingDecimals - 8; // cToken always 8 decimals
   const oneCTokenInUnderlying = exchangeRateCurrent / Math.pow(10, mantissa);
 
   return oneCTokenInUnderlying;
@@ -79,20 +89,25 @@ async function cTokenExchangeRate(cTokenAddress, cTokenName, underlyingDecimals)
  * })().catch(console.error);
  * ```
  */
-export async function getPrice(asset: string, inAsset: string=constants.USDC) {
+export async function getPrice(
+  asset: string,
+  inAsset: string = constants.USDC
+) : Promise<number> {
   await netId(this);
   const errorPrefix = 'Compound [getPrice] | ';
 
   const [
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     assetIsCToken, cTokenName, cTokenAddress, underlyingName, underlyingAddress, underlyingDecimals
   ] = validateAsset.bind(this)(asset, 'asset', errorPrefix);
 
   const [
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     inAssetIsCToken, inAssetCTokenName, inAssetCTokenAddress, inAssetUnderlyingName, inAssetUnderlyingAddress, inAssetUnderlyingDecimals
   ] = validateAsset.bind(this)(inAsset, 'inAsset', errorPrefix);
 
   const priceFeedAddress = address[this._network.name].PriceFeed;
-  const trxOptions: any = {
+  const trxOptions: CallOptions = {
     _compoundProvider: this._provider,
     abi: abi.PriceFeed,
   };
