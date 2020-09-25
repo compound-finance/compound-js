@@ -4,10 +4,10 @@
  *     contract.
  */
 
-import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';
-import { constants, address, abi, cTokens } from './constants';
+import { address, abi, cTokens } from './constants';
+import { CallOptions, TrxResponse } from './types';
 
 /**
  * Enters the user's address into Compound Protocol markets.
@@ -32,7 +32,10 @@ import { constants, address, abi, cTokens } from './constants';
  * })().catch(console.error);
  * ```
  */
-export async function enterMarkets(markets: any = [], options: any = {}) {
+export async function enterMarkets(
+  markets: string | string[] = [],
+  options: CallOptions = {}
+) : Promise<TrxResponse> {
   await netId(this);
   const errorPrefix = 'Compound [enterMarkets] | ';
 
@@ -60,7 +63,7 @@ export async function enterMarkets(markets: any = [], options: any = {}) {
   const comptrollerAddress = address[this._network.name].Comptroller;
   const parameters = [ addresses ];
 
-  const trxOptions: any = {
+  const trxOptions: CallOptions = {
     _compoundProvider: this._provider,
     abi: abi.Comptroller,
     ...options
@@ -91,7 +94,10 @@ export async function enterMarkets(markets: any = [], options: any = {}) {
  * })().catch(console.error);
  * ```
  */
-export async function exitMarket(market: string, options: any = {}) {
+export async function exitMarket(
+  market: string,
+  options: CallOptions = {}
+) : Promise<TrxResponse> {
   await netId(this);
   const errorPrefix = 'Compound [exitMarkets] | ';
 
@@ -112,7 +118,7 @@ export async function exitMarket(market: string, options: any = {}) {
   const comptrollerAddress = address[this._network.name].Comptroller;
   const parameters = [ cTokenAddress ];
 
-  const trxOptions: any = {
+  const trxOptions: CallOptions = {
     _compoundProvider: this._provider,
     abi: abi.Comptroller,
     ...options

@@ -7,7 +7,11 @@
 import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId } from './helpers';
-import { constants, address, abi, decimals, underlyings, cTokens } from './constants';
+import {
+  constants, address, abi, decimals, underlyings, cTokens
+} from './constants';
+import { BigNumber } from '@ethersproject/bignumber/lib/bignumber';
+import { CallOptions, TrxResponse } from './types';
 
 /**
  * Supplies the user's Ethereum asset to the Compound Protocol.
@@ -43,7 +47,12 @@ import { constants, address, abi, decimals, underlyings, cTokens } from './const
  * })().catch(console.error);
  * ```
  */
-export async function supply(asset: string, amount: any, noApprove: boolean = false, options: any = {}) {
+export async function supply(
+  asset: string,
+  amount: string | number | BigNumber,
+  noApprove = false,
+  options: CallOptions = {}
+) : Promise<TrxResponse> {
   await netId(this);
   const errorPrefix = 'Compound [supply] | ';
 
@@ -141,7 +150,11 @@ export async function supply(asset: string, amount: any, noApprove: boolean = fa
  * })().catch(console.error);
  * ```
  */
-export async function redeem(asset: string, amount: any, options: any = {}) {
+export async function redeem(
+  asset: string,
+  amount: string | number | BigNumber,
+  options: CallOptions = {}
+): Promise<TrxResponse> {
   await netId(this);
   const errorPrefix = 'Compound [redeem] | ';
 
@@ -155,7 +168,6 @@ export async function redeem(asset: string, amount: any, options: any = {}) {
   const cTokenAddress = address[this._network.name][cTokenName];
 
   const underlyingName = assetIsCToken ? asset.slice(1, asset.length) : asset;
-  const underlyingAddress = address[this._network.name][underlyingName];
 
   if (!cTokens.includes(cTokenName) || !underlyings.includes(underlyingName)) {
     throw Error(errorPrefix + 'Argument `asset` is not supported.');
@@ -176,7 +188,7 @@ export async function redeem(asset: string, amount: any, options: any = {}) {
 
   amount = ethers.BigNumber.from(amount.toString());
 
-  const trxOptions: any = {
+  const trxOptions: CallOptions = {
     _compoundProvider: this._provider,
     abi: cTokenName === constants.cETH ? abi.cEther : abi.cErc20,
   };
@@ -221,7 +233,11 @@ export async function redeem(asset: string, amount: any, options: any = {}) {
  * })().catch(console.error);
  * ```
  */
-export async function borrow(asset: string, amount: any, options: any = {}) {
+export async function borrow(
+  asset: string,
+  amount: string | number | BigNumber,
+  options: CallOptions = {}
+) : Promise<TrxResponse> {
   await netId(this);
   const errorPrefix = 'Compound [borrow] | ';
 
@@ -247,7 +263,10 @@ export async function borrow(asset: string, amount: any, options: any = {}) {
 
   amount = ethers.BigNumber.from(amount.toString());
 
-  const trxOptions: any = { _compoundProvider: this._provider, ...options };
+  const trxOptions: CallOptions = {
+    ...options,
+    _compoundProvider: this._provider,
+  };
   const parameters = [ amount ];
   trxOptions.abi = cTokenName === constants.cETH ? abi.cEther : abi.cErc20;
 
@@ -293,7 +312,13 @@ export async function borrow(asset: string, amount: any, options: any = {}) {
  * })().catch(console.error);
  * ```
  */
-export async function repayBorrow(asset: string, amount: any, borrower: string, noApprove: boolean = false, options: any = {}) {
+export async function repayBorrow(
+  asset: string,
+  amount: string | number | BigNumber,
+  borrower: string,
+  noApprove = false,
+  options: CallOptions = {}
+) : Promise<TrxResponse> {
   await netId(this);
   const errorPrefix = 'Compound [repayBorrow] | ';
 
@@ -312,7 +337,7 @@ export async function repayBorrow(asset: string, amount: any, borrower: string, 
     throw Error(errorPrefix + 'Argument `amount` must be a string, number, or BigNumber.');
   }
 
-  let method = ethers.utils.isAddress(borrower) ? 'repayBorrowBehalf' : 'repayBorrow';
+  const method = ethers.utils.isAddress(borrower) ? 'repayBorrowBehalf' : 'repayBorrow';
   if (borrower && method === 'repayBorrow') {
     throw Error(errorPrefix + 'Invalid `borrower` address.');
   }
@@ -324,8 +349,13 @@ export async function repayBorrow(asset: string, amount: any, borrower: string, 
 
   amount = ethers.BigNumber.from(amount.toString());
 
-  const trxOptions: any = { _compoundProvider: this._provider, ...options };
-  const parameters = method === 'repayBorrowBehalf' ? [ borrower ] : [];
+  const trxOptions: CallOptions = {
+    ...options,
+    _compoundProvider: this._provider,
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const parameters: any[] = method === 'repayBorrowBehalf' ? [ borrower ] : [];
   if (cTokenName === constants.cETH) {
     trxOptions.value = amount;
     trxOptions.abi = abi.cEther;

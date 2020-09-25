@@ -174,6 +174,22 @@ function getDocBlocks(fileContents) {
   return docBlocks;
 }
 
+function getAllFilePaths(srcPath, resultPaths) {
+  dirOrFileNames = fs.readdirSync(srcPath);
+
+  resultPaths = resultPaths || [];
+
+  dirOrFileNames.forEach((name) => {
+    if (fs.statSync(srcPath + name).isDirectory()) {
+      resultPaths = getAllFilePaths(srcPath + name + '/', resultPaths);
+    } else {
+      resultPaths.push(srcPath + name);
+    }
+  });
+
+  return resultPaths;
+}
+
 let intro = '';
 intro += '<section id="introduction" name="Introduction">\n\n';
 intro += '# Compound.js\n\n';
@@ -187,22 +203,22 @@ intro += 'requests, either create an issue in the GitHub repository or send a';
 intro += ' message in the Development channel of the Compound Discord.\n\n';
 intro += '</section>\n\n';
 
-const srcPath = './src/';
-const outPath = './scripts/out.md';
+const srcDir = './src/';
+const outFilePath = './scripts/out.md';
 
-const srcFileNames = fs.readdirSync(srcPath);
+const srcFilePaths = getAllFilePaths(srcDir);
 
 // Move `index.ts` to the front
-const indexTs = 'index.ts';
-const idx = srcFileNames.findIndex((el) => el === indexTs);
-srcFileNames.splice(idx, 1);
-srcFileNames.unshift(indexTs);
+const indexTs = './src/index.ts';
+const idx = srcFilePaths.findIndex((el) => el === indexTs);
+srcFilePaths.splice(idx, 1);
+srcFilePaths.unshift(indexTs);
 
 let mdResult = '';
 mdResult += intro;
 
-srcFileNames.forEach((f) => {
-  const fileContents = fs.readFileSync(srcPath + f);
+srcFilePaths.forEach((f) => {
+  const fileContents = fs.readFileSync(f);
   const blocks = getDocBlocks(fileContents);
 
   if (blocks.length > 0) {
@@ -213,4 +229,4 @@ srcFileNames.forEach((f) => {
   }
 });
 
-fs.writeFileSync(outPath, mdResult);
+fs.writeFileSync(outFilePath, mdResult);

@@ -14,6 +14,7 @@ import * as comp from './comp';
 import * as gov from './gov';
 import * as api from './api';
 import { constants, decimals } from './constants';
+import { Provider, CompoundOptions, CompoundInstance } from './types';
 
 // Turn off Ethers.js warnings
 ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
@@ -48,12 +49,15 @@ ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
  *
  * @returns {object} Returns an instance of the Compound.js SDK.
  */
-const Compound = function(provider: any='mainnet', options: any={}) {
+const Compound = function(
+  provider: Provider | string = 'mainnet', options: CompoundOptions = {}
+) : CompoundInstance {
   const originalProvider = provider;
 
   options.provider = provider || options.provider;
   provider = eth._createProvider(options);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const instance: any = {
     _originalProvider: originalProvider,
     _provider: provider,

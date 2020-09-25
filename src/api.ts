@@ -4,29 +4,38 @@
  */
 
 import { request } from './util';
-import { version } from '../package.json';
+import {
+  APIRequest,
+  APIResponse,
+  AccountServiceRequest,
+  CTokenServiceRequest,
+  MarketHistoryServiceRequest,
+  GovernanceServiceRequest,
+} from './types';
 
-let userPlatform;
+// import { version } from '../package.json';
 
-try {
-  if (typeof document !== 'undefined') {
-    userPlatform = 'web';
-  } else if (
-    typeof navigator !== 'undefined' &&
-    navigator.product === 'ReactNative'
-  ) {
-    userPlatform = 'react-native';
-  } else if (
-    typeof navigator !== 'undefined' && 
-    navigator.userAgent.toLowerCase().indexOf('electron') > -1
-  ) {
-    userPlatform = 'electron-js';
-  } else {
-    userPlatform = 'node-js';
-  }
-} catch (e) {
-  userPlatform = 'unknown';
-}
+// let userPlatform;
+
+// try {
+//   if (typeof document !== 'undefined') {
+//     userPlatform = 'web';
+//   } else if (
+//     typeof navigator !== 'undefined' &&
+//     navigator.product === 'ReactNative'
+//   ) {
+//     userPlatform = 'react-native';
+//   } else if (
+//     typeof navigator !== 'undefined' && 
+//     navigator.userAgent.toLowerCase().indexOf('electron') > -1
+//   ) {
+//     userPlatform = 'electron-js';
+//   } else {
+//     userPlatform = 'node-js';
+//   }
+// } catch (e) {
+//   userPlatform = 'unknown';
+// }
 
 /**
  * Makes a request to the AccountService API. The Account API retrieves
@@ -61,7 +70,7 @@ try {
  * })().catch(console.error);
  * ```
  */
-export function account(options: object) {
+export function account(options: AccountServiceRequest) : Promise<APIResponse> {
   return queryApi(options, 'account', '/api/v2/account');
 }
 
@@ -86,7 +95,7 @@ export function account(options: object) {
  * })().catch(console.error);
  * ```
  */
-export function cToken(options: object) {
+export function cToken(options: CTokenServiceRequest) : Promise<APIResponse> {
   return queryApi(options, 'cToken', '/api/v2/ctoken');
 }
 
@@ -114,7 +123,7 @@ export function cToken(options: object) {
  * })().catch(console.error);
  * ```
  */
-export function marketHistory(options: object) {
+export function marketHistory(options: MarketHistoryServiceRequest) : Promise<APIResponse> {
   return queryApi(options, 'Market History', '/api/v2/market_history/graph');
 }
 
@@ -142,7 +151,7 @@ export function marketHistory(options: object) {
  * })().catch(console.error);
  * ```
  */
-export function governance(options: object, endpoint: string) {
+export function governance(options: GovernanceServiceRequest, endpoint: string) : Promise<APIResponse> {
   if (endpoint === 'proposals') {
     endpoint = '/api/v2/governance/proposals';
   } else if (endpoint === 'voteReceipts') {
@@ -154,23 +163,21 @@ export function governance(options: object, endpoint: string) {
   return queryApi(options, 'GovernanceService', endpoint);
 }
 
-function queryApi(options: object, name: string, path: string) {
-  return new Promise(async (resolve, reject) => {
+function queryApi(options: APIRequest, name: string, path: string) : Promise<APIResponse> {
+  return new Promise((resolve, reject) => {
     const errorPrefix = `Compound [api] [${name}] | `;
     let responseCode, responseMessage;
 
-    try {
-      const response = await request({
-        hostname: 'https://api.compound.finance',
-        path,
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-          // 'compound-js': `[${version}]_[${userPlatform}]`,
-        },
-        body: options
-      });
-
+    request({
+      hostname: 'https://api.compound.finance',
+      path,
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        // 'compound-js': `[${version}]_[${userPlatform}]`,
+      },
+      body: options
+    }).then((response) => {
       responseCode = response.status;
       responseMessage = response.statusText;
 
@@ -181,7 +188,7 @@ function queryApi(options: object, name: string, path: string) {
       } else {
         throw 'Invalid request made to the Compound API.';
       }
-    } catch(error) {
+    }).catch((error) => {
       let errorMessage = '';
 
       if (error.name === 'SyntaxError') {
@@ -191,6 +198,6 @@ function queryApi(options: object, name: string, path: string) {
       }
 
       reject({ error: errorMessage, responseCode, responseMessage });
-    }
+    });
   });
 }

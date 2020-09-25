@@ -1,6 +1,4 @@
-let request: any;
-let http: any;
-let https: any;
+import { CompoundInstance } from './types';
 
 /**
  * This function acts like a decorator for all methods that interact with the
@@ -14,7 +12,7 @@ let https: any;
  * @param {Compound} _compound The instance of the Compound.js SDK.
  *
  */
-export async function netId(_compound) {
+export async function netId(_compound: CompoundInstance): Promise<void> {
   if (_compound._networkPromise) {
     await _compound._networkPromise;
   }

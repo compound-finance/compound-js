@@ -9,6 +9,14 @@ import * as eth from './eth';
 import { netId } from './helpers';
 import { address, abi } from './constants';
 import { sign } from './EIP712';
+import {
+  CallOptions,
+  TrxResponse,
+  Signature,
+  EIP712Domain,
+  DelegateTypes,
+  DelegateSignatureMessage,
+} from './types';
 
 const keccak256 = ethers.utils.keccak256;
 
@@ -27,7 +35,7 @@ function toChecksumAddress(_address) {
     expanded[i] = chars[i].charCodeAt(0);
   }
 
-  let hash = keccak256(expanded);
+  const hash = keccak256(expanded);
   let ret = '';
 
   for (let i = 0; i < _address.length; i++) {
@@ -59,7 +67,7 @@ function toChecksumAddress(_address) {
  * })().catch(console.error);
  * ```
  */
-export async function getCompBalance(_address: string, _provider: string='mainnet') {
+export async function getCompBalance(_address: string, _provider='mainnet') : Promise<string> {
   const provider = await eth._createProvider({ provider: _provider });
   const net = await eth.getProviderNetwork(provider);
 
@@ -77,7 +85,7 @@ export async function getCompBalance(_address: string, _provider: string='mainne
 
   const compAddress = address[net.name].COMP;
   const parameters = [ _address ];
-  const trxOptions: any = {
+  const trxOptions: CallOptions = {
     _compoundProvider: provider,
     abi: abi.COMP,
   };
@@ -90,7 +98,8 @@ export async function getCompBalance(_address: string, _provider: string='mainne
  * Get the amount of COMP tokens accrued but not yet claimed by an address.
  *
  * @param {string} _address The address in which to find the COMP accrued.
- * @param {string} [_provider] A valid Ethereum provider string.
+ * @param {Provider | string} [_provider] An Ethers.js provider or valid network
+ *     name string.
  *
  * @returns {string} Returns a string of the numeric accruement of COMP. The
  *     value is scaled up by 18 decimal places.
@@ -104,7 +113,7 @@ export async function getCompBalance(_address: string, _provider: string='mainne
  * })().catch(console.error);
  * ```
  */
-export async function getCompAccrued(_address: string, _provider: string='mainnet') {
+export async function getCompAccrued(_address: string, _provider='mainnet') : Promise<string> {
   const provider = await eth._createProvider({ provider: _provider });
   const net = await eth.getProviderNetwork(provider);
 
@@ -124,7 +133,7 @@ export async function getCompAccrued(_address: string, _provider: string='mainne
   const compAddress = address[net.name].COMP;
   const comptrollerAddress = address[net.name].Comptroller;
   const parameters = [ compAddress, comptrollerAddress, _address ];
-  const trxOptions: any = {
+  const trxOptions: CallOptions = {
     _compoundProvider: provider,
     abi: abi.CompoundLens,
   };
@@ -156,20 +165,28 @@ export async function getCompAccrued(_address: string, _provider: string='mainne
  * })().catch(console.error);
  * ```
  */
-export async function claimComp(options: any = {}) {
+export async function claimComp(
+  options: CallOptions = {}
+) : Promise<TrxResponse> {
   await netId(this);
 
-  const errorPrefix = 'Compound [claimComp] | ';
+  try {
+    const userAddress = this._provider.address;
+    const comptrollerAddress = address[this._network.name].Comptroller;
+    const trxOptions: CallOptions = {
+      ...options,
+      _compoundProvider: this._provider,
+      abi: abi.Comptroller,
+    };
+    const parameters = [ userAddress ];
+    const method = 'claimComp(address)';
 
-  const userAddress = this._provider.address;
-  const comptrollerAddress = address[this._network.name].Comptroller;
-  const trxOptions: any = options;
-  trxOptions._compoundProvider = this._provider;
-  trxOptions.abi = abi.Comptroller;
-  const parameters = [ userAddress ];
-  const method = 'claimComp(address)';
-
-  return eth.trx(comptrollerAddress, method, parameters, trxOptions);
+    return eth.trx(comptrollerAddress, method, parameters, trxOptions);
+  } catch(e) {
+    const errorPrefix = 'Compound [claimComp] | ';
+    e.message = errorPrefix + e.message;
+    return e;
+  }
 }
 
 /**
@@ -196,7 +213,10 @@ export async function claimComp(options: any = {}) {
  * })().catch(console.error);
  * ```
  */
-export async function delegate(_address: string, options: any = {}) {
+export async function delegate(
+  _address: string,
+  options: CallOptions = {}
+) : Promise<TrxResponse> {
   await netId(this);
 
   const errorPrefix = 'Compound [delegate] | ';
@@ -212,9 +232,11 @@ export async function delegate(_address: string, options: any = {}) {
   }
 
   const compAddress = address[this._network.name].COMP;
-  const trxOptions: any = options;
-  trxOptions._compoundProvider = this._provider;
-  trxOptions.abi = abi.COMP;
+  const trxOptions: CallOptions = {
+    ...options,
+    _compoundProvider: this._provider,
+    abi: abi.COMP,
+  };
   const parameters = [ _address ];
   const method = 'delegate(address)';
 
@@ -263,9 +285,9 @@ export async function delegateBySig(
   _address: string,
   nonce: number,
   expiry: number,
-  signature: any = {},
-  options: any = {}
-) {
+  signature: Signature = { v: '', r: '', s: '' },
+  options: CallOptions = {}
+) : Promise<TrxResponse> {
   await netId(this);
 
   const errorPrefix = 'Compound [delegateBySig] | ';
@@ -299,9 +321,11 @@ export async function delegateBySig(
   }
 
   const compAddress = address[this._network.name].COMP;
-  const trxOptions: any = options;
-  trxOptions._compoundProvider = this._provider;
-  trxOptions.abi = abi.COMP;
+  const trxOptions: CallOptions = {
+    ...options,
+    _compoundProvider: this._provider,
+    abi: abi.COMP,
+  };
   const { v, r, s } = signature;
   const parameters = [ _address, nonce, expiry, v, r, s ];
   const method = 'delegateBySig';
@@ -335,7 +359,10 @@ export async function delegateBySig(
  * })().catch(console.error);
  * ```
  */
-export async function createDelegateSignature(delegatee: string, expiry: number = 10e9) {
+export async function createDelegateSignature(
+  delegatee: string,
+  expiry = 10e9
+) : Promise<Signature> {
   await netId(this);
 
   const provider = this._provider;
@@ -356,7 +383,7 @@ export async function createDelegateSignature(delegatee: string, expiry: number 
     { provider: originalProvider }
   )).toString();
 
-  const domain = {
+  const domain: EIP712Domain = {
     name: 'Compound',
     chainId,
     verifyingContract: compAddress
@@ -364,9 +391,9 @@ export async function createDelegateSignature(delegatee: string, expiry: number 
 
   const primaryType = 'Delegation';
 
-  const message = { delegatee, nonce, expiry };
+  const message: DelegateSignatureMessage = { delegatee, nonce, expiry };
 
-  const types = {
+  const types: DelegateTypes = {
     EIP712Domain: [
       { name: 'name', type: 'string' },
       { name: 'chainId', type: 'uint256' },
