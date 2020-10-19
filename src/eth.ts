@@ -272,14 +272,16 @@ export async function getBalance(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let providerInstance: any = _createProvider({ provider: _provider });
 
-  if (!providerInstance.send && providerInstance.provider) {
+  if (!providerInstance.send && providerInstance.providerConfigs) {
+    const url = providerInstance.providerConfigs[0].provider.connection.url;
+    providerInstance = new ethers.providers.JsonRpcProvider(url);
+  } else if (!providerInstance.send && providerInstance.provider) {
     providerInstance = providerInstance.provider;
   }
 
   const balance = await providerInstance.send(
     'eth_getBalance', [ address, 'latest' ]
   );
-
   return balance;
 }
 
