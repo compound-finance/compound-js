@@ -15,6 +15,7 @@ export const constants = {
   'cETH': 'cETH',
   'cREP': 'cREP',
   'cSAI': 'cSAI',
+  'cUNI': 'cUNI',
   'cUSDC': 'cUSDC',
   'cUSDT': 'cUSDT',
   'cWBTC': 'cWBTC',
