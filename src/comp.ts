@@ -179,7 +179,12 @@ export async function claimComp(
   await netId(this);
 
   try {
-    const userAddress = this._provider.address;
+    let userAddress = this._provider.address;
+
+    if (!userAddress && this._provider.getAddress) {
+      userAddress = await this._provider.getAddress();
+    }
+
     const comptrollerAddress = address[this._network.name].Comptroller;
     const trxOptions: CallOptions = {
       ...options,
