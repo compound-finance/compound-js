@@ -8,8 +8,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./src/*.ts",
     "build": "npm run lint && ./node_modules/.bin/tsc && npm run rollup",
-    "docs": "./node_modules/typedoc/bin/typedoc --out ./docs/ ./src/",
-    "compound_docs": "node ./scripts/compound-docs.js",
+    "docs": "node ./scripts/compound-docs.js",
     "prepare": "npm run build",
     "publish_patch": "npm version patch && npm publish --access public",
     "publish_minor": "npm version minor && npm publish --access public",
@@ -47,7 +46,6 @@
     "rollup-plugin-babel-minify": "^10.0.0",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-polyfills": "^0.2.1",
-    "typedoc": "^0.18.0",
     "typescript": "^3.9.5"
   },
   "dependencies": {
