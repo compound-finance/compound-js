@@ -90,6 +90,5 @@ Compound.comp = {
   getCompBalance: comp.getCompBalance,
   getCompAccrued: comp.getCompAccrued,
 };
-Object.assign(Compound, constants);
 
-export = Compound;
+export = {...Compound, ...constants};
