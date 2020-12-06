@@ -49,7 +49,7 @@ ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
  *
  * @returns {object} Returns an instance of the Compound.js SDK.
  */
-const Compound = function(
+const CompoundInstance = function(
   provider: Provider | string = 'mainnet', options: CompoundOptions = {}
 ) : CompoundInstance {
   const originalProvider = provider;
@@ -81,14 +81,15 @@ const Compound = function(
   return instance;
 };
 
-Compound.eth = eth;
-Compound.api = api;
-Compound.util = util;
-Compound._ethers = ethers;
-Compound.decimals = decimals;
-Compound.comp = {
+CompoundInstance.eth = eth;
+CompoundInstance.api = api;
+CompoundInstance.util = util;
+CompoundInstance._ethers = ethers;
+CompoundInstance.decimals = decimals;
+CompoundInstance.comp = {
   getCompBalance: comp.getCompBalance,
   getCompAccrued: comp.getCompAccrued,
 };
 
-export = {...Compound, ...constants};
+const Compound = {...CompoundInstance, ...constants} 
+export = Compound; 
