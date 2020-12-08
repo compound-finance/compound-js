@@ -14,7 +14,7 @@ import * as comp from './comp';
 import * as gov from './gov';
 import * as api from './api';
 import { constants, decimals } from './constants';
-import { Provider, CompoundOptions, CompoundInstance } from './types';
+import type { Provider, CompoundSDK, CompoundOptions, CompoundInstance } from './types';
 
 // Turn off Ethers.js warnings
 ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
@@ -49,7 +49,7 @@ ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
  *
  * @returns {object} Returns an instance of the Compound.js SDK.
  */
-const CompoundInstance = function(
+const Compound = function(
   provider: Provider | string = 'mainnet', options: CompoundOptions = {}
 ) : CompoundInstance {
   const originalProvider = provider;
@@ -81,15 +81,15 @@ const CompoundInstance = function(
   return instance;
 };
 
-CompoundInstance.eth = eth;
-CompoundInstance.api = api;
-CompoundInstance.util = util;
-CompoundInstance._ethers = ethers;
-CompoundInstance.decimals = decimals;
-CompoundInstance.comp = {
+Compound.eth = eth;
+Compound.api = api;
+Compound.util = util;
+Compound._ethers = ethers;
+Compound.decimals = decimals;
+Compound.comp = {
   getCompBalance: comp.getCompBalance,
   getCompAccrued: comp.getCompAccrued,
 };
+Object.assign(Compound, constants)
 
-const Compound = {...CompoundInstance, ...constants} 
-export = Compound; 
+export = Compound as CompoundSDK; 

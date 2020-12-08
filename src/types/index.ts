@@ -9,8 +9,27 @@ import {
 } from '@ethersproject/abstract-provider';
 import { Deferrable } from '@ethersproject/properties';
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber';
+import { ethers } from 'ethers';
+import * as eth from '../eth';
+import * as util from '../util';
+import * as comp from '../comp';
+import * as api from '../api';
 
 // =-=-=-=-=-= /src/index.ts =-=-=-=-=-=
+
+export interface CompoundSDK extends Constants {
+  (provider?: string | Provider, options?: CompoundOptions): CompoundInstance;
+  new(provider?: string | Provider, options?: CompoundOptions): CompoundInstance;
+  eth: typeof eth;
+  api: typeof api;
+  util: typeof util;
+  _ethers: typeof ethers;
+  decimals: Decimals;
+  comp: {
+        getCompBalance: typeof comp.getCompBalance;
+        getCompAccrued: typeof comp.getCompAccrued;
+  };
+}
 
 export interface CompoundInstance {
   _networkPromise: Promise<ProviderNetwork>;
@@ -136,6 +155,37 @@ export interface precise {
   value: string;
 }
 
+export interface PaginationSummary {
+  page_number?: number;
+  page_size?: number;
+  total_entries?: number;
+  total_pages?: number;
+}
+
+export interface Account {
+   address?: string;
+   health?: precise;
+   tokens?: AccountCToken[];
+   total_borrow_value_in_eth?: precise;
+   total_collateral_value_in_eth?: precise;
+}
+
+export interface AccountCToken {
+  address?: string;
+  symbol?: string;
+  borrow_balance_underlying?: precise;
+  lifetime_borrow_interest_accrued?: precise;
+  lifetime_supply_interest_accrued?: precise;
+  supply_balance_underlying?: precise;
+}
+
+export enum AccountError {
+  NO_ERROR = "0",
+  INTERNAL_ERROR = "1",
+  INVALID_PAGE_NUMBER = "2",
+  INVALID_PAGE_SIZE = "3"
+}
+
 export interface AccountServiceRequest {
   addresses?: string[] | string;
   min_borrow_value_in_eth?: precise;
@@ -145,6 +195,11 @@ export interface AccountServiceRequest {
   page_size?: number;
   page_number?: number;
   network?: string;
+}
+
+export interface AccountServiceResponse extends APIResponse, AccountServiceRequest {
+  accounts?: Account[];
+  pagination_summary?: PaginationSummary;
 }
 
 export interface CTokenServiceRequest {
@@ -230,4 +285,69 @@ export interface SimpleEthersSigner {
   _signingKey();
   getAddress();
   provider?: SimpleEthersProvider;
+}
+
+
+// =-=-=-=-=-= /src/constants.ts =-=-=-=-=-=
+
+ export interface Constants {
+        PriceFeed: string;
+        Maximillion: string;
+        CompoundLens: string;
+        GovernorAlpha: string;
+        Comptroller: string;
+        Reservoir: string;
+        KNC: string;
+        LINK: string;
+        BTC: string;
+        cBAT: string;
+        cCOMP: string;
+        cDAI: string;
+        cETH: string;
+        cREP: string;
+        cSAI: string;
+        cUNI: string;
+        cUSDC: string;
+        cUSDT: string;
+        cWBTC: string;
+        cZRX: string;
+        BAT: string;
+        COMP: string;
+        DAI: string;
+        ETH: string;
+        REP: string;
+        SAI: string;
+        UNI: string;
+        USDC: string;
+        USDT: string;
+        WBTC: string;
+        ZRX: string;
+}
+
+export interface Decimals {
+  cBAT: number;
+  cCOMP: number;
+  cDAI: number;
+  cETH: number;
+  cREP: number;
+  cSAI: number;
+  cUNI: number;
+  cUSDC: number;
+  cUSDT: number;
+  cWBTC: number;
+  cZRX: number;
+  BAT: number;
+  COMP: number;
+  DAI: number;
+  ETH: number;
+  REP: number;
+  SAI: number;
+  UNI: number;
+  USDC: number;
+  USDT: number;
+  WBTC: number;
+  ZRX: number;
+  KNC: number;
+  LINK: number;
+  BTC: number;
 }

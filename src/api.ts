@@ -4,10 +4,11 @@
  */
 
 import { request } from './util';
-import {
+import type {
   APIRequest,
   APIResponse,
   AccountServiceRequest,
+  AccountServiceResponse,
   CTokenServiceRequest,
   MarketHistoryServiceRequest,
   GovernanceServiceRequest,
@@ -70,8 +71,8 @@ import {
  * })().catch(console.error);
  * ```
  */
-export function account(options: AccountServiceRequest) : Promise<APIResponse> {
-  return queryApi(options, 'account', '/api/v2/account');
+export function account(options: AccountServiceRequest) : Promise<AccountServiceResponse> {
+  return queryApi(options, 'account', '/api/v2/account') as Promise<AccountServiceResponse>;
 }
 
 /**

@@ -1,5 +1,6 @@
+import type { Constants, Decimals } from "./types"
 // Publicly revealed on the parent class
-export const constants = {
+export const constants: Constants = {
   'PriceFeed': 'PriceFeed',
   'Maximillion': 'Maximillion',
   'CompoundLens': 'CompoundLens',
@@ -188,7 +189,7 @@ export const underlyings = ['BAT', 'COMP', 'DAI', 'ETH', 'REP', 'SAI', 'UNI', 'U
 // additional assets supported by the open price feed
 export const opfAssets = ['KNC', 'LINK', 'BTC'];
 
-export const decimals = {
+export const decimals: Decimals = {
   'cBAT': 8,
   'cCOMP': 8,
   'cDAI': 8,
