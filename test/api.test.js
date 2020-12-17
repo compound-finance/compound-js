@@ -1,7 +1,7 @@
 const assert = require('assert');
 const api = require('../src/api.ts');
 
-module.exports = function suite(acc1) {
+module.exports = function suite() {
 
   it('runs api.account', async function () {
     const myAddress = '0xa0df350d2637096571F7A701CBc1C5fdE30dF76A';

@@ -3,7 +3,9 @@ const ethers = require('ethers');
 const eth = require('../src/eth.ts');
 const providerUrl = 'http://localhost:8545';
 
-module.exports = function suite(acc1) {
+module.exports = function suite([ publicKeys, privateKeys ]) {
+
+  const acc1 = { address: publicKeys[0], privateKey: privateKeys[0] };
 
   it('runs eth.getBalance', async function () {
     const ethBalance = await eth.getBalance(acc1.address, providerUrl);
