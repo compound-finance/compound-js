@@ -1,14 +1,14 @@
 // Compound.js Tests
 
 // To run all tests: `npm test`
-// To run a single file's tests: `npm test -- -g 'eth'`
+// To run a single file's tests: `npm test -- -g 'eth.'`
 // To run a single test: `npm test -- -g 'eth.getBalance'`
 
 // Source Files
 const api = require('./api.test.js');
 const comp = require('./comp.test.js');
 const comptroller = require('./comptroller.test.js');
-// const cTokens = require('./cTokens.test.js');
+const cToken = require('./cToken.test.js');
 // const EIP712 = require('./EIP712.test.js');
 const eth = require('./eth.test.js');
 // const gov = require('./gov.test.js');
@@ -42,6 +42,7 @@ describe('Compound.js', function () {
   describe('./src/api.ts', api.bind(this));
   describe('./src/comp.ts', comp.bind(this, acc1));
   describe('./src/comptroller.ts', comptroller.bind(this, acc1));
+  describe('./src/cToken.ts', cToken.bind(this, acc1));
   describe('./src/eth.ts', eth.bind(this, acc1));
 });
 
