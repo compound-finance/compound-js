@@ -101,4 +101,21 @@ module.exports = function suite() {
     assert.equal(error, expectedError);
   });
 
+  it('fails api returns 500', async function () {
+    const expectedErrorMessage = 'Compound [api] [Market History] | Invalid request made to the Compound API.';
+
+    let errorMessage;
+    try {
+      const response = await api.marketHistory({
+        "network": "rinkeby",
+        "asset": '0xinvalid',
+        "num_buckets": 2,
+      });
+    } catch({ error }) {
+      errorMessage = error.toString();
+    }
+
+    assert.equal(errorMessage, expectedErrorMessage);
+  });
+
 }

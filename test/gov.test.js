@@ -3,9 +3,6 @@ const ethers = require('ethers');
 const Compound = require('../src/index.ts');
 const providerUrl = 'http://localhost:8545';
 
-// castVote
-// castVoteBySig
-// createVoteSignature
 const unlockedAddress = '0xa0df350d2637096571F7A701CBc1C5fdE30dF76A';
 const unlockedPk = '0xb8c1b5c1d81f9475fdf2e334517d29f733bdfa40682207571b12fc1142cbf329';
 
@@ -20,12 +17,12 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   it('runs gov.castVote', async function () {
     let address, method, params, votingIsClosed;
 
-    const unpatched = Compound.eth.trx;
+    const nonspy = Compound.eth.trx;
     Compound.eth.trx = function() {
       address = arguments[0];
       method = arguments[1];
       params = arguments[2];
-      return unpatched.apply(this, arguments);
+      return nonspy.apply(this, arguments);
     }
 
     try {
@@ -69,12 +66,12 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   it('runs gov.castVoteBySig', async function () {
     let address, method, params, votingIsClosed;
 
-    const unpatched = Compound.eth.trx;
+    const nonspy = Compound.eth.trx;
     Compound.eth.trx = function() {
       address = arguments[0];
       method = arguments[1];
       params = arguments[2];
-      return unpatched.apply(this, arguments);
+      return nonspy.apply(this, arguments);
     }
 
     const proposalId = 20;
@@ -190,7 +187,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
       r: '0x8c6113af4858a5c423065261e51a6f2652072e123d1ca849e05f75636f766680',
       s: '0x1552df4943100711f6e0517c98bb8a4b81b4a2ddc5427c0aa4b8240a72cc0839',
       v: '0x1c'
-    }
+    };
 
     assert.equal(voteSignature.r, expectedSignature.r);
     assert.equal(voteSignature.s, expectedSignature.s);

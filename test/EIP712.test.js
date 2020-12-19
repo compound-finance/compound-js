@@ -100,8 +100,8 @@ module.exports = function suite() {
   });
 
   it('runs EIP712.sign as Node.js', async function () {
-    const compound = new Compound('http://127.0.0.1:8545', {
-      privateKey: '0xb8c1b5c1d81f9475fdf2e334517d29f733bdfa40682207571b12fc1142cbf329'
+    const compound = new Compound(providerUrl, {
+      privateKey: patchedPrivateKey
     });
 
     const delegateSignature = await compound.createDelegateSignature(

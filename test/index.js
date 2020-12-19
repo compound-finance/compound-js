@@ -12,11 +12,9 @@ const cToken = require('./cToken.test.js');
 const EIP712 = require('./EIP712.test.js');
 const eth = require('./eth.test.js');
 const gov = require('./gov.test.js');
-// const helpers = require('./helpers.test.js');
-// const construct = require('./constructor.test.js');
-// const priceFeed = require('./priceFeed.test.js');
-// const util = require('./util.test.js');
-// const initialize = require('./initialize.test.js');
+const priceFeed = require('./priceFeed.test.js');
+const util = require('./util.test.js');
+const initialize = require('./initialize.test.js');
 
 // Run a Ganache Core to test against a mainnet fork
 const ganache = require('ganache-core');
@@ -45,6 +43,9 @@ describe('Compound.js', function () {
   describe('./src/EIP712.ts', EIP712.bind(this, acc));
   describe('./src/eth.ts', eth.bind(this, acc));
   describe('./src/gov.ts', gov.bind(this, acc));
+  describe('./src/priceFeed.ts', priceFeed.bind(this, acc));
+  describe('./src/util.ts', util.bind(this, acc));
+  describe('initialize', initialize.bind(this, acc));
 });
 
 after(function () {
