@@ -2,3 +2,4 @@
 node_modules/
 dist/
 scripts/out.md
+.nyc_output/
