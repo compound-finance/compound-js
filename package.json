@@ -14,7 +14,7 @@
     "publish_minor": "npm version minor && npm publish --access public",
     "publish_major": "npm version major && npm publish --access public",
     "rollup": "./node_modules/.bin/rollup -c rollup.config.ts",
-    "test": "./node_modules/.bin/mocha -r ts-node/register ./test/index.*  --timeout 30000"
+    "test": "./node_modules/.bin/nyc ./node_modules/.bin/mocha -r ts-node/register ./test/index.*  --timeout 30000"
   },
   "repository": {
     "type": "git",
