@@ -15,7 +15,7 @@
     "publish_major": "npm version major && npm publish --access public",
     "rollup": "./node_modules/.bin/rollup -c rollup.config.ts",
     "test_log_coverage": "./node_modules/.bin/nyc ./node_modules/.bin/mocha -r ts-node/register ./test/index.*  --timeout 60000",
-    "test": "./node_modules/.bin/ ./node_modules/.bin/nyc --reporter=lcov ./node_modules/.bin/mocha -r ts-node/register ./test/index.*  --timeout 60000",
+    "test": "./node_modules/.bin/nyc --reporter=lcov ./node_modules/.bin/mocha -r ts-node/register ./test/index.*  --timeout 60000",
     "coverage": "codecov"
   },
   "repository": {
