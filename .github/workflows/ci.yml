@@ -12,6 +12,6 @@ jobs:
       with:
         node-version: 12.x
     - run: npm install
-    - run: npm test
+    - run: MAINNET_PROVIDER_URL=${{ secrets.MAINNET_PROVIDER_URL }} npm test
     - name: Upload coverage to Codecov
       run: npm run coverage -- -t ${{ secrets.CODECOV_TOKEN }}
