@@ -12,43 +12,50 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
 
   const compound = new Compound(providerUrl);
 
-  it('runs priceFeed.getPrice', async function () {
-    let price, isPositiveNumber;
+  it('runs priceFeed.getPrice underlying asset to USD', async function () {
+    const price = await compound.getPrice(Compound.WBTC);
 
-    price = await compound.getPrice(Compound.WBTC);
+    const isPositiveNumber = price > 0;
 
-    isPositiveNumber = price > 0;
+    assert.equal(typeof price, 'number');
+    assert.equal(isPositiveNumber, true);
+  });
+
+  it('runs priceFeed.getPrice underlying asset to underlying asset', async function () {
+    const price = await compound.getPrice(Compound.UNI, Compound.WBTC);
+
+    const isPositiveNumber = price > 0;
 
     assert.equal(typeof price, 'number');
     assert.equal(isPositiveNumber, true);
 
-    price = await compound.getPrice(Compound.UNI, Compound.WBTC);
+  });
 
-    isPositiveNumber = price > 0;
+  it('runs priceFeed.getPrice cToken to underlying asset', async function () {
+    const price = await compound.getPrice(Compound.cDAI, Compound.WBTC);
 
-    assert.equal(typeof price, 'number');
-    assert.equal(isPositiveNumber, true);
-
-    price = await compound.getPrice(Compound.cDAI, Compound.WBTC);
-
-    isPositiveNumber = price > 0;
-    isLessThanOne = price < 1;
+    const isPositiveNumber = price > 0;
+    const isLessThanOne = price < 1;
 
     assert.equal(typeof price, 'number');
     assert.equal(isPositiveNumber, true);
     assert.equal(isLessThanOne, true);
+  });
 
-    price = await compound.getPrice(Compound.UNI, Compound.cDAI);
+  it('runs priceFeed.getPrice underlying asset to cToken', async function () {
+    const price = await compound.getPrice(Compound.UNI, Compound.cDAI);
 
-    isPositiveNumber = price > 0;
+    const isPositiveNumber = price > 0;
 
     assert.equal(typeof price, 'number');
     assert.equal(isPositiveNumber, true);
+  });
 
-    price = await compound.getPrice(Compound.cDAI, Compound.cDAI);
+  it('runs priceFeed.getPrice cToken to cToken', async function () {
+    const price = await compound.getPrice(Compound.cDAI, Compound.cDAI);
 
-    isPositiveNumber = price > 0;
-    isOne = price === 1;
+    const isPositiveNumber = price > 0;
+    const isOne = price === 1;
 
     assert.equal(typeof price, 'number');
     assert.equal(isPositiveNumber, true);
