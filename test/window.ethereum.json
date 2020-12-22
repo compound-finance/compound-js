@@ -1,0 +1,58 @@
+{
+  "_events": {},
+  "_eventsCount": 1,
+  "_maxListeners": 100,
+  "isMetaMask": true,
+  "_state": {
+    "sentWarnings": {
+      "enable": false,
+      "experimentalMethods": false,
+      "send": false,
+      "events": {
+        "chainIdChanged": false,
+        "close": false,
+        "data": false,
+        "networkChanged": false,
+        "notification": false
+      },
+      "autoRefresh": true,
+      "publicConfigStore": false
+    },
+    "isConnected": true,
+    "accounts": [
+      "0xa0df350d2637096571f7a701cbc1c5fde30df76a"
+    ],
+    "isUnlocked": true
+  },
+  "_metamask": {},
+  "selectedAddress": "0xa0df350d2637096571f7a701cbc1c5fde30df76a",
+  "networkVersion": "1",
+  "chainId": "0x1",
+  "_publicConfigStore": {
+    "_events": {
+      "update": [
+        null,
+        null,
+        null
+      ]
+    },
+    "_eventsCount": 1,
+    "_state": {
+      "isUnlocked": true,
+      "chainId": "0x1",
+      "networkVersion": "1"
+    }
+  },
+  "_rpcEngine": {
+    "_events": {},
+    "_eventsCount": 0,
+    "_middleware": [
+      null,
+      null,
+      null
+    ]
+  },
+  "autoRefreshOnNetworkChange": true,
+  "send": null,
+  "sendAsync": null
+}

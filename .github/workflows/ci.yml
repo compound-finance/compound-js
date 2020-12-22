@@ -1,0 +1,17 @@
+name: CI Pipeline
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - run: npm install
+    - run: MAINNET_PROVIDER_URL=${{ secrets.MAINNET_PROVIDER_URL }} npm test
+    - name: Upload coverage to Codecov
+      run: npm run coverage -- -t ${{ secrets.CODECOV_TOKEN }}

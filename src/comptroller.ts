@@ -99,7 +99,7 @@ export async function exitMarket(
   options: CallOptions = {}
 ) : Promise<TrxResponse> {
   await netId(this);
-  const errorPrefix = 'Compound [exitMarkets] | ';
+  const errorPrefix = 'Compound [exitMarket] | ';
 
   if (typeof market !== 'string' || market === '') {
     throw Error(errorPrefix + 'Argument `market` must be a string of a cToken market name.');

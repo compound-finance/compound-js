@@ -193,7 +193,7 @@ export function getAddress(contract: string, network='mainnet') : string {
  *
  * @example
  * ```
- * console.log('cETH ABI: ', Compound.util.getAbi(Compound.cETH));
+ * console.log('cETH ABI: ', Compound.util.getAbi('cEther'));
  * ```
  */
 export function getAbi(contract: string): AbiType[] {
