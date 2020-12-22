@@ -16,11 +16,18 @@ const priceFeed = require('./priceFeed.test.js');
 const util = require('./util.test.js');
 const initialize = require('./initialize.test.js');
 
+const providerUrl = process.env.MAINNET_PROVIDER_URL;
+
+if (!providerUrl) {
+  console.error('Missing JSON RPC provider URL as environment variable `MAINNET_PROVIDER_URL`');
+  process.exit(1);
+}
+
 // Run a Ganache Core to test against a mainnet fork
 const ganache = require('ganache-core');
 
 const server = ganache.server({
-  fork: process.env.MAINNET_PROVIDER_URL,
+  fork: providerUrl,
   network_id: 1,
   default_balance_ether: 10000,
 });
