@@ -14,7 +14,9 @@
     "publish_minor": "npm version minor && npm publish --access public",
     "publish_major": "npm version major && npm publish --access public",
     "rollup": "./node_modules/.bin/rollup -c rollup.config.ts",
-    "test": "./node_modules/.bin/nyc ./node_modules/.bin/mocha -r ts-node/register ./test/index.*  --timeout 30000"
+    "test_log_coverage": "./node_modules/.bin/nyc ./node_modules/.bin/mocha -r ts-node/register ./test/index.*  --timeout 60000",
+    "test": "./node_modules/.bin/nyc --reporter=lcov ./node_modules/.bin/mocha -r ts-node/register ./test/index.*  --timeout 60000",
+    "coverage": "codecov"
   },
   "repository": {
     "type": "git",
@@ -36,6 +38,7 @@
     "@types/node": "^14.0.11",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
     "@typescript-eslint/parser": "^4.2.0",
+    "codecov": "^3.8.1",
     "docblock-parser": "^1.0.0",
     "eslint": "^7.9.0",
     "ganache-core": "^2.13.1",
