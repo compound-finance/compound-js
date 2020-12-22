@@ -1,5 +1,6 @@
 # Compound.js
 
+[![Build Status](https://github.com/compound-finance/compound-js/workflows/Build/badge.svg)](https://github.com/compound-finance/compound-js/actions)
 [![codecov](https://codecov.io/gh/compound-finance/compound-js/branch/master/graph/badge.svg?token=85IDEVM3U0)](https://codecov.io/gh/compound-finance/compound-js)
 
 A JavaScript SDK for Ethereum and the Compound Protocol. Wraps around [Ethers.js](https://github.com/ethers-io/ethers.js/). Works in the **web browser** and **Node.js**.
