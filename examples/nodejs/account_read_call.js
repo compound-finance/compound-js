@@ -1,5 +1,3 @@
-// // dotenv would be an external dependency and would need to be installed for your project
-// require("dotenv").config(); // this ensures process.env.... contains your .env file configuration values
 
 const Compound = require('../../dist/nodejs/index.js');
 
@@ -7,7 +5,7 @@ const Compound = require('../../dist/nodejs/index.js');
 async function readAccountInfo() {
 
     const account = await Compound.api.account({
-        "addresses": 'process.env.WALLET_ADDRESS', 
+        "addresses": 'your-wallet-address-here', // you might add & require("dotenv").config() - using environment variables
         "network": "mainnet"
     });
     
