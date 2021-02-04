@@ -82,8 +82,17 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
 
 
   it('runs comp.claimComp', async function () {
-    const claimCompTx = await compound.claimComp({ gasLimit: ethers.utils.parseUnits('700000', 'wei') });
-    const txReceipt = await claimCompTx.wait(1);
+    let txReceipt;
+
+    try {
+      const claimCompTx = await compound.claimComp({
+        gasLimit: ethers.utils.parseUnits('1000000', 'wei') // set when prices were unusually high
+      });
+      txReceipt = await claimCompTx.wait(1);
+    } catch (error) {
+      console.error('error', error);
+      console.error('txReceipt', txReceipt);
+    }
 
     const status = txReceipt.status;
     const events = txReceipt.events.length;

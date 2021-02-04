@@ -48,7 +48,7 @@ module.exports = function suite() {
     const borrowRate = response.borrow_rates[0].rate.toFixed(3);
     const error = response.error.error_code;
 
-    const expectedBorrowRate = '0.042';
+    const expectedBorrowRate = '0.041';
     const expectedError = 0;
 
     assert.equal(borrowRate, expectedBorrowRate);
