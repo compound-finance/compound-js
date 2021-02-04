@@ -88,7 +88,11 @@ export async function supply(
 
   if (cTokenName !== constants.cETH && noApprove !== true) {
     const underlyingAddress = address[this._network.name][asset];
-    const userAddress = this._provider.address;
+    let userAddress = this._provider.address;
+
+    if (!userAddress && this._provider.getAddress) {
+      userAddress = await this._provider.getAddress();
+    }
 
     // Check allowance
     const allowance = await eth.read(
