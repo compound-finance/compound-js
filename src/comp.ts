@@ -251,7 +251,7 @@ export async function delegate(
     abi: abi.COMP,
   };
   const parameters = [ _address ];
-  const method = 'delegate(address)';
+  const method = 'delegate';
 
   return eth.trx(compAddress, method, parameters, trxOptions);
 }

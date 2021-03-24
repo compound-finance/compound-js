@@ -4,6 +4,7 @@ const api = require('../src/api.ts');
 module.exports = function suite() {
 
   it('runs api.account', async function () {
+
     const myAddress = '0xa0df350d2637096571F7A701CBc1C5fdE30dF76A';
     const response = await api.account({
       "addresses": myAddress,
@@ -45,10 +46,10 @@ module.exports = function suite() {
       "num_buckets": 1,
     });
 
-    const borrowRate = response.borrow_rates[0].rate.toFixed(3);
+    const borrowRate = response.borrow_rates[0].rate.toFixed(2);
     const error = response.error.error_code;
 
-    const expectedBorrowRate = '0.041';
+    const expectedBorrowRate = '0.04';
     const expectedError = 0;
 
     assert.equal(borrowRate, expectedBorrowRate);
