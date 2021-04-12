@@ -146,6 +146,7 @@ export const address = {
     "Maximillion": "0x8f4abdBA752aa40F6BeEaD5d3ba2b648c7B4606B",
     "CompoundLens": "0xEF11D1eff9C559B47B921dFFfF1e3A147e84E283",
     "GovernorAlpha": "0x0782ccc8912A177ac6b9287394e71dAacf779B83",
+    "GovernorBravo": "0x087e98B40f988E0E1D1de476b2b8d2271Ac84B33",
     "Comptroller": "0xcfa7b0e37f5AC60f3ae25226F5e39ec59AD26152",
     "Reservoir": "0xC84BaE82A99459b81f13298c5b64F094Bff1F96d",
     "COMP": "0xf76D4a441E4ba86A923ce32B89AFF89dBccAA075",
