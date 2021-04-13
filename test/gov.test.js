@@ -26,17 +26,18 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     }
 
     try {
-      const voteTrx = await compound.castVote(20, true, {
+      const voteTrx = await compound.castVote(0, 1, {
         gasLimit: ethers.utils.parseUnits('100000', 'wei')
       });
       const receipt = await voteTrx.wait(1);
     } catch(err) {
-      votingIsClosed = err.error.error.data.stack.includes('GovernorAlpha::_castVote: voting is closed');
+      votingIsClosed = err.error.error.data.stack.includes('GovernorBravo::castVoteInternal: voting is closed');
+      console.log(err.error.error.data.stack);
     }
 
-    const addressExpected = Compound.util.getAddress('GovernorAlpha');
+    const addressExpected = Compound.util.getAddress('GovernorBravo');
     const methodExpected = 'castVote';
-    const paramsExpected = [ 20, true ];
+    const paramsExpected = [ 0, 1 ];
 
     assert.equal(votingIsClosed, true);
     assert.equal(address, addressExpected);
@@ -48,14 +49,14 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   it('fails gov.castVote bad proposalId', async function () {
     const errorMessage = 'Compound [castVote] | Argument `proposalId` must be an integer.';
     try {
-      const voteTrx = await compound.castVote(null, true); // bad proposalId
+      const voteTrx = await compound.castVote(null, 1); // bad proposalId
     } catch (e) {
       assert.equal(e.message, errorMessage);
     }
   });
 
   it('fails gov.castVote bad support', async function () {
-    const errorMessage = 'Compound [castVote] | Argument `support` must be a boolean.';
+    const errorMessage = 'Compound [castVote] | Argument `support` must be an integer (0, 1, or 2).';
     try {
       const voteTrx = await compound.castVote(11, 'abc'); // bad support
     } catch (e) {
@@ -75,7 +76,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     }
 
     const proposalId = 20;
-    const support = true;
+    const support = 1;
     const voteSignature = {
       r: '0x8c6113af4858a5c423065261e51a6f2652072e123d1ca849e05f75636f766680',
       s: '0x1552df4943100711f6e0517c98bb8a4b81b4a2ddc5427c0aa4b8240a72cc0839',
@@ -91,14 +92,14 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
       );
       const receipt = await trx.wait(1);
     } catch({ error }) {
-      votingIsClosed = error.error.data.stack.includes('GovernorAlpha::_castVote: voting is closed');
+      votingIsClosed = error.error.data.stack.includes('GovernorBravo::castVoteInternal: voting is closed');
     }
 
-    const addressExpected = Compound.util.getAddress('GovernorAlpha');
+    const addressExpected = Compound.util.getAddress('GovernorBravo');
     const methodExpected = 'castVoteBySig';
     const paramsExpected = [
       20,
-      true,
+      1,
       '0x1c',
       '0x8c6113af4858a5c423065261e51a6f2652072e123d1ca849e05f75636f766680',
       '0x1552df4943100711f6e0517c98bb8a4b81b4a2ddc5427c0aa4b8240a72cc0839'
@@ -144,7 +145,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
       v: '0x1c'
     };
 
-    const errorMessage = 'Compound [castVoteBySig] | Argument `support` must be a boolean.';
+    const errorMessage = 'Compound [castVoteBySig] | Argument `support` must be an integer (0, 1, or 2).';
     try {
       const trx = await compound.castVoteBySig(
         proposalId,
@@ -158,7 +159,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
 
   it('fails gov.castVoteBySig bad signature', async function () {
     const proposalId = 20;
-    const support = true;
+    const support = 1;
     const voteSignature = 'abc';
 
     const errorMessage = 'Compound [castVoteBySig] | Argument `signature` must be an object that contains the v, r, and s pieces of an EIP-712 signature.';
@@ -180,7 +181,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
 
     const voteSignature = await _compound.createVoteSignature(
       20,
-      true
+      1
     );
 
     const expectedSignature = {
@@ -192,6 +193,65 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     assert.equal(voteSignature.r, expectedSignature.r);
     assert.equal(voteSignature.s, expectedSignature.s);
     assert.equal(voteSignature.v, expectedSignature.v);
+  });
+
+  it('runs gov.castVoteWithReason', async function () {
+    let address, method, params, votingIsClosed;
+
+    const nonspy = Compound.eth.trx;
+    Compound.eth.trx = function() {
+      address = arguments[0];
+      method = arguments[1];
+      params = arguments[2];
+      return nonspy.apply(this, arguments);
+    }
+
+    try {
+      const voteTrx = await compound.castVoteWithReason(20, 1, 'Reason here', {
+        gasLimit: ethers.utils.parseUnits('100000', 'wei')
+      });
+      const receipt = await voteTrx.wait(1);
+    } catch(err) {
+      votingIsClosed = err.error.error.data.stack.includes('GovernorBravo::castVoteInternal: voting is closed');
+    }
+
+    const addressExpected = Compound.util.getAddress('GovernorBravo');
+    const methodExpected = 'castVoteWithReason';
+    const paramsExpected = [ 20, 1, 'Reason here' ];
+
+    assert.equal(votingIsClosed, true);
+    assert.equal(address, addressExpected);
+    assert.equal(method, methodExpected);
+    assert.equal(params[0], paramsExpected[0]);
+    assert.equal(params[1], paramsExpected[1]);
+    assert.equal(params[2], paramsExpected[2]);
+  });
+
+  it('fails gov.castVoteWithReason bad proposalId', async function () {
+    const errorMessage = 'Compound [castVoteWithReason] | Argument `proposalId` must be an integer.';
+    try {
+      const voteTrx = await compound.castVoteWithReason(null, 1, 'Reason here'); // bad proposalId
+    } catch (e) {
+      assert.equal(e.message, errorMessage);
+    }
+  });
+
+  it('fails gov.castVoteWithReason bad support', async function () {
+    const errorMessage = 'Compound [castVoteWithReason] | Argument `support` must be an integer (0, 1, or 2).';
+    try {
+      const voteTrx = await compound.castVoteWithReason(11, 'abc', 'Reason here'); // bad support
+    } catch (e) {
+      assert.equal(e.message, errorMessage);
+    }
+  });
+
+  it('fails gov.castVoteWithReason bad reason', async function () {
+    const errorMessage = 'Compound [castVoteWithReason] | Argument `reason` must be a string';
+    try {
+      const voteTrx = await compound.castVoteWithReason(11, 'abc', 0); // bad reason
+    } catch (e) {
+      assert.equal(e.message, errorMessage);
+    }
   });
 
 }
