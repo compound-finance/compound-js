@@ -102,10 +102,7 @@ import Compound from '@compound-finance/compound-js';
 
 ## More Code Examples
 
-- [Node.js](https://github.com/compound-finance/compound-js/tree/master/examples)
-- [Web Browser](https://compound-finance.github.io/compound-js/examples/web/)
-
-[To run, boot Ganache fork of mainnet locally](https://github.com/compound-finance/compound-js/tree/master/examples)
+See the docblock comments above each function definition or the official [Compound.js Documentation](https://compound.finance/docs/compound-js).
 
 ## Instance Creation
 
