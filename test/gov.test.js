@@ -14,7 +14,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     privateKey: acc1.privateKey
   });
 
-  it('runs gov.castVote', async function () {
+  it('runs gov.castVote ', async function () {
     let address, method, params, votingIsClosed;
 
     const nonspy = Compound.eth.trx;
@@ -26,18 +26,17 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     }
 
     try {
-      const voteTrx = await compound.castVote(0, 1, {
+      const voteTrx = await compound.castVote(43, 1, {
         gasLimit: ethers.utils.parseUnits('100000', 'wei')
       });
       const receipt = await voteTrx.wait(1);
     } catch(err) {
       votingIsClosed = err.error.error.data.stack.includes('GovernorBravo::castVoteInternal: voting is closed');
-      console.log(err.error.error.data.stack);
     }
 
     const addressExpected = Compound.util.getAddress('GovernorBravo');
     const methodExpected = 'castVote';
-    const paramsExpected = [ 0, 1 ];
+    const paramsExpected = [ 43, 1 ];
 
     assert.equal(votingIsClosed, true);
     assert.equal(address, addressExpected);
@@ -64,7 +63,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     }
   });
 
-  it('runs gov.castVoteBySig', async function () {
+  it('runs gov.castVoteBySig ', async function () {
     let address, method, params, votingIsClosed;
 
     const nonspy = Compound.eth.trx;
@@ -75,7 +74,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
       return nonspy.apply(this, arguments);
     }
 
-    const proposalId = 20;
+    const proposalId = 43;
     const support = 1;
     const voteSignature = {
       r: '0x8c6113af4858a5c423065261e51a6f2652072e123d1ca849e05f75636f766680',
@@ -98,7 +97,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     const addressExpected = Compound.util.getAddress('GovernorBravo');
     const methodExpected = 'castVoteBySig';
     const paramsExpected = [
-      20,
+      43,
       1,
       '0x1c',
       '0x8c6113af4858a5c423065261e51a6f2652072e123d1ca849e05f75636f766680',
@@ -137,7 +136,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails gov.castVoteBySig bad support', async function () {
-    const proposalId = 20;
+    const proposalId = 43;
     const support = 'abc';
     const voteSignature = {
       r: '0x8c6113af4858a5c423065261e51a6f2652072e123d1ca849e05f75636f766680',
@@ -158,7 +157,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails gov.castVoteBySig bad signature', async function () {
-    const proposalId = 20;
+    const proposalId = 43;
     const support = 1;
     const voteSignature = 'abc';
 
@@ -174,19 +173,19 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     }
   });
 
-  it('runs gov.createVoteSignature', async function () {
+  it('runs gov.createVoteSignature ', async function () {
     const _compound = new Compound(providerUrl, {
       privateKey: unlockedPk
     });
 
     const voteSignature = await _compound.createVoteSignature(
-      20,
+      43,
       1
     );
 
     const expectedSignature = {
-      r: '0x8c6113af4858a5c423065261e51a6f2652072e123d1ca849e05f75636f766680',
-      s: '0x1552df4943100711f6e0517c98bb8a4b81b4a2ddc5427c0aa4b8240a72cc0839',
+      r: '0xfe5e182c4668df8378c8b17667067fdf13c1ea47dcf152fa6bdf10e629c6b59c',
+      s: '0x2d66efa63dd8d8efee977e55c05c8d7568124d01fcd1b3663641b583ca639daa',
       v: '0x1c'
     };
 
@@ -195,7 +194,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     assert.equal(voteSignature.v, expectedSignature.v);
   });
 
-  it('runs gov.castVoteWithReason', async function () {
+  it('runs gov.castVoteWithReason ', async function () {
     let address, method, params, votingIsClosed;
 
     const nonspy = Compound.eth.trx;
@@ -207,7 +206,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     }
 
     try {
-      const voteTrx = await compound.castVoteWithReason(20, 1, 'Reason here', {
+      const voteTrx = await compound.castVoteWithReason(43, 1, 'Reason here', {
         gasLimit: ethers.utils.parseUnits('100000', 'wei')
       });
       const receipt = await voteTrx.wait(1);
@@ -217,7 +216,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
 
     const addressExpected = Compound.util.getAddress('GovernorBravo');
     const methodExpected = 'castVoteWithReason';
-    const paramsExpected = [ 20, 1, 'Reason here' ];
+    const paramsExpected = [ 43, 1, 'Reason here' ];
 
     assert.equal(votingIsClosed, true);
     assert.equal(address, addressExpected);
@@ -246,9 +245,9 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails gov.castVoteWithReason bad reason', async function () {
-    const errorMessage = 'Compound [castVoteWithReason] | Argument `reason` must be a string';
+    const errorMessage = 'Compound [castVoteWithReason] | Argument `reason` must be a string.';
     try {
-      const voteTrx = await compound.castVoteWithReason(11, 'abc', 0); // bad reason
+      const voteTrx = await compound.castVoteWithReason(11, 1, 0); // bad reason
     } catch (e) {
       assert.equal(e.message, errorMessage);
     }

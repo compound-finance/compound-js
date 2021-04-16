@@ -200,7 +200,7 @@ export async function createVoteSignature(
     ],
     Ballot: [
       { name: 'proposalId', type: 'uint256' },
-      { name: 'support', type: 'number' }
+      { name: 'support', type: 'uint8' }
     ]
   };
 
@@ -264,7 +264,7 @@ export async function castVoteWithReason(
   trxOptions._compoundProvider =  this._provider;
   trxOptions.abi =  abi.GovernorBravo;
   const parameters = [ proposalId, support, reason ];
-  const method = 'castVote';
+  const method = 'castVoteWithReason';
 
   return eth.trx(governorAddress, method, parameters, trxOptions);
 }
