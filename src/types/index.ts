@@ -57,6 +57,7 @@ export interface CallOptions {
   privateKey?: string;
   mnemonic?: string;
   mantissa?: boolean;
+  blockTag?: number | string;
   // blockNumber?: string;
   // id?: number;
 }
@@ -216,7 +217,7 @@ export interface DelegateSignatureMessage {
 
 export interface VoteSignatureMessage {
   proposalId: number;
-  support: boolean;
+  support: number;
 }
 
 export type EIP712Message = DelegateSignatureMessage | VoteSignatureMessage;
