@@ -163,10 +163,10 @@ export async function castVoteBySig(
  *
  * (async () => {
  *
- *   const voteForSignature = await compound.createVoteSignature(20, true);
+ *   const voteForSignature = await compound.createVoteSignature(20, 1);
  *   console.log('voteForSignature', voteForSignature);
  *
- *   const voteAgainstSignature = await compound.createVoteSignature(20, false);
+ *   const voteAgainstSignature = await compound.createVoteSignature(20, 0);
  *   console.log('voteAgainstSignature', voteAgainstSignature);
  *
  * })().catch(console.error);
