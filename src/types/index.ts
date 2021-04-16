@@ -57,6 +57,7 @@ export interface CallOptions {
   privateKey?: string;
   mnemonic?: string;
   mantissa?: boolean;
+  blockTag?: number | string;
   // blockNumber?: string;
   // id?: number;
 }

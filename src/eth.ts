@@ -51,6 +51,7 @@ function _ethJsonRpc(
       chainId: options.chainId,
       from: options.from,
       gasLimit: options.gasLimit,
+      blockTag: options.blockTag,
     };
 
     parameters.push(overrides);
