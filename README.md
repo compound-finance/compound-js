@@ -215,6 +215,18 @@ const main = async () => {
 main().catch(console.error);
 ```
 
+## Test
+
+Tests are available in `./test/*.test.js`. The tests are configured in `./test/index.js`. Methods are tested using a forked chain using ganache-core. A JSON RPC provider URL needs to be configured as an environment variable before running the tests (`MAINNET_PROVIDER_URL`). Archive state must be available to run the tests. For free archive node access, get a provider URL from [Alchemy](http://alchemy.com/).
+
+```
+## Run all tests
+npm test
+
+## Run a single test (Mocha JS grep option)
+npm test -- -g 'runs eth.getBalance'
+```
+
 ## Build for Node.js & Web Browser
 
 ```

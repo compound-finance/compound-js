@@ -30,6 +30,7 @@ const server = ganache.server({
   fork: providerUrl,
   network_id: 1,
   default_balance_ether: 10000,
+  fork_block_number: 12588581, // for free archive node access, use alchemy.com
 });
 
 server.listen(8545, (err, blockchain) => console.error);
