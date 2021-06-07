@@ -52,6 +52,7 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "assert": "^2.0.0",
     "ethers": "^5.0.7"
   }
 }

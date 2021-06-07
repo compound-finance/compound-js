@@ -98,7 +98,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     const events = txReceipt.events.length;
 
     const expectedStatus = 1;
-    const expectedEvents = 12;
+    const expectedEvents = 14;
 
     assert.equal(status, expectedStatus);
     assert.equal(events, expectedEvents);
