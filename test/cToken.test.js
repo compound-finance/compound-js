@@ -420,6 +420,17 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.repayBorrow behalf address', async function () {
+
+    // TODO: delete
+    const p = new ethers.providers.JsonRpcProvider('http://localhost:8545');
+    const block = await p.getBlockNumber();
+    console.log('block', block);
+    const net = await p.getNetwork();
+    console.log('net', net);
+    const net_version = await hre.network.provider.send('net_version');
+    console.log('net_version', net_version);
+    ///////
+
     const errorMessage = 'Compound [repayBorrow] | Invalid `borrower` address.';
     try {
       const trx = await compound.repayBorrow('USDC', 1, '0xbadaddress', false); // bad address

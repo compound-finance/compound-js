@@ -39,7 +39,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
       'function mint() payable',
       [],
       {
-        gasLimit: 150000,
+        gasLimit: 170000,
         gasPrice: ethers.utils.parseUnits('20.0', 'gwei'),
         value: ethers.utils.parseEther('1.0'),
         provider: providerUrl,
