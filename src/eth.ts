@@ -224,8 +224,7 @@ export async function getProviderNetwork(
 
   let networkId;
   if (_provider.send) {
-    // networkId = await _provider.send('net_version');
-    networkId = (await _provider.send('eth_chainId')).chainId;
+    networkId = await _provider.send('net_version');
   } else {
     networkId = _provider._network.chainId;
   }
