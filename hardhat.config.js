@@ -1,4 +1,4 @@
-// require('@nomiclabs/hardhat-waffle');
+require('@nomiclabs/hardhat-waffle');
 
 const providerUrl = process.env.MAINNET_PROVIDER_URL;
 
