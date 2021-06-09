@@ -423,12 +423,16 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
 
     // TODO: delete
     const p = new ethers.providers.JsonRpcProvider('http://localhost:8545');
-    const block = await p.getBlockNumber();
-    console.log('block', block);
-    const net = await p.getNetwork();
-    console.log('net', net);
-    const net_version = await hre.network.provider.send('net_version');
-    console.log('net_version', net_version);
+
+    const ethersNetVersion = await p.send('net_version');
+    console.log('ethers net_version', +ethersNetVersion);
+    const ethersChainId = await p.send('eth_chainId');
+    console.log('ethers eth_chainId', +ethersChainId);
+
+    const hreNetVersion = await hre.network.provider.send('net_version');
+    console.log('hre net_version', +hreNetVersion);
+    const hreChainId = await hre.network.provider.send('eth_chainId');
+    console.log('hre eth_chainId', +hreChainId);
     ///////
 
     const errorMessage = 'Compound [repayBorrow] | Invalid `borrower` address.';

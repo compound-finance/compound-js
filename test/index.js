@@ -6,8 +6,8 @@
 
 // Set up hardhat
 const hre = require('hardhat');
-const ethers = require('ethers');
-// const ethers = hre.ethers;
+// const ethers = require('ethers');
+const ethers = hre.ethers;
 
 // Source Files
 const api = require('./api.test.js');
