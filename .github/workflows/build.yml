@@ -3,7 +3,7 @@ name: Build
 on:
   pull_request_target:
     branches:
-      - master
+      - '**'
   push:
     branches:
       - master
@@ -12,6 +12,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - name: Branch name
+      run: echo Running on branch ${GITHUB_REF##*/}
     - uses: actions/checkout@v2
     - name: Use Node.js 12.x
       uses: actions/setup-node@v1
