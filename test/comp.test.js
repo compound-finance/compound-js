@@ -7,7 +7,7 @@ const providerUrl = 'http://localhost:8545';
 const unlockedAddress = '0xa0df350d2637096571F7A701CBc1C5fdE30dF76A';
 const unlockedPk = '0xb8c1b5c1d81f9475fdf2e334517d29f733bdfa40682207571b12fc1142cbf329';
 
-function getNonce (address, compAddress, _providerUrl) {
+function getNonce(address, compAddress, _providerUrl) {
   return new Promise((resolve, reject) => {
     Compound.eth.read(
       compAddress,
@@ -21,10 +21,6 @@ function getNonce (address, compAddress, _providerUrl) {
 module.exports = function suite([ publicKeys, privateKeys ]) {
 
   const acc1 = { address: publicKeys[0], privateKey: privateKeys[0] };
-
-  const compound = new Compound(providerUrl, {
-    privateKey: acc1.privateKey
-  });
 
   it('runs comp.getCompBalance', async function () {
     const bal = await comp.getCompBalance(acc1.address, providerUrl);
@@ -84,9 +80,13 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   it('runs comp.claimComp', async function () {
     let txReceipt;
 
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     try {
       const claimCompTx = await compound.claimComp({
-        gasLimit: ethers.utils.parseUnits('1000000', 'wei') // set when prices were unusually high
+        gasLimit: ethers.utils.parseUnits('2000000', 'wei') // set when prices were unusually high
       });
       txReceipt = await claimCompTx.wait(1);
     } catch (error) {
@@ -105,6 +105,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs comp.delegate', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const delegateTx = await compound.delegate(acc1.address);
     const txReceipt = await delegateTx.wait(1);
 
@@ -161,6 +165,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs comp.delegateBySig', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const compAddress = Compound.util.getAddress(Compound.COMP);
     const nonce = +(await getNonce(acc1.address, compAddress, providerUrl)).toString();
     const expiry = 10e9;
@@ -185,6 +193,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails comp.delegateBySig address string', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [delegateBySig] | Argument `_address` must be a string.';
     try {
       const delegateTx = await compound.delegateBySig(
@@ -203,6 +215,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails comp.delegateBySig address invalid', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [delegateBySig] | Argument `_address` must be a valid Ethereum address.';
     try {
       const delegateTx = await compound.delegateBySig(
@@ -221,6 +237,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails comp.delegateBySig nonce', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [delegateBySig] | Argument `nonce` must be an integer.';
     try {
       const delegateTx = await compound.delegateBySig(
@@ -239,6 +259,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails comp.delegateBySig expiry', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [delegateBySig] | Argument `expiry` must be an integer.';
     try {
       const delegateTx = await compound.delegateBySig(
@@ -257,6 +281,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails comp.delegateBySig signature', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [delegateBySig] | Argument `signature` must be an object that contains the v, r, and s pieces of an EIP-712 signature.';
     try {
       const delegateTx = await compound.delegateBySig(

@@ -4,6 +4,12 @@
 // To run a single file's tests: `npm test -- -g './src/eth.ts'`
 // To run a single test: `npm test -- -g 'eth.getBalance'`
 
+// Set up hardhat
+const { TASK_NODE_CREATE_SERVER } = require("hardhat/builtin-tasks/task-names");
+const hre = require('hardhat');
+const ethers = hre.ethers;
+let jsonRpcServer; // used to run a localhost fork of mainnet
+
 // Source Files
 const api = require('./api.test.js');
 const comp = require('./comp.test.js');
@@ -16,34 +22,40 @@ const priceFeed = require('./priceFeed.test.js');
 const util = require('./util.test.js');
 const initialize = require('./initialize.test.js');
 
-const providerUrl = process.env.MAINNET_PROVIDER_URL;
-
-if (!providerUrl) {
-  console.error('Missing JSON RPC provider URL as environment variable `MAINNET_PROVIDER_URL`');
-  process.exit(1);
+const mnemonic = hre.network.config.accounts.mnemonic;
+const addresses = [];
+const privateKeys = [];
+for (let i = 0; i < 20; i++) {
+  const wallet = new ethers.Wallet.fromMnemonic(mnemonic, `m/44'/60'/0'/0/${i}`);
+  addresses.push(wallet.address);
+  privateKeys.push(wallet._signingKey().privateKey);
 }
 
-// Run a Ganache Core to test against a mainnet fork
-const ganache = require('ganache-core');
-
-const server = ganache.server({
-  fork: providerUrl,
-  network_id: 1,
-  default_balance_ether: 10000,
-  fork_block_number: 12588581, // for free archive node access, use alchemy.com
-});
-
-server.listen(8545, (err, blockchain) => console.error);
-
-const unlockedAccounts = server.provider.manager.state.unlocked_accounts;
-const publicKeys = Object.keys(unlockedAccounts);
-const privateKeys = publicKeys.map((k) => {
-  return '0x' + unlockedAccounts[k].secretKey.toString('hex');
-});
-const acc = [ publicKeys, privateKeys ]; // Unlocked accounts with test ETH
+let acc = [ addresses, privateKeys ]; // Unlocked accounts with test ETH
 
 // Main test suite
 describe('Compound.js', function () {
+
+  before(async () => {
+    console.log('Running a hardhat local fork of mainnet...');
+
+    jsonRpcServer = await hre.run(TASK_NODE_CREATE_SERVER, {
+      hostname: 'localhost',
+      port: 8545,
+      provider: hre.network.provider
+    });
+
+    await jsonRpcServer.listen();
+  });
+
+  beforeEach(async () => {
+    await resetForkedChain();
+  });
+
+  after(async () => {
+    await jsonRpcServer.close();
+  });
+
   describe('./src/api.ts', api.bind(this, acc));
   describe('./src/comp.ts', comp.bind(this, acc));
   describe('./src/comptroller.ts', comptroller.bind(this, acc));
@@ -54,8 +66,20 @@ describe('Compound.js', function () {
   describe('./src/priceFeed.ts', priceFeed.bind(this, acc));
   describe('./src/util.ts', util.bind(this, acc));
   describe('initialize', initialize.bind(this, acc));
+
 });
 
-after(function () {
-  server.close();
-});
+async function resetForkedChain() {
+  // Parent directory's hardhat.config.js needs these to be set
+  const forkUrl = hre.config.networks.hardhat.forking.url;
+  const forkBlockNumber = hre.config.networks.hardhat.forking.blockNumber;
+  await hre.network.provider.request({
+    method: 'hardhat_reset',
+    params: [{
+      forking: {
+        jsonRpcUrl: forkUrl,
+        blockNumber: forkBlockNumber
+      }
+    }]
+  });
+}

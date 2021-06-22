@@ -9,15 +9,11 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   const acc1 = { address: publicKeys[0], privateKey: privateKeys[0] };
   const acc2 = { address: publicKeys[1], privateKey: privateKeys[1] };
 
-  const compound = new Compound(providerUrl, {
-    privateKey: acc1.privateKey
-  });
-
-  const compound2 = new Compound(providerUrl, {
-    privateKey: acc2.privateKey
-  });
-
   it('runs cToken.supply ETH', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const trx = await compound.supply(Compound.ETH, 2);
     const receipt = await trx.wait(1);
 
@@ -33,6 +29,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs cToken.supply USDC', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const supplyEthTrx = await compound.supply(Compound.ETH, 2);
     await supplyEthTrx.wait(1);
 
@@ -62,6 +62,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs cToken.supply USDC no approve', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const supplyEthTrx = await compound.supply(Compound.ETH, 2);
     await supplyEthTrx.wait(1);
 
@@ -85,6 +89,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.supply asset type', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [supply] | Argument `asset` cannot be supplied.';
     try {
       const trx = await compound.supply(null, 10); // bad asset type
@@ -94,6 +102,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.supply bad amount', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [supply] | Argument `amount` must be a string, number, or BigNumber.';
     try {
       const trx = await compound.supply('ETH', null); // bad amount
@@ -103,6 +115,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs cToken.redeem ETH', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const supplyEthTrx = await compound.supply(Compound.ETH, 1);
     await supplyEthTrx.wait(1);
 
@@ -121,6 +137,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs cToken.redeem USDC', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const supplyEthTrx = await compound.supply(Compound.ETH, 2);
     await supplyEthTrx.wait(1);
 
@@ -153,6 +173,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs cToken.redeem cUSDC', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const supplyEthTrx = await compound.supply(Compound.ETH, 2);
     await supplyEthTrx.wait(1);
 
@@ -185,6 +209,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.redeem bad asset', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [redeem] | Argument `asset` must be a non-empty string.';
     try {
       const trx = await compound.redeem(null, 2); // bad asset
@@ -194,6 +222,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.redeem invalid asset', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [redeem] | Argument `asset` is not supported.';
     try {
       const trx = await compound.redeem('UUUU', 2); // invalid asset
@@ -203,6 +235,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.redeem invalid cToken', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [redeem] | Argument `asset` is not supported.';
     try {
       const trx = await compound.redeem('cUUUU', 2); // invalid asset
@@ -212,6 +248,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.redeem bad amount', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [redeem] | Argument `amount` must be a string, number, or BigNumber.';
     try {
       const trx = await compound.redeem(Compound.cUSDC, null); // bad amount
@@ -221,6 +261,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs cToken.borrow USDC', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const supplyEthTrx = await compound.supply(Compound.ETH, 2);
     await supplyEthTrx.wait(1);
 
@@ -242,6 +286,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs cToken.borrow ETH', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const supplyEthTrx = await compound.supply(Compound.ETH, 10);
     await supplyEthTrx.wait(1);
 
@@ -258,6 +306,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.borrow invalid asset', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [borrow] | Argument `asset` cannot be borrowed.';
     try {
       const trx = await compound.borrow('UUUU', 5); // invalid asset
@@ -267,6 +319,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.borrow bad amount', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [borrow] | Argument `amount` must be a string, number, or BigNumber.';
     try {
       const trx = await compound.borrow(Compound.USDC, null); // bad amount
@@ -276,6 +332,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs cToken.repayBorrow USDC', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const supplyEthTrx = await compound.supply(Compound.ETH, 2);
     await supplyEthTrx.wait(1);
 
@@ -300,6 +360,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs cToken.repayBorrow ETH', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const supplyEthTrx = await compound.supply(Compound.ETH, 10);
     await supplyEthTrx.wait(1);
 
@@ -323,6 +387,14 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs cToken.repayBorrow behalf USDC', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
+    const compound2 = new Compound(providerUrl, {
+      privateKey: acc2.privateKey
+    });
+
     const supplyEthTrx2 = await compound2.supply(Compound.ETH, 2);
     await supplyEthTrx2.wait(1);
 
@@ -364,6 +436,14 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs cToken.repayBorrow behalf ETH', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
+    const compound2 = new Compound(providerUrl, {
+      privateKey: acc2.privateKey
+    });
+
     const supplyEthTrx = await compound2.supply(Compound.ETH, 10);
     await supplyEthTrx.wait(1);
 
@@ -393,6 +473,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.repayBorrow bad asset', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [repayBorrow] | Argument `asset` is not supported.';
     try {
       const trx = await compound.repayBorrow(null, 1, acc2.address, false); // bad asset
@@ -402,6 +486,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.repayBorrow invalid asset', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [repayBorrow] | Argument `asset` is not supported.';
     try {
       const trx = await compound.repayBorrow('xxxx', 1, acc2.address, false); // invalid asset
@@ -411,6 +499,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.repayBorrow bad amount', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [repayBorrow] | Argument `amount` must be a string, number, or BigNumber.';
     try {
       const trx = await compound.repayBorrow('USDC', null, acc2.address, false); // invalid asset
@@ -420,6 +512,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails cToken.repayBorrow behalf address', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [repayBorrow] | Invalid `borrower` address.';
     try {
       const trx = await compound.repayBorrow('USDC', 1, '0xbadaddress', false); // bad address
