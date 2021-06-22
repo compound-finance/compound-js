@@ -5,6 +5,11 @@
   "description": "A JavaScript SDK for Ethereum and the Compound Protocol.",
   "license": "BSD-3-Clause",
   "main": "dist/nodejs/index.js",
+  "nyc": {
+    "include": [
+      "src/**/*.ts"
+    ]
+  },
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./src/*.ts",
     "build": "npm run lint && ./node_modules/.bin/tsc && npm run rollup",
@@ -16,7 +21,6 @@
     "rollup": "./node_modules/.bin/rollup -c rollup.config.ts",
     "test_log_coverage": "./node_modules/.bin/nyc ./node_modules/.bin/mocha -r ts-node/register ./test/index.js  --timeout 60000",
     "test": "./node_modules/.bin/nyc --reporter=lcov ./node_modules/.bin/mocha -r ts-node/register ./test/index.js  --timeout 60000",
-    "test2": "./node_modules/.bin/mocha -r ts-node/register ./test/index.js  --timeout 60000",
     "coverage": "codecov"
   },
   "repository": {
@@ -33,6 +37,7 @@
     "ethereum"
   ],
   "devDependencies": {
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@types/mocha": "^8.2.0",
@@ -42,6 +47,7 @@
     "codecov": "^3.8.1",
     "docblock-parser": "^1.0.0",
     "eslint": "^7.9.0",
+    "hardhat": "^2.4.1",
     "mocha": "^8.2.1",
     "nyc": "^15.1.0",
     "rollup": "^2.15.0",
@@ -53,8 +59,6 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "@nomiclabs/hardhat-waffle": "^2.0.1",
-    "ethers": "^5.3.0",
-    "hardhat": "^2.4.1"
+    "ethers": "^5.3.0"
   }
 }

@@ -18,7 +18,7 @@ function getNonce(address, compAddress, _providerUrl) {
   });
 }
 
-module.exports = function suite(hre, [ publicKeys, privateKeys ]) {
+module.exports = function suite([ publicKeys, privateKeys ]) {
 
   const acc1 = { address: publicKeys[0], privateKey: privateKeys[0] };
 
