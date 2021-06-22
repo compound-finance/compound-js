@@ -14,8 +14,9 @@
     "publish_minor": "npm version minor && npm publish --access public",
     "publish_major": "npm version major && npm publish --access public",
     "rollup": "./node_modules/.bin/rollup -c rollup.config.ts",
-    "test_log_coverage": "./node_modules/.bin/nyc ./node_modules/.bin/mocha -r ts-node/register ./test/index.*  --timeout 60000",
-    "test": "./node_modules/.bin/nyc --reporter=lcov ./node_modules/.bin/mocha -r ts-node/register ./test/index.*  --timeout 60000",
+    "test_log_coverage": "./node_modules/.bin/nyc ./node_modules/.bin/mocha -r ts-node/register ./test/index.js  --timeout 60000",
+    "test": "./node_modules/.bin/nyc --reporter=lcov ./node_modules/.bin/mocha -r ts-node/register ./test/index.js  --timeout 60000",
+    "test2": "./node_modules/.bin/mocha -r ts-node/register ./test/index.js  --timeout 60000",
     "coverage": "codecov"
   },
   "repository": {
@@ -32,7 +33,6 @@
     "ethereum"
   ],
   "devDependencies": {
-    "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@types/mocha": "^8.2.0",
@@ -42,8 +42,6 @@
     "codecov": "^3.8.1",
     "docblock-parser": "^1.0.0",
     "eslint": "^7.9.0",
-    "ganache-core": "^2.13.1",
-    "hardhat": "^2.3.0",
     "mocha": "^8.2.1",
     "nyc": "^15.1.0",
     "rollup": "^2.15.0",
@@ -55,6 +53,8 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
-    "ethers": "^5.3.0"
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "ethers": "^5.3.0",
+    "hardhat": "^2.4.1"
   }
 }

@@ -10,11 +10,11 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
 
   const acc1 = { address: publicKeys[0], privateKey: privateKeys[0] };
 
-  const compound = new Compound(providerUrl, {
-    privateKey: acc1.privateKey
-  });
+  it('runs gov.castVote', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
 
-  it('runs gov.castVote ', async function () {
     let address, method, params, votingIsClosed;
 
     const nonspy = Compound.eth.trx;
@@ -31,7 +31,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
       });
       const receipt = await voteTrx.wait(1);
     } catch(err) {
-      votingIsClosed = err.error.error.data.stack.includes('GovernorBravo::castVoteInternal: voting is closed');
+      votingIsClosed = JSON.stringify(err).includes('GovernorBravo::castVoteInternal: voting is closed');
     }
 
     const addressExpected = Compound.util.getAddress('GovernorBravo');
@@ -46,6 +46,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails gov.castVote bad proposalId', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [castVote] | Argument `proposalId` must be an integer.';
     try {
       const voteTrx = await compound.castVote(null, 1); // bad proposalId
@@ -55,6 +59,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails gov.castVote bad support', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [castVote] | Argument `support` must be an integer (0, 1, or 2).';
     try {
       const voteTrx = await compound.castVote(11, 'abc'); // bad support
@@ -63,8 +71,12 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     }
   });
 
-  it('runs gov.castVoteBySig ', async function () {
+  it('runs gov.castVoteBySig closed vote', async function () {
     let address, method, params, votingIsClosed;
+
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
 
     const nonspy = Compound.eth.trx;
     Compound.eth.trx = function() {
@@ -90,8 +102,8 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
         { gasLimit: ethers.utils.parseUnits('500000', 'wei') }
       );
       const receipt = await trx.wait(1);
-    } catch({ error }) {
-      votingIsClosed = error.error.data.stack.includes('GovernorBravo::castVoteInternal: voting is closed');
+    } catch(err) {
+      votingIsClosed = JSON.stringify(err).includes('GovernorBravo::castVoteInternal: voting is closed');
     }
 
     const addressExpected = Compound.util.getAddress('GovernorBravo');
@@ -115,6 +127,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails gov.castVoteBySig bad proposalId', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const proposalId = null;
     const support = true;
     const voteSignature = {
@@ -136,6 +152,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails gov.castVoteBySig bad support', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const proposalId = 43;
     const support = 'abc';
     const voteSignature = {
@@ -157,6 +177,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails gov.castVoteBySig bad signature', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const proposalId = 43;
     const support = 1;
     const voteSignature = 'abc';
@@ -195,6 +219,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs gov.castVoteWithReason ', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     let address, method, params, votingIsClosed;
 
     const nonspy = Compound.eth.trx;
@@ -211,7 +239,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
       });
       const receipt = await voteTrx.wait(1);
     } catch(err) {
-      votingIsClosed = err.error.error.data.stack.includes('GovernorBravo::castVoteInternal: voting is closed');
+      votingIsClosed = JSON.stringify(err).includes('GovernorBravo::castVoteInternal: voting is closed');
     }
 
     const addressExpected = Compound.util.getAddress('GovernorBravo');
@@ -227,6 +255,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails gov.castVoteWithReason bad proposalId', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [castVoteWithReason] | Argument `proposalId` must be an integer.';
     try {
       const voteTrx = await compound.castVoteWithReason(null, 1, 'Reason here'); // bad proposalId
@@ -236,6 +268,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails gov.castVoteWithReason bad support', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [castVoteWithReason] | Argument `support` must be an integer (0, 1, or 2).';
     try {
       const voteTrx = await compound.castVoteWithReason(11, 'abc', 'Reason here'); // bad support
@@ -245,6 +281,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails gov.castVoteWithReason bad reason', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [castVoteWithReason] | Argument `reason` must be a string.';
     try {
       const voteTrx = await compound.castVoteWithReason(11, 1, 0); // bad reason

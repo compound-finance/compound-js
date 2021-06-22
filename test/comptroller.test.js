@@ -8,11 +8,11 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
 
   const acc1 = { address: publicKeys[0], privateKey: privateKeys[0] };
 
-  const compound = new Compound(providerUrl, {
-    privateKey: acc1.privateKey
-  });
-
   it('runs comptroller.enterMarkets single asset', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const trx = await compound.enterMarkets(Compound.ETH);
     const receipt = await trx.wait(1);
 
@@ -27,6 +27,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs comptroller.enterMarkets multiple assets', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const trx = await compound.enterMarkets(
       [ Compound.DAI, Compound.USDC, Compound.UNI ]
     );
@@ -43,6 +47,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails comptroller.enterMarkets cToken string', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [enterMarkets] | Argument `markets` must be an array or string.';
     try {
       const trx = await compound.enterMarkets(null);
@@ -52,6 +60,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails comptroller.enterMarkets invalid cToken', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [enterMarkets] | Provided market `cbadctokenname` is not a recognized cToken.';
     try {
       const trx = await compound.enterMarkets(['USDC', 'badctokenname']);
@@ -61,6 +73,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs comptroller.exitMarket', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const enterMarketsTrx = await compound.enterMarkets(Compound.ETH);
     await enterMarketsTrx.wait(1);
 
@@ -78,6 +94,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails comptroller.exitMarket cToken string', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [exitMarket] | Argument `market` must be a string of a cToken market name.';
     try {
       const trx = await compound.exitMarket(null);
@@ -87,6 +107,10 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('fails comptroller.exitMarket invalid cToken', async function () {
+    const compound = new Compound(providerUrl, {
+      privateKey: acc1.privateKey
+    });
+
     const errorMessage = 'Compound [exitMarket] | Provided market `cbadctokenname` is not a recognized cToken.';
     try {
       const trx = await compound.exitMarket('badctokenname');
