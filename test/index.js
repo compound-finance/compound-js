@@ -56,6 +56,10 @@ describe('Compound.js', function () {
     await jsonRpcServer.close();
   });
 
+  it('GITHUB ACTIONS CHECK BRANCH NAME', async function () {
+    console.log("BRANCH NAME", process.env.GITHUB_REF);
+  });
+
   describe('./src/api.ts', api.bind(this, acc));
   describe('./src/comp.ts', comp.bind(this, acc));
   describe('./src/comptroller.ts', comptroller.bind(this, acc));
