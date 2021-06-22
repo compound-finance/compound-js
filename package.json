@@ -37,6 +37,7 @@
     "ethereum"
   ],
   "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
@@ -47,6 +48,7 @@
     "codecov": "^3.8.1",
     "docblock-parser": "^1.0.0",
     "eslint": "^7.9.0",
+    "ethereum-waffle": "^3.4.0",
     "hardhat": "^2.4.1",
     "mocha": "^8.2.1",
     "nyc": "^15.1.0",
