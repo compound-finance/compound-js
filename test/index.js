@@ -37,7 +37,7 @@ let acc = [ addresses, privateKeys ]; // Unlocked accounts with test ETH
 describe('Compound.js', function () {
 
   before(async () => {
-    console.log('Running a hardhat local fork of mainnet...');
+    console.log('\n    Running a hardhat local fork of mainnet...\n');
 
     jsonRpcServer = await hre.run(TASK_NODE_CREATE_SERVER, {
       hostname: 'localhost',

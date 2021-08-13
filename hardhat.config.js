@@ -13,7 +13,7 @@ module.exports = {
       chainId: 1,
       forking: {
         url: providerUrl,
-        blockNumber: 12588581,
+        blockNumber: 13010000,
       },
       gasPrice: 0,
       loggingEnabled: false,

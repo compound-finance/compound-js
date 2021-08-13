@@ -34,20 +34,27 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   it('runs eth.trx', async function () {
     // Mint some cETH by supplying ETH to the Compound Protocol
     const cEthMainnetAddress = '0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5';
-    const trx = await eth.trx(
-      cEthMainnetAddress,
-      'function mint() payable',
-      [],
-      {
-        gasLimit: 170000,
-        gasPrice: ethers.utils.parseUnits('20.0', 'gwei'),
-        value: ethers.utils.parseEther('1.0'),
-        provider: providerUrl,
-        privateKey: acc1.privateKey
-      }
-    );
 
-    const trxReceipt = await trx.wait(1);
+    let txReceipt;
+
+    try {
+
+      const trx = await eth.trx(
+        cEthMainnetAddress,
+        'function mint() payable',
+        [],
+        {
+          value: ethers.utils.parseEther('1.0'),
+          provider: providerUrl,
+          privateKey: acc1.privateKey
+        }
+      );
+
+      trxReceipt = await trx.wait(1);
+    } catch (error) {
+      console.error('error', error);
+      console.error('txReceipt', txReceipt);
+    }
 
     const expected = 4;
     assert.equal(trxReceipt.events.length, expected);

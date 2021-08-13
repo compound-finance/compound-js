@@ -98,7 +98,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     const events = txReceipt.events.length;
 
     const expectedStatus = 1;
-    const expectedEvents = 14;
+    const expectedEvents = 18;
 
     assert.equal(status, expectedStatus);
     assert.equal(events, expectedEvents);
@@ -109,8 +109,15 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
       privateKey: acc1.privateKey
     });
 
-    const delegateTx = await compound.delegate(acc1.address);
-    const txReceipt = await delegateTx.wait(1);
+    let txReceipt;
+
+    try {
+      const delegateTx = await compound.delegate(acc1.address);
+      txReceipt = await delegateTx.wait(1);
+    } catch (error) {
+      console.error('error', error);
+      console.error('txReceipt', txReceipt);
+    }
 
     const event = txReceipt.events[0].event;
     const delegatee = txReceipt.events[0].args[2].toLowerCase();
