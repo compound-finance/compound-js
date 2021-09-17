@@ -52,7 +52,5 @@
       null
     ]
   },
-  "autoRefreshOnNetworkChange": true,
-  "send": null,
-  "sendAsync": null
+  "autoRefreshOnNetworkChange": true
 }

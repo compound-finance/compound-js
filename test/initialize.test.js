@@ -2,7 +2,7 @@ const assert = require('assert');
 const Compound = require('../src/index.ts');
 
 // Mocked browser `window.ethereum` as unlocked account '0xa0df35...'
-const window = { ethereum: require('./window.ethereum.json') };
+const _window = { ethereum: require('./window.ethereum.json') };
 
 const providerUrl = 'http://localhost:8545';
 const unlockedPrivateKey = '0xb8c1b5c1d81f9475fdf2e334517d29f733bdfa40682207571b12fc1142cbf329';
@@ -47,6 +47,9 @@ module.exports = function suite() {
   });
 
   it('initializes compound as web3', async function () {
+    // make a fresh copy, so our newly defined functions don't break other tests
+    const window = JSON.parse(JSON.stringify(_window));
+
     window.ethereum.send = function (request, callback) {}
     const compound = new Compound(window.ethereum);
 
