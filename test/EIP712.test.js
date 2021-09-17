@@ -4,7 +4,7 @@ const ethers = require('ethers');
 const providerUrl = 'http://localhost:8545';
 
 // Mocked browser `window.ethereum` as unlocked account '0xa0df35...'
-const window = { ethereum: require('./window.ethereum.json') };
+const _window = { ethereum: require('./window.ethereum.json') };
 
 const patchedAddress = '0xa0df350d2637096571f7a701cbc1c5fde30df76a';
 const patchedPrivateKey = '0xb8c1b5c1d81f9475fdf2e334517d29f733bdfa40682207571b12fc1142cbf329';
@@ -58,6 +58,9 @@ module.exports = function suite() {
 
   it('runs EIP712.sign as browser', async function () {
     const provider = new ethers.providers.JsonRpcProvider(providerUrl);
+
+    // make a fresh copy, so our newly defined functions don't break other tests
+    const window = JSON.parse(JSON.stringify(_window));
 
     window.ethereum.send = function (request, callback) {
       const { method, params } = request;

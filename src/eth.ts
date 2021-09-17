@@ -301,10 +301,17 @@ export function _createProvider(options: CallOptions = {}) : Provider {
   let provider: any = options.provider || (options.network || 'mainnet');
   const isADefaultProvider = !!ethers.providers.getNetwork(provider.toString());
 
+  const isObject = typeof provider === 'object';
+
+  // User passed an ethers.js provider/signer/wallet object
+  if (isObject && (provider._isSigner || provider._isProvider)) {
+    return provider;
+  }
+
   // Create an ethers provider, web3s can sign
   if (isADefaultProvider) {
     provider = ethers.getDefaultProvider(provider);
-  } else if (typeof provider === 'object') {
+  } else if (isObject) {
     provider = new ethers.providers.Web3Provider(provider).getSigner();
   } else {
     provider = new ethers.providers.JsonRpcProvider(provider);
