@@ -1,6 +1,6 @@
 {
   "name": "@compound-finance/compound-js",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Compound Labs, Inc.",
   "description": "A JavaScript SDK for Ethereum and the Compound Protocol.",
   "license": "BSD-3-Clause",
