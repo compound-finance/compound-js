@@ -5,6 +5,11 @@
   "description": "A JavaScript SDK for Ethereum and the Compound Protocol.",
   "license": "BSD-3-Clause",
   "main": "dist/nodejs/index.js",
+  "files": [
+    "/dist/**/*.d.ts",
+    "/dist/**/*.js",
+    "/dist/**/*.js.map"
+  ],
   "nyc": {
     "include": [
       "src/**/*.ts"
