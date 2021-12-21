@@ -291,7 +291,7 @@ export const decimals = {
   'TUSD': 18,
   'UNI': 18,
   'USDC': 6,
-  'USDP': 8,
+  'USDP': 18,
   'USDT': 6,
   'WBTC': 8,
   'YFI': 18,
