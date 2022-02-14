@@ -206,6 +206,22 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
 
   });
 
+  it('runs priceFeed.getPrice for FEI', async function () {
+    const compound = new Compound(providerUrl);
+
+    let price;
+    try {
+      price = await compound.getPrice(Compound.FEI);
+      // console.log('FEI', 'price', price);
+    } catch (error) {
+      console.error(error);
+    }
+
+    assert.equal(typeof price, 'number', 'Ensure returned object is a number');
+    assert.equal(price > 0, true, 'Ensure the returned price is > 0');
+
+  });
+
   it('runs priceFeed.getPrice for MKR', async function () {
     const compound = new Compound(providerUrl);
 
@@ -309,6 +325,22 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     try {
       price = await compound.getPrice(Compound.USDC);
       // console.log('USDC', 'price', price);
+    } catch (error) {
+      console.error(error);
+    }
+
+    assert.equal(typeof price, 'number', 'Ensure returned object is a number');
+    assert.equal(price > 0, true, 'Ensure the returned price is > 0');
+
+  });
+
+  it('runs priceFeed.getPrice for USDP', async function () {
+    const compound = new Compound(providerUrl);
+
+    let price;
+    try {
+      price = await compound.getPrice(Compound.USDP);
+      // console.log('USDP', 'price', price);
     } catch (error) {
       console.error(error);
     }
