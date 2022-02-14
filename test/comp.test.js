@@ -86,7 +86,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
 
     try {
       const claimCompTx = await compound.claimComp({
-        gasLimit: ethers.utils.parseUnits('2000000', 'wei') // set when prices were unusually high
+        gasLimit: ethers.utils.parseUnits('5000000', 'wei') // set when prices were unusually high
       });
       txReceipt = await claimCompTx.wait(1);
     } catch (error) {
@@ -95,13 +95,14 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     }
 
     const status = txReceipt.status;
-    const events = txReceipt.events.length;
-
     const expectedStatus = 1;
-    const expectedEvents = 18;
+
+    const events = txReceipt.events.map(e => e.event);
 
     assert.equal(status, expectedStatus);
-    assert.equal(events, expectedEvents);
+    assert.equal(events.includes('DistributedSupplierComp'), true, 'Missing event: DistributedSupplierComp');
+    assert.equal(events.includes('DistributedBorrowerComp'), true, 'Missing event: DistributedBorrowerComp');
+
   });
 
   it('runs comp.delegate', async function () {

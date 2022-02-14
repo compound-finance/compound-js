@@ -274,15 +274,11 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     const trx = await compound.borrow(Compound.USDC, 5, { gasLimit: 600000 });
     const receipt = await trx.wait(1);
 
-    const numEvents = receipt.events.length;
     const events = receipt.events.map(e => e.event);
 
-    const numEventsExpected = 4;
-
-    assert.equal(numEvents, numEventsExpected);
-    assert.equal(events.includes('AccrueInterest'), true);
-    assert.equal(events.includes('Borrow'), true);
-    assert.equal(events.includes('Transfer'), true);
+    assert.equal(events.includes('AccrueInterest'), true, 'Missing event: AccrueInterest');
+    assert.equal(events.includes('Borrow'), true, 'Missing event: Borrow');
+    assert.equal(events.includes('Transfer'), true, 'Missing event: Transfer');
   });
 
   it('runs cToken.borrow ETH', async function () {
