@@ -41,8 +41,8 @@ module.exports = function suite() {
     const cUsdcMainnetAddress = '0x39aa39c021dfbae8fac545936693ac917d5e7563';
     const response = await api.marketHistory({
       "asset": cUsdcMainnetAddress,
-      "min_block_timestamp": 1588598520,
-      "max_block_timestamp": 1589000000,
+      "min_block_timestamp": 1650486000,
+      "max_block_timestamp": 1651636800,
       "num_buckets": 1,
     });
 
