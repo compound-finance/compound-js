@@ -1,7 +1,7 @@
 const assert = require('assert');
 const ethers = require('ethers');
 const Compound = require('../src/index.ts');
-const providerUrl = 'http://localhost:8545';
+const providerUrl = require('./config.js').httpProviderUrl;
 
 const unlockedAddress = '0xa0df350d2637096571F7A701CBc1C5fdE30dF76A';
 const unlockedPk = '0xb8c1b5c1d81f9475fdf2e334517d29f733bdfa40682207571b12fc1142cbf329';

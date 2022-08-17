@@ -1,7 +1,7 @@
 const assert = require('assert');
 const ethers = require('ethers');
 const eth = require('../src/eth.ts');
-const providerUrl = 'http://localhost:8545';
+const providerUrl = require('./config.js').httpProviderUrl;
 
 // Mocked browser `window.ethereum` as unlocked account '0xa0df35...'
 const _window = { ethereum: require('./window.ethereum.json') };

@@ -89,7 +89,7 @@ Web Browser
 Node.js
 
 ```
-npm install @compound-finance/compound-js
+npm install ethers @compound-finance/compound-js
 ```
 
 ```js

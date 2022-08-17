@@ -5,14 +5,15 @@
  */
 
 import { ethers } from 'ethers';
-import * as eth from './eth';
-import * as util from './util';
+import * as api from './api';
+import * as comet from './comet';
+import * as comp from './comp';
 import * as comptroller from './comptroller';
 import * as cToken from './cToken';
-import * as priceFeed from './priceFeed';
-import * as comp from './comp';
+import * as eth from './eth';
 import * as gov from './gov';
-import * as api from './api';
+import * as priceFeed from './priceFeed';
+import * as util from './util';
 import { constants, decimals } from './constants';
 import { Provider, CompoundOptions, CompoundInstance } from './types';
 
@@ -63,8 +64,8 @@ const Compound = function(
     _provider: provider,
     ...comptroller,
     ...cToken,
-    ...priceFeed,
     ...gov,
+    ...priceFeed,
     claimComp: comp.claimComp,
     delegate: comp.delegate,
     delegateBySig: comp.delegateBySig,
@@ -78,6 +79,20 @@ const Compound = function(
     instance._network = network;
   });
 
+  instance.comet = {
+    _compoundInstance: instance,
+    absorb: comet.absorb,
+    allow: comet.allow,
+    allowBySig: comet.allowBySig,
+    buyCollateral: comet.buyCollateral,
+    createAllowSignature: comet.createAllowSignature,
+    supply: comet.supply,
+    transfer: comet.transfer,
+    withdraw: comet.withdraw,
+    withdrawFrom: comet.withdrawFrom,
+    withdrawTo: comet.withdrawTo,
+  };
+
   return instance;
 };
 
@@ -87,8 +102,27 @@ Compound.util = util;
 Compound._ethers = ethers;
 Compound.decimals = decimals;
 Compound.comp = {
-  getCompBalance: comp.getCompBalance,
   getCompAccrued: comp.getCompAccrued,
+  getCompBalance: comp.getCompBalance,
+};
+Compound.comet = {
+  borrowBalanceOf: comet.borrowBalanceOf,
+  collateralBalanceOf: comet.collateralBalanceOf,
+  getAssetInfo: comet.getAssetInfo,
+  getAssetInfoByAddress: comet.getAssetInfoByAddress,
+  getAssetInfoBySymbol: comet.getAssetInfoBySymbol,
+  getBaseAssetName: comet.getBaseAssetName,
+  getBorrowRate: comet.getBorrowRate,
+  getPrice: comet.getPrice,
+  getReserves: comet.getReserves,
+  getSupplyRate: comet.getSupplyRate,
+  getSupportedCollaterals: comet.getSupportedCollaterals,
+  getSupportedNetworkNames: comet.getSupportedNetworkNames,
+  getUtilization: comet.getUtilization,
+  isBorrowCollateralized: comet.isBorrowCollateralized,
+  isLiquidatable: comet.isLiquidatable,
+  quoteCollateral: comet.quoteCollateral,
+  targetReserves: comet.targetReserves,
 };
 Object.assign(Compound, constants);
 

@@ -1,10 +1,13 @@
+import * as _cometConstants from './comet-artifacts/comet-constants.json';
+
 // Publicly revealed on the parent class
-export const constants = {
+const _constants = {
   'PriceFeed': 'PriceFeed',
   'Maximillion': 'Maximillion',
   'CompoundLens': 'CompoundLens',
   // 'GovernorAlpha': 'GovernorAlpha',
   'GovernorBravo': 'GovernorBravo',
+  'Comet': 'Comet',
   'Comptroller': 'Comptroller',
   'Reservoir': 'Reservoir',
   'LINK': 'LINK',
@@ -47,6 +50,14 @@ export const constants = {
   'YFI': 'YFI',
   'ZRX': 'ZRX',
 };
+
+// Move all Comet constants to the parent class
+Object.assign(_constants, _cometConstants.moveToParentClass);
+delete _cometConstants.moveToParentClass;
+
+export const cometConstants = _cometConstants;
+
+export const constants = _constants;
 
 export const address = {
   "mainnet": {

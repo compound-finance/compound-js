@@ -4,15 +4,23 @@
 // To run a single file's tests: `npm test -- -g './src/eth.ts'`
 // To run a single test: `npm test -- -g 'eth.getBalance'`
 
+// import global config variables
+const config = require('./config.js');
+
 // Set up hardhat
 const { TASK_NODE_CREATE_SERVER } = require("hardhat/builtin-tasks/task-names");
 const hre = require('hardhat');
 const ethers = hre.ethers;
-let jsonRpcServer; // used to run a localhost fork of mainnet
+
+// Used to run a localhost fork of mainnet
+// Comment out all references to it to use an already running node
+// Set the server URL and port in ./config.js
+let jsonRpcServer;
 
 // Source Files
 const api = require('./api.test.js');
 const comp = require('./comp.test.js');
+const comet = require('./comet.test.js');
 const comptroller = require('./comptroller.test.js');
 const cToken = require('./cToken.test.js');
 const EIP712 = require('./EIP712.test.js');
@@ -40,8 +48,8 @@ describe('Compound.js', function () {
     console.log('\n    Running a hardhat local fork of mainnet...\n');
 
     jsonRpcServer = await hre.run(TASK_NODE_CREATE_SERVER, {
-      hostname: 'localhost',
-      port: 8545,
+      hostname: config.hostname,
+      port: config.port,
       provider: hre.network.provider
     });
 
@@ -58,6 +66,7 @@ describe('Compound.js', function () {
 
   describe('./src/api.ts', api.bind(this, acc));
   describe('./src/comp.ts', comp.bind(this, acc));
+  // describe('./src/comet.ts', comet.bind(this, acc)); // TODO: Include with mainnet test when ready
   describe('./src/comptroller.ts', comptroller.bind(this, acc));
   describe('./src/cToken.ts', cToken.bind(this, acc));
   describe('./src/EIP712.ts', EIP712.bind(this, acc));

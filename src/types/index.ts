@@ -193,6 +193,7 @@ export interface EIP712Type {
 
 export interface EIP712Domain {
   name: string;
+  version?: string;
   chainId: number;
   verifyingContract: string;
 }
@@ -207,7 +208,12 @@ export interface DelegateTypes {
   Delegation: EIP712Type[];
 }
 
-export type EIP712Types = VoteTypes | DelegateTypes;
+export interface AllowTypes {
+  EIP712Domain: EIP712Type[];
+  Authorization: EIP712Type[];
+}
+
+export type EIP712Types = VoteTypes | DelegateTypes | AllowTypes;
 
 export interface DelegateSignatureMessage {
   delegatee: string;
@@ -220,7 +226,15 @@ export interface VoteSignatureMessage {
   support: number;
 }
 
-export type EIP712Message = DelegateSignatureMessage | VoteSignatureMessage;
+export interface AllowSignatureMessage {
+  owner: string;
+  manager: string;
+  isAllowed: boolean;
+  nonce: number;
+  expiry: number;
+}
+
+export type EIP712Message = DelegateSignatureMessage | VoteSignatureMessage | AllowSignatureMessage;
 
 interface SimpleEthersProvider {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -231,4 +245,17 @@ export interface SimpleEthersSigner {
   _signingKey();
   getAddress();
   provider?: SimpleEthersProvider;
+}
+
+// =-=-=-=-=-= /src/comet.ts =-=-=-=-=-=
+
+export interface AssetInfo {
+  offset: number;
+  asset: string;
+  priceFeed: string;
+  scale: BigNumber;
+  borrowCollateralFactor: BigNumber;
+  liquidateCollateralFactor: BigNumber;
+  liquidationFactor: BigNumber;
+  supplyCap: BigNumber;
 }
