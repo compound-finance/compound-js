@@ -203,18 +203,6 @@ function getAllFilePaths(srcPath, resultPaths) {
   return resultPaths;
 }
 
-// let intro = '';
-// intro += '# Compound.js\n\n';
-// intro += '## Introduction\n\n';
-// intro += '[Compound.js](https://www.npmjs.com/package/@compound-finance/compound-js) is a ';
-// intro += 'JavaScript SDK for Ethereum and the Compound Protocol. It wraps ';
-// intro += 'around Ethers.js, which is its only dependency. It is designed for ';
-// intro += 'both the web browser and Node.js.\n\n';
-// intro += 'The SDK is currently in open beta. **Use at your own risk.**\n\n';
-// intro += 'For bugs reports and feature requests, either create an issue in ';
-// intro += 'the [GitHub repository](https://github.com/compound-finance/compound-js) or send a message in the Development channel of'
-// intro += ' the [Compound Discord](https://compound.finance/discord).\n\n';
-
 let intro = `
 # Compound.js
 
