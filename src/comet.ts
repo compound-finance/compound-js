@@ -1,14 +1,12 @@
 /**
  * @file Comet
- * @desc These methods facilitate interactions with Compound Comet.
+ * @desc These methods facilitate interactions with Compound III.
  */
 
 import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId, toChecksumAddress } from './helpers';
 import { sign } from './EIP712';
-// import * as constants from './constants';
-// import { constants, address, abi, decimals, underlyings } from './constants';
 import { constants, cometConstants, abi as _abi } from './constants';
 const { address, abi, decimals, collaterals, base } = cometConstants;
 
@@ -363,6 +361,7 @@ export async function createAllowSignature(
   const provider = this._compoundInstance._provider;
   const cometAddress = address[net.name][constants.Comet];
   const chainId = net.id;
+
   let userAddress = provider.address;
 
   if (!userAddress && provider.getAddress) {
@@ -771,7 +770,7 @@ export async function getSupplyRate(
   const net = await eth.getProviderNetwork(provider);
   const cometAddress = address[net.name][constants.Comet];
 
-  const parameters = [ utilization ];
+  const parameters = [ utilization.toString() ];
   const trxOptions: CallOptions = {
     _compoundProvider: provider,
     abi: abi[net.name].Comet,
@@ -810,7 +809,7 @@ export async function getBorrowRate(
   const net = await eth.getProviderNetwork(provider);
   const cometAddress = address[net.name][constants.Comet];
 
-  const parameters = [ utilization ];
+  const parameters = [ utilization.toString() ];
   const trxOptions: CallOptions = {
     _compoundProvider: provider,
     abi: abi[net.name].Comet,
@@ -1430,7 +1429,7 @@ export async function collateralBalanceOf(
  * ```
  * (async function () {
  *   const assetInfo = await Compound.comet.getAssetInfo(2);
- *   console.log('Asset Info, assetInfo);
+ *   console.log('Asset Info', assetInfo);
  * })().catch(console.error);
  * ```
  */
@@ -1475,8 +1474,8 @@ export async function getAssetInfo(
  *
  * ```
  * (async function () {
- *   const assetInfo = await Compound.comet.getAssetInfoByAddress(0xContract);
- *   console.log('Asset Info, assetInfo);
+ *   const assetInfo = await Compound.comet.getAssetInfoByAddress('0xContract');
+ *   console.log('Asset Info', assetInfo);
  * })().catch(console.error);
  * ```
  */
@@ -1532,7 +1531,7 @@ export async function getAssetInfoByAddress(
  * ```
  * (async function () {
  *   const assetInfo = await Compound.comet.getAssetInfoBySymbol(Compound.WETH);
- *   console.log('Asset Info, assetInfo);
+ *   console.log('Asset Info', assetInfo);
  * })().catch(console.error);
  * ```
  */
@@ -1595,7 +1594,7 @@ export function getSupportedNetworkNames() : string[] {
  * @example
  *
  * ```
- * const collaterals = Compound.comet.getSupportedCollaterals('kovan');
+ * const collaterals = Compound.comet.getSupportedCollaterals();
  * ```
  */
 export function getSupportedCollaterals(
@@ -1620,7 +1619,7 @@ export function getSupportedCollaterals(
  * @example
  *
  * ```
- * const baseAssetName = Compound.comet.getBaseAssetName('kovan');
+ * const baseAssetName = Compound.comet.getBaseAssetName();
  * ```
  */
 export function getBaseAssetName(

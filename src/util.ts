@@ -209,7 +209,7 @@ export function getAbi(contract: string): AbiType[] {
  *
  * @example
  * ```
- * console.log('Ropsten : ', Compound.util.getNetNameWithChainId(3));
+ * console.log('Goerli : ', Compound.util.getNetNameWithChainId(5));
  * ```
  */
 export function getNetNameWithChainId(chainId: number) : string {

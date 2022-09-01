@@ -51,8 +51,7 @@ import {
  * ```
  * (async function() {
  *   const account = await Compound.api.account({
- *     "addresses": "0xB61C5971d9c0472befceFfbE662555B78284c307",
- *     "network": "ropsten"
+ *     "addresses": "0xa0df350d2637096571F7A701CBc1C5fdE30dF76A",
  *   });
  * 
  *   let daiBorrowBalance = 0;

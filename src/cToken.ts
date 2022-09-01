@@ -1,5 +1,5 @@
 /**
- * @file cToken
+ * @file Compound.js cToken
  * @desc These methods facilitate interactions with the cToken smart
  *     contracts.
  */

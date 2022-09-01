@@ -24,6 +24,8 @@ const keccak256 = ethers.utils.keccak256;
 /**
  * Applies the EIP-55 checksum to an Ethereum address.
  *
+ * @hidden
+ *
  * @param {string} _address The Ethereum address to apply the checksum.
  *
  * @returns {string} Returns a string of the Ethereum address.

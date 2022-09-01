@@ -1,7 +1,7 @@
 /**
  * @file Comptroller
  * @desc These methods facilitate interactions with the Comptroller smart
- *     contract.
+ *     contract. Methods like `claimComp` are in the Governance/COMP section.
  */
 
 import * as eth from './eth';

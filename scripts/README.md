@@ -1,10 +1,10 @@
 # Scripts
 
-These are scripts for build functionality.
+These scripts are for build functionality.
 
 ## Compound Docs
 
-To build the Compound docs, `npm run docs` or `node ./scripts/compound-docs.js`. Move the contents of `/scripts/out.md` into the internal project `/src/elm/LandingSite/Docs/CompoundJsDoc.elm`.
+To build the Compound docs, `npm run docs` or `node ./scripts/compound-docs.js`. Move the contents of `/scripts/out.md` to the markdown files in the [Compound docs website repository](https://github.com/compound-finance/compound-finance.github.io).
 
 ## Comet Spider
 

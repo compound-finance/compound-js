@@ -28,6 +28,7 @@ ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
  * @param {object} [options] Optional provider options.
  *
  * @example
+ *
  * ```
  * var compound = new Compound(window.ethereum); // web browser
  * 
@@ -35,7 +36,7 @@ ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
  * 
  * var compound = new Compound(); // Uses Ethers.js fallback mainnet (for testing only)
  * 
- * var compound = new Compound('ropsten'); // Uses Ethers.js fallback (for testing only)
+ * var compound = new Compound('goerli'); // Uses Ethers.js fallback (for testing only)
  * 
  * // Init with private key (server side)
  * var compound = new Compound('https://mainnet.infura.io/v3/_your_project_id_', {

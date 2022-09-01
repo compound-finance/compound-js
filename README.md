@@ -5,7 +5,7 @@
 
 A JavaScript SDK for Ethereum and the Compound Protocol. Wraps around [Ethers.js](https://github.com/ethers-io/ethers.js/). Works in the **web browser** and **Node.js**.
 
-[Compound.js Documentation](https://compound.finance/docs/compound-js)
+[Compound.js Documentation](https://docs.compound.finance/compound-js/)
 
 This SDK is in **open beta**, and is constantly under development. **USE AT YOUR OWN RISK**.
 
@@ -102,7 +102,7 @@ import Compound from '@compound-finance/compound-js';
 
 ## More Code Examples
 
-See the docblock comments above each function definition or the official [Compound.js Documentation](https://compound.finance/docs/compound-js).
+See the docblock comments above each function definition or the official [Compound.js Documentation](https://docs.compound.finance/compound-js/).
 
 ## Instance Creation
 
@@ -115,7 +115,7 @@ var compound = new Compound('http://127.0.0.1:8545'); // HTTP provider
 
 var compound = new Compound(); // Uses Ethers.js fallback mainnet (for testing only)
 
-var compound = new Compound('ropsten'); // Uses Ethers.js fallback (for testing only)
+var compound = new Compound('goerli'); // Uses Ethers.js fallback (for testing only)
 
 // Init with private key (server side)
 var compound = new Compound('https://mainnet.infura.io/v3/_your_project_id_', {
@@ -137,7 +137,7 @@ console.log(Compound.DAI, Compound.ETH, Compound.cETH);
 // DAI, ETH, cETH
 
 const cUsdtAddress = Compound.util.getAddress(Compound.cUSDT);
-// Mainnet cUSDT address. Second parameter can be a network like 'ropsten'.
+// Mainnet cUSDT address. Second parameter can be a network like 'goerli'.
 ```
 
 ## Mantissas
@@ -176,14 +176,14 @@ const trxOptions = {
 
 ## API
 
-The [Compound API](https://compound.finance/docs/api) is accessible from Compound.js. The corresponding services are defined in the `api` namespace on the class.
+The [Compound API](https://docs.compound.finance/v2/api) is accessible from Compound.js. The corresponding services are defined in the `api` namespace on the class.
 
 - `Compound.api.account`
 - `Compound.api.cToken`
 - `Compound.api.marketHistory`
 - `Compound.api.governance`
 
-The governance method requires a second parameter (string) for the corresponding endpoint shown in the [documentation](https://compound.finance/docs/api#GovernanceService).
+The governance method requires a second parameter (string) for the corresponding endpoint shown in the [documentation](https://docs.compound.finance/v2/api/#GovernanceService).
 
 - `proposals`
 - `voteReceipts`
@@ -194,8 +194,7 @@ Here is an example for using the `account` endpoint. The `network` parameter in 
 ```js
 const main = async () => {
   const account = await Compound.api.account({
-    "addresses": "0xB61C5971d9c0472befceFfbE662555B78284c307",
-    "network": "ropsten"
+    "addresses": "0xB61C5971d9c0472befceFfbE662555B78284c307"
   });
 
   let daiBorrowBalance = 0;

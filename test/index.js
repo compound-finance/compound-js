@@ -66,7 +66,7 @@ describe('Compound.js', function () {
 
   describe('./src/api.ts', api.bind(this, acc));
   describe('./src/comp.ts', comp.bind(this, acc));
-  // describe('./src/comet.ts', comet.bind(this, acc)); // TODO: Include with mainnet test when ready
+  describe('./src/comet.ts', comet.bind(this, acc));
   describe('./src/comptroller.ts', comptroller.bind(this, acc));
   describe('./src/cToken.ts', cToken.bind(this, acc));
   describe('./src/EIP712.ts', EIP712.bind(this, acc));
