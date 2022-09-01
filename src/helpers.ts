@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import { CompoundInstance } from './types';
 
 /**
@@ -16,4 +17,37 @@ export async function netId(_compound: CompoundInstance): Promise<void> {
   if (_compound._networkPromise) {
     await _compound._networkPromise;
   }
+}
+
+const keccak256 = ethers.utils.keccak256;
+
+/**
+ * Applies the EIP-55 checksum to an Ethereum address.
+ *
+ * @hidden
+ *
+ * @param {string} _address The Ethereum address to apply the checksum.
+ *
+ * @returns {string} Returns a string of the Ethereum address.
+ */
+export function toChecksumAddress(_address: string): string {
+  const chars = _address.toLowerCase().substring(2).split('');
+  const expanded = new Uint8Array(40);
+
+  for (let i = 0; i < 40; i++) {
+    expanded[i] = chars[i].charCodeAt(0);
+  }
+
+  const hash = keccak256(expanded);
+  let ret = '';
+
+  for (let i = 0; i < _address.length; i++) {
+    if (parseInt(hash[i], 16) >= 8) {
+      ret += _address[i].toUpperCase();
+    } else {
+      ret += _address[i];
+    }
+  }
+
+  return ret;
 }

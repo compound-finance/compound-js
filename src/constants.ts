@@ -1,10 +1,13 @@
+import * as _cometConstants from './comet-artifacts/comet-constants.json';
+
 // Publicly revealed on the parent class
-export const constants = {
+const _constants = {
   'PriceFeed': 'PriceFeed',
   'Maximillion': 'Maximillion',
   'CompoundLens': 'CompoundLens',
   // 'GovernorAlpha': 'GovernorAlpha',
   'GovernorBravo': 'GovernorBravo',
+  'Comet': 'Comet',
   'Comptroller': 'Comptroller',
   'Reservoir': 'Reservoir',
   'LINK': 'LINK',
@@ -47,6 +50,14 @@ export const constants = {
   'YFI': 'YFI',
   'ZRX': 'ZRX',
 };
+
+// Move all Comet constants to the parent class
+Object.assign(_constants, _cometConstants.moveToParentClass);
+delete _cometConstants.moveToParentClass;
+
+export const cometConstants = _cometConstants;
+
+export const constants = _constants;
 
 export const address = {
   "mainnet": {
@@ -204,6 +215,24 @@ export const address = {
     "ZRX": "0xc0e2d7d9279846b80eacdea57220ab2333bc049d"
   }
 };
+
+// Move all relevant Comet addresses to the address storage
+const cometNetworks = Object.keys(_cometConstants.address);
+cometNetworks.forEach((network) => {
+  const contractNames = Object.keys(_cometConstants.address[network]);
+  contractNames.forEach((contract) => {
+    if (!address[network]) {
+      address[network] = {};
+    }
+
+    const value = _cometConstants.address[network][contract];
+    if (typeof value === 'string') {
+      address[network][contract] = value;
+    } else if (typeof value === 'object' && value.contract && typeof value.contract === 'string') {
+      address[network][contract] = value.contract;
+    }
+  });
+});
 
 export const abi = {
   Erc20: [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}],

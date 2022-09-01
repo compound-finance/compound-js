@@ -67,26 +67,34 @@ function markdownify(block, functionName) {
   // for the header of a file
   if (tags.file && tags.desc) {
     const file = `${tags.file} Methods`;
-    const id = `${tags.file.toLowerCase()}-methods`;
-    result += `<section id="${id}" name="${file}">\n\n`
     result += `## ${file}\n\n`;
     result += `${tags.desc.toSingleLine()}\n\n`;
-    result += `</section>\n\n`;
 
     return result;
   }
 
-  let id = functionName.toKebabCase();
+  const isApi = tags.example && tags.example.includes('\.api\.');
+  const isV2 = !(tags.example && tags.example.includes('\.comet\.'));
   let title = functionName.toTitleCase();
 
   // handle special cases
-  if (functionName === 'cToken') {
-    id = 'cToken';
-    title = 'cToken';
+  if (isApi) {
+    title += ' API'
+  }
+
+  if (functionName === 'cToken' && isV2) {
+    title = 'cToken API';
+  }
+
+  if (functionName === 'supply') {
+    title = isV2 ? 'Compound v2 Supply' : 'Compound III Supply';
+  }
+
+  if (functionName === 'getPrice') {
+    title = isV2 ? 'Compound v2 Get Price' : 'Compound III Get Price';
   }
 
   if (functionName === 'function') {
-    id = 'constructor';
     title = 'Compound Constructor';
   }
 
@@ -99,7 +107,6 @@ function markdownify(block, functionName) {
   }
 
   // create section header
-  result += `<section id="${id}" name="${title}">\n\n`;
   result += `## ${title}\n\n`;
 
   // description
@@ -119,7 +126,7 @@ function markdownify(block, functionName) {
   if (tags.returns) {
     let _return = tags.returns.toSingleLine().replace('{', '(').replace('}', ')');
     _return = _return.replace(/\</g, '&lt;').replace(/\>/g, '&gt;');
-    result += '- `RETURN` ' + _return + '\n\n';
+    result += '- `RETURN` ' + _return + '\n';
   }
 
   // example
@@ -130,7 +137,9 @@ function markdownify(block, functionName) {
     result += example + '\n\n';
   }
 
-  result += '</section>\n\n';
+  // escape pipe characters (doc block parameter type definitions)
+  // might become an issue if we add md tables to the docs
+  result = result.replace(/\|/g, '\\|');
 
   return result;
 }
@@ -194,18 +203,22 @@ function getAllFilePaths(srcPath, resultPaths) {
   return resultPaths;
 }
 
-let intro = '';
-intro += '<section id="introduction" name="Introduction">\n\n';
-intro += '# Compound.js\n\n';
-intro += '## Introduction\n\n';
-intro += '[Compound.js](https://github.com/compound-finance/compound-js) is a ';
-intro += 'JavaScript SDK for Ethereum and the Compound Protocol. It wraps ';
-intro += 'around Ethers.js, which is its only dependency. It is designed for ';
-intro += 'both the web browser and Node.js.\n\n';
-intro += 'The SDK is currently in open beta. For bugs reports and feature ';
-intro += 'requests, either create an issue in the GitHub repository or send a';
-intro += ' message in the Development channel of the Compound Discord.\n\n';
-intro += '</section>\n\n';
+let intro = `
+# Compound.js
+
+## Introduction
+
+[Compound.js](https://www.npmjs.com/package/@compound-finance/compound-js) is ` +
+`a JavaScript SDK for Ethereum and the Compound Protocol. It wraps ` +
+`around Ethers.js, which is its only dependency. It is designed for ` +
+`both the web browser and Node.js.
+
+The SDK is currently in open beta. **Use at your own risk.**
+
+For bugs reports and feature requests, either create an issue in ` +
+`the [GitHub repository](https://github.com/compound-finance/compound-js) ` +
+`or send a message in the Development channel of the ` +
+`[Compound Discord](https://compound.finance/discord).\n\n`;
 
 const srcDir = './src/';
 const outFilePath = './scripts/out.md';
@@ -227,7 +240,7 @@ srcFilePaths.forEach((f) => {
 
   if (blocks.length > 0) {
     blocks.forEach((b) => {
-      const parsed = unSlashBug(docblockParser.parse(b.contents));
+      let parsed = unSlashBug(docblockParser.parse(b.contents));
       mdResult += markdownify(parsed, b.functionName);
     });
   }

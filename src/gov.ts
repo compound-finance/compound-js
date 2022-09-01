@@ -14,7 +14,7 @@ import {
   VoteSignatureMessage,
   VoteTypes,
   EIP712Domain
- } from './types';
+} from './types';
 
 /**
  * Submit a vote on a Compound Governance proposal.

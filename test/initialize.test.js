@@ -4,7 +4,7 @@ const Compound = require('../src/index.ts');
 // Mocked browser `window.ethereum` as unlocked account '0xa0df35...'
 const _window = { ethereum: require('./window.ethereum.json') };
 
-const providerUrl = 'http://localhost:8545';
+const providerUrl = require('./config.js').httpProviderUrl;
 const unlockedPrivateKey = '0xb8c1b5c1d81f9475fdf2e334517d29f733bdfa40682207571b12fc1142cbf329';
 const unlockedMnemonic = 'clutch captain shoe salt awake harvest setup primary inmate ugly among become';
 

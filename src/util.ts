@@ -209,7 +209,7 @@ export function getAbi(contract: string): AbiType[] {
  *
  * @example
  * ```
- * console.log('Ropsten : ', Compound.util.getNetNameWithChainId(3));
+ * console.log('Goerli : ', Compound.util.getNetNameWithChainId(5));
  * ```
  */
 export function getNetNameWithChainId(chainId: number) : string {
@@ -219,6 +219,8 @@ export function getNetNameWithChainId(chainId: number) : string {
     4: 'rinkeby',
     5: 'goerli',
     42: 'kovan',
+    43113: 'fuji',
+    43114: 'ava-mainnet',
   };
   return networks[chainId];
 }

@@ -2,7 +2,7 @@ const assert = require('assert');
 const ethers = require('ethers');
 const Compound = require('../src/index.ts');
 const { request } = require('../src/util.ts');
-const providerUrl = 'http://localhost:8545';
+const providerUrl = require('./config.js').httpProviderUrl;
 
 function wait(ms) {
   return new Promise((resolve) => { setTimeout(resolve, ms); });

@@ -2,7 +2,7 @@ const assert = require('assert');
 const ethers = require('ethers');
 const comptroller = require('../src/comptroller.ts');
 const Compound = require('../src/index.ts');
-const providerUrl = 'http://localhost:8545';
+const providerUrl = require('./config.js').httpProviderUrl;
 
 module.exports = function suite([ publicKeys, privateKeys ]) {
 
