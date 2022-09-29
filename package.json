@@ -6,6 +6,7 @@
   "license": "BSD-3-Clause",
   "main": "dist/nodejs/index.js",
   "files": [
+    "/dist/**/*.json",
     "/dist/**/*.d.ts",
     "/dist/**/*.js",
     "/dist/**/*.js.map"
