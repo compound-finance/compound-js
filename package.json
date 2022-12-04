@@ -27,7 +27,7 @@
     "rollup": "./node_modules/.bin/rollup -c rollup.config.ts",
     "test_log_coverage": "./node_modules/.bin/nyc ./node_modules/.bin/mocha -r ts-node/register ./test/index.js  --timeout 60000",
     "test": "echo 'AAAAA'",
-    "coverage": "codecov"
+    "coverage": "echo 'AAAAA'"
   },
   "repository": {
     "type": "git",
