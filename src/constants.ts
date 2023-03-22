@@ -61,7 +61,7 @@ export const constants = _constants;
 
 export const address = {
   "mainnet": {
-    "PriceFeed": "0x65c816077C29b557BEE980ae3cC2dCE80204A0C5",
+    "PriceFeed": "0x50ce56A3239671Ab62f185704Caedf626352741e",
     "Maximillion": "0xf859A1AD94BcF445A406B892eF0d3082f4174088",
     "CompoundLens": "0xA6c8D1c55951e8AC44a0EaA959Be5Fd21cc07531",
     // "GovernorAlpha": "0xc0da01a04c3f3e0be433606045bb7017a7323e38",
