@@ -1132,7 +1132,7 @@ export async function quoteCollateral(
 
   if (!options.mantissa) {
     baseAmount = +baseAmount;
-    baseAmount = baseAmount * Math.pow(10, decimals[net.name][asset]);
+    baseAmount = baseAmount * Math.pow(10, decimals[net.name][getBaseAssetName(net.name)]);
   }
 
   baseAmount = ethers.BigNumber.from(baseAmount.toString());
