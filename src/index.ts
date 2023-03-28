@@ -5,7 +5,6 @@
  */
 
 import { ethers } from 'ethers';
-import * as api from './api';
 import * as comet from './comet';
 import * as comp from './comp';
 import * as comptroller from './comptroller';
@@ -98,7 +97,6 @@ const Compound = function(
 };
 
 Compound.eth = eth;
-Compound.api = api;
 Compound.util = util;
 Compound._ethers = ethers;
 Compound.decimals = decimals;
