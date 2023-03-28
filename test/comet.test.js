@@ -631,12 +631,17 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
 
     const cometAddress = Compound.util.getAddress(Compound.Comet); // this gets the ETH mainnet address
 
-    // supply wbtc collateral to Comet so it can sell it
-    const trx1 = await anotherAccount.comet.supply(
-      another,
-      cometAddress, // give Comet balance sheet some collateral to sell
-      Compound.WBTC,
-      0.5,
+    // Direct transfer WBTC to Comet so it can sell it
+    // Don't do this in practice, the way to make collateral available
+    // to be purchased via `buyCollateral` is after an account absorption
+    const token = new ethers.Contract(
+      Compound.util.getAddress(Compound.WBTC),
+      ['function transfer(address, uint)'],
+      new ethers.Wallet(acc2.privateKey, new ethers.providers.JsonRpcProvider(providerUrl))
+    );
+    const trx1 = await token.transfer(
+      cometAddress,
+      (0.5 * 1e8).toString()
     );
     await trx1.wait(1);
 
@@ -644,8 +649,8 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
     try {
       const trx = await compound.comet.buyCollateral(
         Compound.WBTC,
-        0.0001, // $2.39 of WBTC
-        50,
+        0.0001, //  $2.39 of WBTC
+        50,     // $50.00 of USDC
         me,
         false,
         { gasLimit: '5000000' }
@@ -898,7 +903,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
       throw Error(JSON.stringify(e));
     }
 
-    assert.equal((quote).toString(), '502441462');
+    assert.equal((quote).toString(), '3820187');
   });
 
   it('runs comet.getBaseAssetName', async function () {

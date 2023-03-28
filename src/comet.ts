@@ -1397,7 +1397,7 @@ export async function collateralBalanceOf(
   }
 
   let assetAddress;
-  try { assetAddress = address[this._compoundInstance._network.name][asset].contract }
+  try { assetAddress = address[net.name][asset].contract }
   catch(e) {}
 
   if (!assetAddress || !collaterals[net.name].includes(asset)) {
