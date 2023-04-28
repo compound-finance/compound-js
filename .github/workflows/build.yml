@@ -4,23 +4,25 @@ on:
   pull_request:
     branches:
       - master
+  push:
+    branches:
+      - master
 
 jobs:
   build:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-    - name: Branch name
-      run: echo Running on branch ${GITHUB_REF##*/}
-    - uses: actions/checkout@v2
-    - name: Use Node.js 18.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 18.x
-    # Installs deps and builds
-    - run: npm install
-    # Runs tests
-    - run: MAINNET_PROVIDER_URL=${{ secrets.MAINNET_PROVIDER_URL }} npm run test_coverage
-    # Updates code coverage badge in readme
-    - name: Upload coverage to Codecov
-      run: npm run coverage -- -t ${{ secrets.CODECOV_TOKEN }}
+      - name: Branch name
+        run: echo Running on branch ${{ github.ref_name }}
+      - uses: actions/checkout@v2
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+      # Installs deps and builds
+      - run: npm install
+      # Runs tests
+      - run: MAINNET_PROVIDER_URL=${{ secrets.MAINNET_PROVIDER_URL }} npm run test_coverage
+      # Updates code coverage badge in readme
+      - name: Upload coverage to Codecov
+        run: npm run coverage -- -t ${{ secrets.CODECOV_TOKEN }}

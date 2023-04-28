@@ -18,8 +18,9 @@
   },
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./src/*.ts",
-    "build": "npm run lint && ./node_modules/.bin/tsc && npm run rollup",
+    "build": "npm run spider && npm run lint && ./node_modules/.bin/tsc && npm run rollup",
     "docs": "node ./scripts/compound-docs.js",
+    "spider": "node ./scripts/comet-spider.js",
     "prepare": "npm run build",
     "publish_patch": "npm version patch && npm publish --access public",
     "publish_minor": "npm version minor && npm publish --access public",
