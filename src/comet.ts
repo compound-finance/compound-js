@@ -7,22 +7,22 @@ import { ethers } from 'ethers';
 import * as eth from './eth';
 import { netId, toChecksumAddress } from './helpers';
 import { sign } from './EIP712';
-import { constants, cometConstants, abi as _abi } from './constants';
-const { address, abi, decimals, collaterals, base } = cometConstants;
+import { constants, cometConstants, abi } from './constants';
+const { address, decimals, collaterals, base } = cometConstants;
 
 import { BigNumber } from '@ethersproject/bignumber/lib/bignumber';
 import {
   AllowSignatureMessage,
   AllowTypes,
+  AssetInfo,
   CallOptions,
+  CometInstance,
   EIP712Domain,
-  Provider,
   Signature,
   TrxResponse,
-  AssetInfo,
 } from './types';
 
-function isValidEthereumAddress(_address: string) {
+function isValidEthereumAddress(_address: string): boolean {
   let result = true;
 
   if (
@@ -34,6 +34,13 @@ function isValidEthereumAddress(_address: string) {
   }
 
   return result;
+}
+
+async function checkValidCometProvider(comet: CometInstance): Promise<void> {
+  await netId(comet);
+  if (typeof comet._invalidProvider === 'string') {
+    throw Error(comet._invalidProvider);
+  }
 }
 
 /**
@@ -65,16 +72,17 @@ function isValidEthereumAddress(_address: string) {
  *
  * ```
  * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
  *
  * // Ethers.js overrides are an optional last parameter
  * // const trxOptions = { gasLimit: 250000, mantissa: false };
  * 
  * (async function() {
  * 
- *   const me = '0xSenderAddress';
+ *   const me = '0xSenderAddress'; // can be compound._provider.address
  * 
  *   console.log('Supplying ETH to Compound Comet...');
- *   const trx = await compound.comet.supply(
+ *   const trx = await comet.supply(
  *     me, // supplied asset comes from this account
  *     me, // supplied asset is credited to this account's balance
  *     Compound.WBTC,
@@ -93,12 +101,12 @@ export async function supply(
   noApprove = false,
   options: CallOptions = {}
 ) : Promise<TrxResponse> {
-  await netId(this._compoundInstance);
+  await checkValidCometProvider(this);
   const errorPrefix = 'Compound Comet [supply] | ';
 
-  const cometAddress = address[this._compoundInstance._network.name][constants.Comet];
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
   let assetAddress;
-  try { assetAddress = address[this._compoundInstance._network.name][asset].contract }
+  try { assetAddress = address[this._cometDeploymentName][asset].contract }
   catch(e) {}
 
   if (!isValidEthereumAddress(from)) {
@@ -109,7 +117,7 @@ export async function supply(
     throw Error(errorPrefix + 'Argument `dst` is not a string or is an invalid address.');
   }
 
-  if (!assetAddress || !collaterals[this._compoundInstance._network.name].includes(asset)) {
+  if (!assetAddress || !collaterals[this._cometDeploymentName].includes(asset)) {
     throw Error(errorPrefix + 'Argument `asset` cannot be supplied.');
   }
 
@@ -123,19 +131,19 @@ export async function supply(
 
   if (!options.mantissa) {
     amount = +amount;
-    amount = amount * Math.pow(10, decimals[this._compoundInstance._network.name][asset]);
+    amount = amount * Math.pow(10, decimals[this._cometDeploymentName][asset]);
   }
 
   amount = ethers.BigNumber.from(amount.toString());
 
-  options.abi = _abi.Erc20;
-  options._compoundProvider = this._compoundInstance._provider;
+  options.abi = abi.Erc20;
+  options._compoundProvider = this._provider;
 
   if (noApprove !== true) {
-    let userAddress = this._compoundInstance._provider.address;
+    let userAddress = this._provider.address;
 
-    if (!userAddress && this._compoundInstance._provider.getAddress) {
-      userAddress = await this._compoundInstance._provider.getAddress();
+    if (!userAddress && this._provider.getAddress) {
+      userAddress = await this._provider.getAddress();
     }
 
     // Check allowance
@@ -159,7 +167,7 @@ export async function supply(
     }
   }
 
-  options.abi = abi[this._compoundInstance._network.name].Comet;
+  options.abi = abi.Comet;
   const parameters = [ from, dst, assetAddress, amount ];
 
   return eth.trx(cometAddress, 'supplyFrom', parameters, options);
@@ -182,10 +190,11 @@ export async function supply(
  *
  * ```
  * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
  * 
  * (async function () {
  *   const address = '0xManagerAddressHere';
- *   const trx = await compound.comet.allow(address, true);
+ *   const trx = await comet.allow(address, true);
  *   console.log('Ethers.js transaction object', trx);
  * })().catch(console.error);
  * ```
@@ -195,19 +204,19 @@ export async function allow(
   isAllowed: boolean,
   options: CallOptions = {}
 ) : Promise<TrxResponse> {
-  await netId(this._compoundInstance);
+  await checkValidCometProvider(this);
   const errorPrefix = 'Compound Comet [allow] | ';
 
   if (!isValidEthereumAddress(manager)) {
     throw Error(errorPrefix + 'Argument `manager` is not a string or is an invalid address.');
   }
 
-  const cometAddress = address[this._compoundInstance._network.name][constants.Comet];
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
   const parameters = [ manager, !!isAllowed ];
 
   const trxOptions: CallOptions = {
-    _compoundProvider: this._compoundInstance._provider,
-    abi: abi[this._compoundInstance._network.name].Comet,
+    _compoundProvider: this._provider,
+    abi: abi.Comet,
     ...options
   };
 
@@ -238,9 +247,10 @@ export async function allow(
  *
  * ```
  * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
  * 
  * (async function() {
- *   const allowTx = await compound.comet.allowBySig(
+ *   const allowTx = await comet.allowBySig(
  *     '0xaAaAaAaaAaAaAaaAaAAAAAAAAaaaAaAaAaaAaaAa',
  *     '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
  *     true,
@@ -265,7 +275,7 @@ export async function allowBySig(
   signature: Signature = { v: '', r: '', s: '' },
   options: CallOptions = {}
 ) : Promise<TrxResponse> {
-  await netId(this);
+  await checkValidCometProvider(this);
 
   const errorPrefix = 'Compound [allowBySig] | ';
 
@@ -307,11 +317,11 @@ export async function allowBySig(
       'contains the v, r, and s pieces of an EIP-712 signature.');
   }
 
-  const cometAddress = address[this._compoundInstance._network.name][constants.Comet];
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
   const trxOptions: CallOptions = {
     ...options,
-    _compoundProvider: this._compoundInstance._provider,
-    abi: abi[this._compoundInstance._network.name].Comet,
+    _compoundProvider: this._provider,
+    abi: abi.Comet,
   };
   const { v, r, s } = signature;
   const parameters = [ owner, manager, isAllowed, nonce, expiry, v, r, s ];
@@ -337,10 +347,11 @@ export async function allowBySig(
  *
  * ```
  * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
  *
  * (async () => {
  *
- *   const allowSignature = await compound.comet.createAllowSignature(
+ *   const allowSignature = await comet.createAllowSignature(
  *     '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
  *     true
  *   );
@@ -354,12 +365,12 @@ export async function createAllowSignature(
   isAllowed: boolean,
   expiry = 10e9
 ) : Promise<Signature> {
-  await netId(this._compoundInstance);
+  await checkValidCometProvider(this);
   const errorPrefix = 'Compound Comet [createAllowSignature] | ';
 
-  const net = this._compoundInstance._network;
-  const provider = this._compoundInstance._provider;
-  const cometAddress = address[net.name][constants.Comet];
+  const net = this._network;
+  const provider = this._provider;
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
   const chainId = net.id;
 
   let userAddress = provider.address;
@@ -463,6 +474,7 @@ export async function createAllowSignature(
  *
  * ```
  * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
  *
  * // Ethers.js overrides are an optional last parameter
  * // const trxOptions = { gasLimit: 250000 };
@@ -470,7 +482,7 @@ export async function createAllowSignature(
  * (async function() {
  * 
  *   console.log('Transferring WETH in Compound Comet...');
- *   const trx = await compound.comet.transfer(
+ *   const trx = await comet.transfer(
  *     true, // on behalf of the sender
  *     destinationAddress,
  *     Compound.WETH,
@@ -489,12 +501,12 @@ export async function transfer(
   amount: string | number | BigNumber,
   options: CallOptions = {}
 ) : Promise<TrxResponse> {
-  await netId(this._compoundInstance);
+  await checkValidCometProvider(this);
   const errorPrefix = 'Compound Comet [transfer] | ';
 
-  const cometAddress = address[this._compoundInstance._network.name][constants.Comet];
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
   let assetAddress;
-  try { assetAddress = address[this._compoundInstance._network.name][asset].contract }
+  try { assetAddress = address[this._cometDeploymentName][asset].contract }
   catch(e) {}
 
   if (
@@ -514,7 +526,7 @@ export async function transfer(
     throw Error(errorPrefix + 'Argument `dst` is not a string or is an invalid address.');
   }
 
-  if (!assetAddress || !collaterals[this._compoundInstance._network.name].includes(asset)) {
+  if (!assetAddress || !collaterals[this._cometDeploymentName].includes(asset)) {
     throw Error(errorPrefix + 'Argument `asset` cannot be transferred.');
   }
 
@@ -528,18 +540,18 @@ export async function transfer(
 
   if (!options.mantissa) {
     amount = +amount;
-    amount = amount * Math.pow(10, decimals[this._compoundInstance._network.name][asset]);
+    amount = amount * Math.pow(10, decimals[this._cometDeploymentName][asset]);
   }
 
   amount = ethers.BigNumber.from(amount.toString());
 
   if (src === true) {
-    src = await this._compoundInstance._provider.getAddress();
+    src = await this._provider.getAddress();
   }
 
-  options._compoundProvider = this._compoundInstance._provider;
+  options._compoundProvider = this._provider;
 
-  options.abi = abi[this._compoundInstance._network.name].Comet;
+  options.abi = abi.Comet;
   const parameters = [ src, dst, assetAddress, amount ];
 
   return eth.trx(cometAddress, 'transferAssetFrom', parameters, options);
@@ -563,6 +575,7 @@ export async function transfer(
  *
  * ```
  * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
  *
  * // Ethers.js overrides are an optional last parameter
  * // const trxOptions = { gasLimit: 250000 };
@@ -570,7 +583,7 @@ export async function transfer(
  * (async function() {
  * 
  *   console.log('Withdrawing DAI from my account...');
- *   const trx = await compound.comet.withdraw(
+ *   const trx = await comet.withdraw(
  *     Compound.DAI,
  *     10,
  *     trxOptions
@@ -585,9 +598,9 @@ export async function withdraw(
   amount: string | number | BigNumber,
   options: CallOptions = {}
 ) : Promise<TrxResponse> {
-  const src = await this._compoundInstance._provider.getAddress();
+  const src = await this._provider.getAddress();
   const dst = src;
-  return _withdraw('withdraw', src, dst, asset, amount, options, this._compoundInstance);
+  return _withdraw('withdraw', src, dst, asset, amount, options, this);
 }
 
 /**
@@ -609,6 +622,7 @@ export async function withdraw(
  *
  * ```
  * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
  *
  * // Ethers.js overrides are an optional last parameter
  * // const trxOptions = { gasLimit: 250000 };
@@ -616,7 +630,7 @@ export async function withdraw(
  * (async function() {
  * 
  *   console.log('Withdrawing DAI from my account to dst account...');
- *   const trx = await compound.comet.withdrawTo(
+ *   const trx = await comet.withdrawTo(
  *     dst, // destination, the address that the withdrawn asset is sent to
  *     Compound.DAI,
  *     10,
@@ -633,8 +647,8 @@ export async function withdrawTo(
   amount: string | number | BigNumber,
   options: CallOptions = {}
 ) : Promise<TrxResponse> {
-  const src = await this._compoundInstance._provider.getAddress();
-  return _withdraw('withdrawTo', src, dst, asset, amount, options, this._compoundInstance);
+  const src = await this._provider.getAddress();
+  return _withdraw('withdrawTo', src, dst, asset, amount, options, this);
 }
 
 /**
@@ -659,6 +673,7 @@ export async function withdrawTo(
  *
  * ```
  * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
  *
  * // Ethers.js overrides are an optional last parameter
  * // const trxOptions = { gasLimit: 250000 };
@@ -666,7 +681,7 @@ export async function withdrawTo(
  * (async function() {
  * 
  *   console.log('Withdrawing DAI from src account to dst account...');
- *   const trx = await compound.comet.withdrawFrom(
+ *   const trx = await comet.withdrawFrom(
  *     src, // source address, sender must be an allowed manager for the address
  *     dst, // destination, the address that the withdrawn asset is sent to
  *     Compound.DAI,
@@ -685,7 +700,7 @@ export async function withdrawFrom(
   amount: string | number | BigNumber,
   options: CallOptions = {}
 ) : Promise<TrxResponse> {
-  return _withdraw('withdrawFrom', src, dst, asset, amount, options, this._compoundInstance);
+  return _withdraw('withdrawFrom', src, dst, asset, amount, options, this);
 }
 
 async function _withdraw(
@@ -696,14 +711,14 @@ async function _withdraw(
   amount: string | number | BigNumber,
   options: CallOptions = {},
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  _compoundInstance: any,
+  _cometInstance: any
 ) : Promise<TrxResponse> {
-  await netId(_compoundInstance);
+  await checkValidCometProvider(_cometInstance);
   const errorPrefix = `Compound Comet [${overloadName}] | `;
 
-  const cometAddress = address[_compoundInstance._network.name][constants.Comet];
+  const cometAddress = address[_cometInstance._cometDeploymentName][constants.Comet];
   let assetAddress;
-  try { assetAddress = address[_compoundInstance._network.name][asset].contract }
+  try { assetAddress = address[_cometInstance._cometDeploymentName][asset].contract }
   catch(e) {}
 
   if (!isValidEthereumAddress(src)) {
@@ -714,7 +729,7 @@ async function _withdraw(
     throw Error(errorPrefix + 'Argument `dst` is not a string or is an invalid address.');
   }
 
-  if (!assetAddress || !collaterals[_compoundInstance._network.name].includes(asset)) {
+  if (!assetAddress || !collaterals[_cometInstance._cometDeploymentName].includes(asset)) {
     throw Error(errorPrefix + 'Argument `asset` cannot be withdrawn.');
   }
 
@@ -728,14 +743,14 @@ async function _withdraw(
 
   if (!options.mantissa) {
     amount = +amount;
-    amount = amount * Math.pow(10, decimals[_compoundInstance._network.name][asset]);
+    amount = amount * Math.pow(10, decimals[_cometInstance._cometDeploymentName][asset]);
   }
 
   amount = ethers.BigNumber.from(amount.toString());
 
-  options._compoundProvider = _compoundInstance._provider;
+  options._compoundProvider = _cometInstance._provider;
 
-  options.abi = abi[_compoundInstance._network.name].Comet;
+  options.abi = abi.Comet;
   const parameters = [ src, dst, assetAddress, amount ];
 
   return eth.trx(cometAddress, 'withdrawFrom', parameters, options);
@@ -748,32 +763,31 @@ async function _withdraw(
  * @param {string | number | BigNumber} [utilization] A number representing the 
  *     utilization rate in which to get the corresponding supply rate. The 
  *     current utilization rate can be fetched by using `Compound.comet.getUtilization()`.
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
  * 
  * @returns {string} Returns a string of the numeric value of the supply rate.
  *
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
- *   const supplyRate = await Compound.comet.getSupplyRate();
+ *   const supplyRate = await comet.getSupplyRate();
  *   console.log('Supply Rate', supplyRate);
  * })().catch(console.error);
  * ```
  */
 export async function getSupplyRate(
-  utilization: string | number | BigNumber,
-  _provider : Provider | string='mainnet'
+  utilization: string | number | BigNumber
 ) : Promise<string> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
+  await checkValidCometProvider(this);
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
 
   const parameters = [ utilization.toString() ];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider.provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'getSupplyRate', parameters, trxOptions);
@@ -787,32 +801,31 @@ export async function getSupplyRate(
  * @param {string | number | BigNumber} [utilization] A number representing the 
  *     utilization rate in which to get the corresponding supply rate. The 
  *     current utilization rate can be fetched by using `Compound.comet.getUtilization()`.
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
  * 
  * @returns {string} Returns a string of the numeric value of the borrow rate.
  *
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
- *   const borrowRate = await Compound.comet.getBorrowRate();
+ *   const borrowRate = await comet.getBorrowRate();
  *   console.log('Borrow Rate', borrowRate);
  * })().catch(console.error);
  * ```
  */
 export async function getBorrowRate(
   utilization: string | number | BigNumber,
-  _provider : Provider | string='mainnet'
 ) : Promise<string> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
+  await checkValidCometProvider(this);
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
 
   const parameters = [ utilization.toString() ];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider.provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'getBorrowRate', parameters, trxOptions);
@@ -822,32 +835,29 @@ export async function getBorrowRate(
 /**
  * Gets the utilization rate.
  * 
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
- * 
  * @returns {string} Returns the current protocol utilization as a percentage as
  *     a decimal, represented by an unsigned integer, scaled up by 10 ^ 18.
  *
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
- *   const utilization = await Compound.comet.getUtilization();
+ *   const utilization = await comet.getUtilization();
  *   console.log('Utilization', utilization);
  * })().catch(console.error);
  * ```
  */
-export async function getUtilization(
-  _provider : Provider | string='mainnet'
-) : Promise<string> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
+export async function getUtilization() : Promise<string> {
+  await checkValidCometProvider(this);
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
 
   const parameters = [];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider.provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'getUtilization', parameters, trxOptions);
@@ -857,6 +867,8 @@ export async function getUtilization(
 /**
  * This method triggers the liquidation of one or many underwater accounts.
  *
+ * @param {string} absorber The account that is issued liquidator points during 
+ *     successful execution.
  * @param {string | string[]} accounts A string of one or an array of many 
  *     addresses of underwater accounts.
  * @param {CallOptions} [options] Call options and Ethers.js overrides for the 
@@ -869,12 +881,13 @@ export async function getUtilization(
  *
  * ```
  * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
  * 
  * (async function () {
  *   const addresses = [
  *     '0xUnderwaterAccountAddress1',
  *   ];
- *   const trx = await compound.comet.absorb(addresses);
+ *   const trx = await comet.absorb(addresses);
  *   console.log('Ethers.js transaction object', trx);
  * })().catch(console.error);
  * ```
@@ -884,7 +897,7 @@ export async function absorb(
   accounts: string[],
   options: CallOptions = {}
 ) : Promise<TrxResponse> {
-  await netId(this._compoundInstance);
+  await checkValidCometProvider(this);
   const errorPrefix = 'Compound Comet [absorb] | ';
 
   if (!isValidEthereumAddress(absorber)) {
@@ -907,12 +920,12 @@ export async function absorb(
     throw Error(errorPrefix + 'Argument `accounts` array contains an invalid address or is otherwise invalid.');
   }
 
-  const cometAddress = address[this._compoundInstance._network.name][constants.Comet];
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
   const parameters = [ absorber, accounts ];
 
   const trxOptions: CallOptions = {
-    _compoundProvider: this._compoundInstance._provider,
-    abi: abi[this._compoundInstance._network.name].Comet,
+    _compoundProvider: this._provider,
+    abi: abi.Comet,
     ...options
   };
 
@@ -922,9 +935,6 @@ export async function absorb(
 /**
  * Gets the Comet protocol reserves for the base asset as an integer.
  * 
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
- * 
  * @returns {string} Returns the current protocol reserves in in the base asset 
  *     as an unsigned integer, scaled up by 10 to the "decimals" integer in the 
  *     base asset's contract.
@@ -932,23 +942,23 @@ export async function absorb(
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
- *   const reserves = await Compound.comet.getReserves();
+ *   const reserves = await comet.getReserves();
  *   console.log('Reserves', reserves);
  * })().catch(console.error);
  * ```
  */
-export async function getReserves(
-  _provider : Provider | string='mainnet'
-) : Promise<string> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
+export async function getReserves() : Promise<string> {
+  await checkValidCometProvider(this);
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
 
   const parameters = [];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'getReserves', parameters, trxOptions);
@@ -958,9 +968,6 @@ export async function getReserves(
 /**
  * Gets the Comet protocol target reserves.
  * 
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
- * 
  * @returns {string} Returns the protocol target reserves in the base asset as 
  *     an unsigned integer, scaled up by 10 to the "decimals" integer in the 
  *     base asset's contract.
@@ -968,23 +975,23 @@ export async function getReserves(
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
- *   const target = await Compound.comet.targetReserves();
+ *   const target = await comet.targetReserves();
  *   console.log('Target Reserves', target);
  * })().catch(console.error);
  * ```
  */
-export async function targetReserves(
-  _provider : Provider | string='mainnet'
-) : Promise<string> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
+export async function targetReserves() : Promise<string> {
+  await checkValidCometProvider(this);
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
 
   const parameters = [];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'targetReserves', parameters, trxOptions);
@@ -994,8 +1001,6 @@ export async function targetReserves(
 /**
  * Gets the collateralization of an account as a boolean.
  * 
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
  * @param {string} account The account address as a string.
  * 
  * @returns {boolean} Returns the collateralization of the account as a boolean.
@@ -1003,20 +1008,19 @@ export async function targetReserves(
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
  *   const address = '0xAccountThatBorrows';
- *   const isCollateralized = await Compound.comet.isBorrowCollateralized(address);
+ *   const isCollateralized = await comet.isBorrowCollateralized(address);
  *   console.log('Is Collateralized', isCollateralized);
  * })().catch(console.error);
  * ```
  */
-export async function isBorrowCollateralized(
-  _provider : Provider | string='mainnet',
-  account: string
-) : Promise<boolean> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
+export async function isBorrowCollateralized(account: string) : Promise<boolean> {
+  await checkValidCometProvider(this);
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
 
   const errorPrefix = 'Compound Comet [isBorrowCollateralized] | ';
 
@@ -1026,8 +1030,8 @@ export async function isBorrowCollateralized(
 
   const parameters = [ account ];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'isBorrowCollateralized', parameters, trxOptions);
@@ -1037,8 +1041,6 @@ export async function isBorrowCollateralized(
 /**
  * Checks if the passed account is presently liquidatable.
  * 
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
  * @param {string} account The account address as a string.
  * 
  * @returns {boolean} Returns the ability to liquidate the account as a boolean.
@@ -1046,20 +1048,19 @@ export async function isBorrowCollateralized(
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
  *   const address = '0xAccountThatBorrows';
- *   const isLiquidatable = await Compound.comet.isLiquidatable(address);
+ *   const isLiquidatable = await comet.isLiquidatable(address);
  *   console.log('Is Liquidatable', isLiquidatable);
  * })().catch(console.error);
  * ```
  */
-export async function isLiquidatable(
-  _provider : Provider | string='mainnet',
-  account: string
-) : Promise<boolean> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
+export async function isLiquidatable(account: string) : Promise<boolean> {
+  await checkValidCometProvider(this);
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
 
   const errorPrefix = 'Compound Comet [isLiquidatable] | ';
 
@@ -1069,8 +1070,8 @@ export async function isLiquidatable(
 
   const parameters = [ account ];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'isLiquidatable', parameters, trxOptions);
@@ -1086,8 +1087,6 @@ export async function isLiquidatable(
  *     object of the amount of the base asset to get a quote. Use the `mantissa`
  *     boolean in the `options` parameter to indicate if this value is scaled up
  *     (so there are no decimals) or in its natural scale.
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
  * @param {CallOptions} [options] Call options and Ethers.js overrides for the 
  *     transaction.
  * 
@@ -1097,8 +1096,11 @@ export async function isLiquidatable(
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
- *   const price = await Compound.comet.quoteCollateral(Compound.UNI, '1000000000');
+ *   const price = await comet.quoteCollateral(Compound.UNI, '1000000000');
  *   console.log('Price quote of 1000 base asset of UNI', price);
  * })().catch(console.error);
  * ```
@@ -1106,19 +1108,18 @@ export async function isLiquidatable(
 export async function quoteCollateral(
   asset: string,
   baseAmount: string | number | BigNumber,
-  _provider : Provider | string='mainnet',
   options: CallOptions = {}
 ) : Promise<string> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
+  await checkValidCometProvider(this);
+  const deployment = this._cometDeploymentName;
+  const cometAddress = address[deployment][constants.Comet];
   let assetAddress;
-  try { assetAddress = address[net.name][asset].contract }
+  try { assetAddress = address[deployment][asset].contract }
   catch(e) {}
 
   const errorPrefix = 'Compound Comet [quoteCollateral] | ';
 
-  if (!assetAddress || !collaterals[net.name].includes(asset)) {
+  if (!assetAddress || !collaterals[deployment].includes(asset)) {
     throw Error(errorPrefix + 'Argument `asset` is not priceable.');
   }
 
@@ -1132,15 +1133,15 @@ export async function quoteCollateral(
 
   if (!options.mantissa) {
     baseAmount = +baseAmount;
-    baseAmount = baseAmount * Math.pow(10, decimals[net.name][getBaseAssetName(net.name)]);
+    baseAmount = baseAmount * Math.pow(10, decimals[deployment][getBaseAssetName(deployment)]);
   }
 
   baseAmount = ethers.BigNumber.from(baseAmount.toString());
 
   const parameters = [ assetAddress, baseAmount ];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'quoteCollateral', parameters, trxOptions);
@@ -1176,13 +1177,14 @@ export async function quoteCollateral(
  *
  * ```
  * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
  *
  * (async function() {
  * 
  *   const me = '0xRecipient';
  * 
  *   console.log('Buying collateral...');
- *   const trx = await compound.comet.buyCollateral(
+ *   const trx = await comet.buyCollateral(
  *     Compound.WBTC,
  *     1,
  *     10000
@@ -1201,15 +1203,16 @@ export async function buyCollateral(
   noApprove = false,
   options: CallOptions = {}
 ) : Promise<TrxResponse> {
-  await netId(this._compoundInstance);
+  await checkValidCometProvider(this);
   const errorPrefix = 'Compound Comet [buyCollateral] | ';
 
-  const net = this._compoundInstance._network;
-  const provider = this._compoundInstance._provider;
-  const cometAddress = address[net.name][constants.Comet];
-  const baseAssetAddress = address[net.name][getBaseAssetName(net.name)].contract;
+  const provider = this._provider;
+  const deployment = this._cometDeploymentName;
+  const cometAddress = address[deployment][constants.Comet];
+  const baseAssetAddress = address[deployment][getBaseAssetName(deployment)].contract;
+
   let assetAddress;
-  try { assetAddress = address[net.name][asset].contract }
+  try { assetAddress = address[deployment][asset].contract }
   catch(e) {}
 
   if (
@@ -1225,15 +1228,15 @@ export async function buyCollateral(
 
   if (!options.mantissa) {
     baseAmount = +baseAmount;
-    baseAmount = baseAmount * Math.pow(10, decimals[net.name][getBaseAssetName(net.name)]);
+    baseAmount = baseAmount * Math.pow(10, decimals[deployment][getBaseAssetName(deployment)]);
     minAmount = +minAmount;
-    minAmount = minAmount * Math.pow(10, decimals[net.name][asset]);
+    minAmount = minAmount * Math.pow(10, decimals[deployment][asset]);
   }
 
   baseAmount = ethers.BigNumber.from(baseAmount.toString());
   minAmount = ethers.BigNumber.from(minAmount.toString());
 
-  options.abi = _abi.Erc20;
+  options.abi = abi.Erc20;
   options._compoundProvider = provider;
 
   if (noApprove !== true) {
@@ -1264,7 +1267,7 @@ export async function buyCollateral(
     }
   }
 
-  options.abi = abi[net.name].Comet;
+  options.abi = abi.Comet;
   const parameters = [ assetAddress, minAmount, baseAmount, recipient ];
 
   return eth.trx(cometAddress, 'buyCollateral', parameters, options);
@@ -1274,9 +1277,7 @@ export async function buyCollateral(
  * Gets the price of the asset that is passed to it in USD as an unsigned 
  *     integer, scaled up by 10 ^ 8.
  * 
- * @param {string} asset A string of the name of the asset.
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
+ * @param {string} asset A string of the symbol of the asset.
  * 
  * @returns {string} Returns the price of the asset that is passed to it in USD 
  *     as an unsigned integer, scaled up by 10 ^ 8.
@@ -1284,33 +1285,33 @@ export async function buyCollateral(
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
- *   const price = await Compound.comet.getPrice(Compound.WBTC);
+ *   const price = await comet.getPrice(Compound.WBTC);
  *   console.log('Price of WBTC', price);
  * })().catch(console.error);
  * ```
  */
-export async function getPrice(
-  asset: string,
-  _provider : Provider | string='mainnet'
-) : Promise<string> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
+export async function getPrice(asset: string) : Promise<string> {
+  await checkValidCometProvider(this);
+  const deployment = this._cometDeploymentName;
+  const cometAddress = address[deployment][constants.Comet];
 
   const errorPrefix = 'Compound Comet [getPrice] | ';
 
   let assetPriceFeedAddress;
   try {
-    assetPriceFeedAddress = address[net.name][asset].priceFeed;
+    assetPriceFeedAddress = address[deployment][asset].priceFeed;
   } catch(e) {
     throw Error(errorPrefix + 'Argument `asset` price is not available.');
   }
 
   const parameters = [ assetPriceFeedAddress ];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'getPrice', parameters, trxOptions);
@@ -1322,28 +1323,25 @@ export async function getPrice(
  *     account has a non-negative base asset balance, it will return 0.
  * 
  * @param {string} account The account address as a string.
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
  * 
  * @returns {string} Returns the collateralization of the account as an integer.
  *
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
  *   const address = '0xAccountThatBorrows';
- *   const bal = await Compound.comet.borrowBalanceOf(address);
+ *   const bal = await comet.borrowBalanceOf(address);
  *   console.log('Borrow Balance', bal.toString());
  * })().catch(console.error);
  * ```
  */
-export async function borrowBalanceOf(
-  account: string,
-  _provider : Provider | string='mainnet',
-) : Promise<string> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
+export async function borrowBalanceOf(account: string) : Promise<string> {
+  await checkValidCometProvider(this);
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
 
   const errorPrefix = 'Compound Comet [borrowBalanceOf] | ';
 
@@ -1353,8 +1351,8 @@ export async function borrowBalanceOf(
 
   const parameters = [ account ];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'borrowBalanceOf', parameters, trxOptions);
@@ -1364,8 +1362,6 @@ export async function borrowBalanceOf(
 /**
  * Gets the current balance of the collateral asset for the specified account.
  * 
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
  * @param {string} account The account address as a string.
  * @param {string} asset The name of the collateral asset.
  * 
@@ -1374,21 +1370,23 @@ export async function borrowBalanceOf(
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
  *   const address = '0xAccountThatSupplied';
- *   const balance = await Compound.comet.collateralBalanceOf(address, Compound.WBTC);
+ *   const balance = await comet.collateralBalanceOf(address, Compound.WBTC);
  *   console.log('Collateral balance', balance);
  * })().catch(console.error);
  * ```
  */
 export async function collateralBalanceOf(
-  _provider : Provider | string='mainnet',
   account: string,
   asset: string
 ) : Promise<string> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
+  await checkValidCometProvider(this);
+  const deployment = this._cometDeploymentName;
+  const cometAddress = address[deployment][constants.Comet];
 
   const errorPrefix = 'Compound Comet [collateralBalanceOf] | ';
 
@@ -1397,17 +1395,17 @@ export async function collateralBalanceOf(
   }
 
   let assetAddress;
-  try { assetAddress = address[net.name][asset].contract }
+  try { assetAddress = address[deployment][asset].contract }
   catch(e) {}
 
-  if (!assetAddress || !collaterals[net.name].includes(asset)) {
+  if (!assetAddress || !collaterals[deployment].includes(asset)) {
     throw Error(errorPrefix + 'Argument `asset` is not a valid collateral.');
   }
 
   const parameters = [ account, assetAddress ];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider.provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'collateralBalanceOf', parameters, trxOptions);
@@ -1419,32 +1417,31 @@ export async function collateralBalanceOf(
  * 
  * @param {number | string | BigNumber} assetIndex The index of the asset in the
  *     array in the Comet contract.
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
  * 
  * @returns {AssetInfo} Returns a tuple of the asset's information.
  *
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
- *   const assetInfo = await Compound.comet.getAssetInfo(2);
+ *   const assetInfo = await comet.getAssetInfo(2);
  *   console.log('Asset Info', assetInfo);
  * })().catch(console.error);
  * ```
  */
 export async function getAssetInfo(
   assetIndex: string | number | BigNumber,
-  _provider : Provider | string='mainnet',
 ) : Promise<AssetInfo> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
+  await checkValidCometProvider(this);
+  const cometAddress = address[this._cometDeploymentName][constants.Comet];
 
   const parameters = [ assetIndex ];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'getAssetInfo', parameters, trxOptions);
@@ -1465,28 +1462,26 @@ export async function getAssetInfo(
  * Gets the stored information for a supported asset.
  * 
  * @param {string} _address The contract address of the supported asset.
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
  * 
  * @returns {AssetInfo} Returns a tuple of the asset's information.
  *
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
- *   const assetInfo = await Compound.comet.getAssetInfoByAddress('0xContract');
+ *   const assetInfo = await comet.getAssetInfoByAddress('0xContract');
  *   console.log('Asset Info', assetInfo);
  * })().catch(console.error);
  * ```
  */
-export async function getAssetInfoByAddress(
-  _address: string,
-  _provider : Provider | string='mainnet',
-) : Promise<AssetInfo> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
-  const cometAddress = address[net.name][constants.Comet];
-  const baseAssetAddress = address[net.name][getBaseAssetName(net.name)].contract;
+export async function getAssetInfoByAddress(_address: string) : Promise<AssetInfo> {
+  await checkValidCometProvider(this);
+  const deployment = this._cometDeploymentName;
+  const cometAddress = address[deployment][constants.Comet];
+  const baseAssetAddress = address[deployment][getBaseAssetName(deployment)].contract;
 
   const errorPrefix = 'Compound Comet [getAssetInfoByAddress] | ';
 
@@ -1499,8 +1494,8 @@ export async function getAssetInfoByAddress(
 
   const parameters = [ _address ];
   const trxOptions: CallOptions = {
-    _compoundProvider: provider,
-    abi: abi[net.name].Comet,
+    _compoundProvider: this._provider,
+    abi: abi.Comet,
   };
 
   const result = await eth.read(cometAddress, 'getAssetInfoByAddress', parameters, trxOptions);
@@ -1521,42 +1516,39 @@ export async function getAssetInfoByAddress(
  * Gets the stored information for a supported asset.
  * 
  * @param {string} symbol The symbol of the supported asset.
- * @param {Provider | string} [_provider] An Ethers.js provider or valid network
- *     name string.
  * 
  * @returns {AssetInfo} Returns a tuple of the asset's information.
  *
  * @example
  *
  * ```
+ * const compound = new Compound(window.ethereum);
+ * const comet = compound.comet.MAINNET_USDC();
+ * 
  * (async function () {
- *   const assetInfo = await Compound.comet.getAssetInfoBySymbol(Compound.WETH);
+ *   const assetInfo = await comet.getAssetInfoBySymbol(Compound.WETH);
  *   console.log('Asset Info', assetInfo);
  * })().catch(console.error);
  * ```
  */
-export async function getAssetInfoBySymbol(
-  asset: string,
-  _provider : Provider | string='mainnet',
-) : Promise<AssetInfo> {
-  const provider = await eth._createProvider({ provider: _provider });
-  const net = await eth.getProviderNetwork(provider);
+export async function getAssetInfoBySymbol(asset: string) : Promise<AssetInfo> {
+  await checkValidCometProvider(this);
 
   const errorPrefix = 'Compound Comet [getAssetInfoBySymbol] | ';
 
   let assetAddress;
-  try { assetAddress = address[net.name][asset].contract }
+  try { assetAddress = address[this._cometDeploymentName][asset].contract }
   catch(e) {}
 
   if (
     !assetAddress ||
-    asset === getBaseAssetName(net.name) ||
-    !collaterals[net.name].includes(asset)
+    asset === getBaseAssetName(this._cometDeploymentName) ||
+    !collaterals[this._cometDeploymentName].includes(asset)
   ) {
     throw Error(errorPrefix + 'Argument `asset` is not a valid collateral.');
   }
 
-  const result = await getAssetInfoByAddress(assetAddress, _provider);
+  const result = await this.getAssetInfoByAddress(assetAddress);
   const info: AssetInfo = {
     offset: result.offset,
     asset: result.asset,
@@ -1571,17 +1563,17 @@ export async function getAssetInfoBySymbol(
 }
 
 /**
- * Gets an array of the supported Compound III network names.
+ * Gets an array of the supported Compound III deployment names.
  *
- * @returns {string[]} Returns an array of strings of the network names.
+ * @returns {string[]} Returns an array of strings that are used to refer to each Compound III deployment.
  *
  * @example
  *
  * ```
- * const networkNames = Compound.comet.getSupportedNetworkNames();
+ * const networkNames = Compound.comet.getSupportedDeployments();
  * ```
  */
-export function getSupportedNetworkNames() : string[] {
+export function getSupportedDeployments() : string[] {
   return Object.keys(address);
 }
 
@@ -1589,6 +1581,12 @@ export function getSupportedNetworkNames() : string[] {
  * Gets an array of the supported collateral assets in the specified Comet 
  *     instance.
  *
+ * @param {string?} deployment The specific deployment in which to get supported 
+ *     collaterals. The key is usually `${network}_${baseAssetSymbol}`. Use 
+ *     `getSupportedDeployments` to get proper values for this parameter. 
+ *     Defaults to cUSDCv3 on Ethereum Mainnet (`mainnet_usdc`) if nothing is 
+ *     passed.
+ * 
  * @returns {string[]} Returns an array of strings of the asset names.
  *
  * @example
@@ -1598,22 +1596,28 @@ export function getSupportedNetworkNames() : string[] {
  * ```
  */
 export function getSupportedCollaterals(
-  network?: string
+  deployment?: string
 ) : string[] {
-  if (!network) {
-    network = 'mainnet';
+  if (!deployment) {
+    deployment = 'mainnet_usdc';
   }
 
-  if (!collaterals[network]) {
-    throw Error('Argument `network` is not recognized.');
+  if (!collaterals[deployment]) {
+    throw Error('Argument `deployment` is not recognized.');
   } else {
-    return collaterals[network];
+    return collaterals[deployment];
   }
 }
 
 /**
  * Gets the name of the base asset in the specified instance.
  *
+ * @param {string?} deployment The specific deployment in which to get supported 
+ *     collaterals. The key is usually `${network}_${baseAssetSymbol}`. Use 
+ *     `getSupportedDeployments` to get proper values for this parameter. 
+ *     Defaults to cUSDCv3 on Ethereum Mainnet (`mainnet_usdc`) if nothing is 
+ *     passed.
+ * 
  * @returns {string} Returns a string of the base asset name.
  *
  * @example
@@ -1623,15 +1627,15 @@ export function getSupportedCollaterals(
  * ```
  */
 export function getBaseAssetName(
-  network?: string
+  deployment?: string
 ) : string {
-  if (!network) {
-    network = 'mainnet';
+  if (!deployment) {
+    deployment = 'mainnet_usdc';
   }
 
-  if (!base[network]) {
-    throw Error('Argument `network` is not recognized.');
+  if (!base[deployment]) {
+    throw Error('Argument `deployment` is not recognized.');
   } else {
-    return base[network];
+    return base[deployment];
   }
 }
