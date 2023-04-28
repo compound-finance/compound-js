@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { CompoundInstance } from './types';
+import { CompoundInstance, CometInstance } from './types';
 
 /**
  * This function acts like a decorator for all methods that interact with the
@@ -10,12 +10,12 @@ import { CompoundInstance } from './types';
  *
  * @hidden
  *
- * @param {Compound} _compound The instance of the Compound.js SDK.
+ * @param {Compound | Comet} instance The Compound (v2) or Comet instance of the SDK.
  *
  */
-export async function netId(_compound: CompoundInstance): Promise<void> {
-  if (_compound._networkPromise) {
-    await _compound._networkPromise;
+export async function netId(instance: CompoundInstance | CometInstance): Promise<void> {
+  if (instance._networkPromise) {
+    await instance._networkPromise;
   }
 }
 
