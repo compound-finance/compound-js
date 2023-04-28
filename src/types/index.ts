@@ -16,6 +16,11 @@ export interface CompoundInstance {
   _networkPromise: Promise<ProviderNetwork>;
 }
 
+export interface CometInstance {
+  _networkPromise: Promise<ProviderNetwork>;
+  _invalidProvider?: boolean | string;
+}
+
 export interface CompoundOptions {
   privateKey?: string;
   mnemonic?: string;
