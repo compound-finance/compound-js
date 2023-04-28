@@ -13,8 +13,8 @@ import * as eth from './eth';
 import * as gov from './gov';
 import * as priceFeed from './priceFeed';
 import * as util from './util';
-import { constants, decimals } from './constants';
-import { Provider, CompoundOptions, CompoundInstance } from './types';
+import { constants, cometConstants, decimals } from './constants';
+import { Provider, CompoundOptions, CompoundInstance, CometInstance } from './types';
 
 // Turn off Ethers.js warnings
 ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
@@ -47,6 +47,18 @@ ethers.utils.Logger.setLogLevel(ethers.utils.Logger.levels.ERROR);
  *   mnemonic: 'clutch captain shoe...', // preferably with environment variable
  * });
  * ```
+ * 
+ * Compound III (Comet) Object Initialization. This accepts the same parameters 
+ *     as the `Compound` constructor. An error will be thrown initially and 
+ *     whenever a method is called if the provider does not match the network of
+ *     the specific Comet deployment. The SDK constants as well as a method in 
+ *     the Comet documentation note the Comet deployments that Compound.js 
+ *     supports.
+ * 
+ * ```
+ * var compound = new Compound(window.ethereum);
+ * var comet = compound.comet.MAINNET_USDC(); // provider from `compound` will be used unless on is explicitly passed
+ * ```
  *
  * @returns {object} Returns an instance of the Compound.js SDK.
  */
@@ -74,24 +86,58 @@ const Compound = function(
 
   // Instance needs to know which network the provider connects to, so it can
   //     use the correct contract addresses.
-  instance._networkPromise = eth.getProviderNetwork(provider).then((network) => {
+  instance._networkPromise = eth.getProviderNetwork(provider).then((_network) => {
     delete instance._networkPromise;
-    instance._network = network;
+    instance._network = _network;
   });
 
-  instance.comet = {
-    _compoundInstance: instance,
-    absorb: comet.absorb,
-    allow: comet.allow,
-    allowBySig: comet.allowBySig,
-    buyCollateral: comet.buyCollateral,
-    createAllowSignature: comet.createAllowSignature,
-    supply: comet.supply,
-    transfer: comet.transfer,
-    withdraw: comet.withdraw,
-    withdrawFrom: comet.withdrawFrom,
-    withdrawTo: comet.withdrawTo,
-  };
+  instance.comet = {};
+  const comets = comet.getSupportedDeployments();
+  comets.forEach((_comet) => {
+    const cometReference = _comet.toUpperCase();
+    instance.comet[cometReference] = function(
+        _provider: Provider = instance._provider, _options: CompoundOptions = {}
+      ) : CometInstance {
+        const _originalProvider = _provider;
+
+        _options.provider = _provider || _options.provider;
+        _provider = eth._createProvider(_options);
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const cometInstance: any = {
+          _originalProvider,
+          _provider,
+          _invalidProvider: false,
+          _cometDeploymentName: _comet,
+        };
+
+        Object.keys(comet).forEach((method) => {
+          cometInstance[method] = comet[method];
+        });
+
+        function disableCometConnection(error) {
+          console.error(error);
+
+          // All Comet methods will throw an error when called if this flag is set
+          cometInstance._invalidProvider = error;
+        }
+
+        cometInstance._networkPromise = eth.getProviderNetwork(_provider).then((_network) => {
+
+          delete cometInstance._networkPromise;
+          cometInstance._network = _network;
+
+          // Throws an error if the Chain ID is not compatible
+          util.getNetNameWithChainId(_network.id);
+
+          if (cometConstants.instanceNetworkMap[_comet] !== _network.name) {
+            disableCometConnection('Compound.js Comet constructor was passed a provider that is not compatible with the selected Comet instance.');
+          }
+        });
+
+        return cometInstance;
+      }
+  });
 
   return instance;
 };
@@ -105,24 +151,10 @@ Compound.comp = {
   getCompBalance: comp.getCompBalance,
 };
 Compound.comet = {
-  borrowBalanceOf: comet.borrowBalanceOf,
-  collateralBalanceOf: comet.collateralBalanceOf,
-  getAssetInfo: comet.getAssetInfo,
-  getAssetInfoByAddress: comet.getAssetInfoByAddress,
-  getAssetInfoBySymbol: comet.getAssetInfoBySymbol,
-  getBaseAssetName: comet.getBaseAssetName,
-  getBorrowRate: comet.getBorrowRate,
-  getPrice: comet.getPrice,
-  getReserves: comet.getReserves,
-  getSupplyRate: comet.getSupplyRate,
+  getSupportedDeployments: comet.getSupportedDeployments,
   getSupportedCollaterals: comet.getSupportedCollaterals,
-  getSupportedNetworkNames: comet.getSupportedNetworkNames,
-  getUtilization: comet.getUtilization,
-  isBorrowCollateralized: comet.isBorrowCollateralized,
-  isLiquidatable: comet.isLiquidatable,
-  quoteCollateral: comet.quoteCollateral,
-  targetReserves: comet.targetReserves,
-};
+  getBaseAssetName: comet.getBaseAssetName,
+}
 Object.assign(Compound, constants);
 
 export = Compound;
