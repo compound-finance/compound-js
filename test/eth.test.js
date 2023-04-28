@@ -99,7 +99,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs eth._createProvider with fallback testnet', async function () {
-    const provider = await eth._createProvider({ provider: 'ropsten' });
+    const provider = await eth._createProvider({ provider: 'goerli' });
 
     const expected = 'FallbackProvider';
     assert.equal(provider.constructor.name, expected);
@@ -107,24 +107,24 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
 
   it('runs eth._createProvider with fallback and private key', async function () {
     const provider = await eth._createProvider({
-      provider: 'ropsten',
+      provider: 'goerli',
       privateKey: '0xb8c1b5c1d81f9475fdf2e334517d29f733bdfa40682207571b12fc1142cbf329'
     });
 
     const expected = 'Wallet';
-    const expectedChainId = 3;
+    const expectedChainId = 5;
     assert.equal(provider.provider._network.chainId, expectedChainId);
     assert.equal(provider.constructor.name, expected);
   });
 
   it('runs eth._createProvider with fallback and private key', async function () {
     const provider = await eth._createProvider({
-      provider: 'ropsten',
+      provider: 'goerli',
       mnemonic: 'clutch captain shoe salt awake harvest setup primary inmate ugly among become'
     });
 
     const expected = 'Wallet';
-    const expectedChainId = 3;
+    const expectedChainId = 5;
     assert.equal(provider.provider._network.chainId, expectedChainId);
     assert.equal(provider.constructor.name, expected);
   });

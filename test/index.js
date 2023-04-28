@@ -18,7 +18,6 @@ const ethers = hre.ethers;
 let jsonRpcServer;
 
 // Source Files
-const api = require('./api.test.js');
 const comp = require('./comp.test.js');
 const comet = require('./comet.test.js');
 const comptroller = require('./comptroller.test.js');
@@ -64,7 +63,6 @@ describe('Compound.js', function () {
     await jsonRpcServer.close();
   });
 
-  describe('./src/api.ts', api.bind(this, acc));
   describe('./src/comp.ts', comp.bind(this, acc));
   describe('./src/comet.ts', comet.bind(this, acc));
   describe('./src/comptroller.ts', comptroller.bind(this, acc));

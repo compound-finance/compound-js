@@ -16,6 +16,11 @@ export interface CompoundInstance {
   _networkPromise: Promise<ProviderNetwork>;
 }
 
+export interface CometInstance {
+  _networkPromise: Promise<ProviderNetwork>;
+  _invalidProvider?: boolean | string;
+}
+
 export interface CompoundOptions {
   privateKey?: string;
   mnemonic?: string;
@@ -125,59 +130,6 @@ export interface Provider extends AbstractSigner, FallbackProvider {
 }
 
 
-// =-=-=-=-=-= /src/api.ts =-=-=-=-=-=
-
-export interface APIResponse {
-  error?: string;
-  responseCode?: number;
-  responseMessage?: string;
-}
-
-export interface precise {
-  value: string;
-}
-
-export interface AccountServiceRequest {
-  addresses?: string[] | string;
-  min_borrow_value_in_eth?: precise;
-  max_health?: precise;
-  block_number?: number;
-  block_timestamp?: number;
-  page_size?: number;
-  page_number?: number;
-  network?: string;
-}
-
-export interface CTokenServiceRequest {
-  addresses?: string[] | string;
-  block_number?: number;
-  block_timestamp?: number;
-  meta?: boolean;
-  network?: string;
-}
-
-export interface MarketHistoryServiceRequest {
-  asset?: string;
-  min_block_timestamp?: number;
-  max_block_timestamp?: number;
-  num_buckets?: number;
-  network?: string;
-}
-
-
-export interface GovernanceServiceRequest {
-  proposal_ids?: number[];
-  state?: string;
-  with_detail?: boolean;
-  page_size?: number;
-  page_number?: number;
-  network?: string;
-}
-
-export type APIRequest = AccountServiceRequest |
-  CTokenServiceRequest | MarketHistoryServiceRequest | GovernanceServiceRequest;
-
-
 // =-=-=-=-=-= /src/EIP712.ts =-=-=-=-=-=
 
 export interface Signature {
@@ -246,6 +198,7 @@ export interface SimpleEthersSigner {
   getAddress();
   provider?: SimpleEthersProvider;
 }
+
 
 // =-=-=-=-=-= /src/comet.ts =-=-=-=-=-=
 
