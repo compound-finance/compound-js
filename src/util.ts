@@ -3,7 +3,7 @@
  * @desc These methods are helpers for the Compound class.
  */
 
-import { address, abi } from './constants';
+import { address, abi, cometConstants } from './constants';
 import { AbiType } from './types';
 
 /* eslint-disable */
@@ -201,7 +201,8 @@ export function getAbi(contract: string): AbiType[] {
 }
 
 /**
- * Gets the name of an Ethereum network based on its chain ID.
+ * Gets the name of an Ethereum network based on its chain ID. This method 
+ *     returns information only for chains that have a Compound deployment.
  *
  * @param {string} chainId The chain ID of the network.
  *
@@ -214,13 +215,40 @@ export function getAbi(contract: string): AbiType[] {
  */
 export function getNetNameWithChainId(chainId: number) : string {
   const networks = {
-    1: 'mainnet',
-    3: 'ropsten',
-    4: 'rinkeby',
-    5: 'goerli',
-    42: 'kovan',
-    43113: 'fuji',
-    43114: 'ava-mainnet',
+
+    // From https://github.com/ethers-io/ethers.js/blob/main/src.ts/providers/network.ts
+
+    1:        'mainnet',
+    5:        'goerli',
+    // 11155111: 'sepolia',
+    // 61:       'classic',
+    // 6:        'classicKotti',
+    // 100:      'xdai',
+    // 10:       'optimism',
+    420:      'optimism-goerli',
+    // 42161:    'arbitrum',
+    // 421613:   'arbitrum-goerli',
+    137:      'matic',
+    80001:    'maticmum',
+    // 56:       'bnb',
+    // 97:       'bnbt',
+
+    // Not included in ethers. Made up here.
+
+    // 43114:    'ava',
+    43113:    'ava-fuji',
+    // 250:      'fantom',
+    // 4002:     'fantom-testnet',
+    // 8453:     'base',
+    // 84531:    'base-goerli',
+    // 59140:    'linea-goerli',
+    // 1101:     'matic-zkevm',
+    // 1442:     'matic-zkevm-testnet',
   };
-  return networks[chainId];
+
+  if (networks[chainId] === undefined) {
+    throw Error('Util.getNetNameWithChainId invalid chainId.');
+  } else {
+    return networks[chainId];
+  }
 }
