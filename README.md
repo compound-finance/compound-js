@@ -57,7 +57,7 @@ const toAddress = '0xa0df350d2637096571F7A701CBc1C5fdE30dF76A';
 
 ## Compound Protocol
 
-Simple methods for using the Compound protocol.
+Simple methods for using the Compound protocol (v2).
 
 ```js
 const compound = new Compound(window.ethereum); // in a web browser
@@ -72,6 +72,15 @@ const compound = new Compound(window.ethereum); // in a web browser
   console.log('Ethers.js transaction object', trx);
 
 })().catch(console.error);
+```
+
+### Comet
+
+Compound III (Comet) object initialization. The constructor accepts the same parameters as the `Compound` constructor. An error will be thrown initially and whenever a method is called if the provider does not match the network of the specific Comet deployment. The SDK constants as well as a method in the Comet documentation note the Comet deployments that Compound.js supports.
+
+```js
+var compound = new Compound(window.ethereum);
+var comet = compound.comet.MAINNET_USDC(); // provider from `compound` will be used unless on is explicitly passed
 ```
 
 ## Install / Import
@@ -172,46 +181,6 @@ const trxOptions = {
   privateKey, // String, meant to be used with `Compound.eth.trx` (server side)
   mnemonic,   // String, meant to be used with `Compound.eth.trx` (server side)
 };
-```
-
-## API
-
-The [Compound API](https://docs.compound.finance/v2/api) is accessible from Compound.js. The corresponding services are defined in the `api` namespace on the class.
-
-- `Compound.api.account`
-- `Compound.api.cToken`
-- `Compound.api.marketHistory`
-- `Compound.api.governance`
-
-The governance method requires a second parameter (string) for the corresponding endpoint shown in the [documentation](https://docs.compound.finance/v2/api/#GovernanceService).
-
-- `proposals`
-- `voteReceipts`
-- `accounts`
-
-Here is an example for using the `account` endpoint. The `network` parameter in the request body is optional and defaults to `mainnet`.
-
-```js
-const main = async () => {
-  const account = await Compound.api.account({
-    "addresses": "0xB61C5971d9c0472befceFfbE662555B78284c307"
-  });
-
-  let daiBorrowBalance = 0;
-  if (Object.isExtensible(account) && account.accounts) {
-    account.accounts.forEach((acc) => {
-      acc.tokens.forEach((tok) => {
-        if (tok.symbol === Compound.cDAI) {
-          daiBorrowBalance = +tok.borrow_balance_underlying.value;
-        }
-      });
-    });
-  }
-
-  console.log('daiBorrowBalance', daiBorrowBalance);
-}
-
-main().catch(console.error);
 ```
 
 ## Test
