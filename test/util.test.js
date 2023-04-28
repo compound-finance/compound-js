@@ -21,11 +21,20 @@ module.exports = function suite() {
   });
 
   it('runs util.getNetNameWithChainId', async function () {
-    const result = util.getNetNameWithChainId(3);
+    const result = util.getNetNameWithChainId(5);
 
-    const expectedResult ='ropsten';
+    const expectedResult = 'goerli';
 
     assert.equal(result, expectedResult);
+  });
+
+  it('runs util.getNetNameWithChainId fails deprecated chain', async function () {
+    const errorMessage = 'Util.getNetNameWithChainId invalid chainId.';
+    try {
+      const result = util.getNetNameWithChainId(3); // ropsten
+    } catch (e) {
+      assert.equal(e.message, errorMessage);
+    }
   });
 
 }
