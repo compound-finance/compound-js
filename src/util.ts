@@ -3,7 +3,7 @@
  * @desc These methods are helpers for the Compound class.
  */
 
-import { address, abi, cometConstants } from './constants';
+import { address, abi } from './constants';
 import { AbiType } from './types';
 
 /* eslint-disable */
