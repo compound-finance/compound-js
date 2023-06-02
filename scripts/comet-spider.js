@@ -3,6 +3,7 @@ const ethers = require('ethers');
 const { dirname } = require('path');
 const srcDir = dirname(require.main.filename).split('scripts')[0] + 'src/';
 
+// Remember to add any new secrets to the GitHub actions/workflows/build.yml file
 const providers = {
   'mainnet_usdc': process.env.MAINNET_PROVIDER_URL,
   'mainnet_weth': process.env.MAINNET_PROVIDER_URL,
