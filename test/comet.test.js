@@ -997,7 +997,7 @@ module.exports = function suite([ publicKeys, privateKeys ]) {
   });
 
   it('runs comet.getSupportedDeployments', async function () {
-    const expected = '["mainnet_usdc","mainnet_weth","polygon_usdc","goerli_usdc","goerli_weth","mumbai_usdc","goerli_optimism_usdc","fuji_usdc"]';
+    const expected = '["mainnet_usdc","mainnet_weth","polygon_usdc","arbitrum_usdc","goerli_usdc","goerli_weth","mumbai_usdc","goerli_arbitrum_usdc","goerli_optimism_usdc","fuji_usdc"]';
     let nets;
     try {
       nets = Compound.comet.getSupportedDeployments();

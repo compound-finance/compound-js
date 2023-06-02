@@ -3,13 +3,16 @@ const ethers = require('ethers');
 const { dirname } = require('path');
 const srcDir = dirname(require.main.filename).split('scripts')[0] + 'src/';
 
+// Remember to add any new secrets to the GitHub actions/workflows/build.yml file
 const providers = {
   'mainnet_usdc': process.env.MAINNET_PROVIDER_URL,
   'mainnet_weth': process.env.MAINNET_PROVIDER_URL,
   'polygon_usdc': process.env.POLYGON_PROVIDER_URL,
+  'arbitrum_usdc': process.env.ARBITRUM_PROVIDER_URL,
   'goerli_usdc': process.env.GOERLI_PROVIDER_URL,
   'goerli_weth': process.env.GOERLI_PROVIDER_URL,
   'mumbai_usdc': process.env.MUMBAI_PROVIDER_URL,
+  'goerli_arbitrum_usdc': process.env.GOERLI_ARBITRUM_PROVIDER_URL,
   'goerli_optimism_usdc': process.env.GOERLI_OPTIMISM_PROVIDER_URL,
   'fuji_usdc': process.env.FUJI_PROVIDER_URL,
 };
@@ -18,9 +21,11 @@ const cometInstances = {
   'mainnet_usdc': '0xc3d688B66703497DAA19211EEdff47f25384cdc3',
   'mainnet_weth': '0xA17581A9E3356d9A858b789D68B4d866e593aE94',
   'polygon_usdc': '0xF25212E676D1F7F89Cd72fFEe66158f541246445',
+  'arbitrum_usdc': '0xA5EDBDD9646f8dFF606d7448e414884C7d905dCA',
   'goerli_usdc': '0x3EE77595A8459e93C2888b13aDB354017B198188',
   'goerli_weth': '0x9A539EEc489AAA03D588212a164d0abdB5F08F5F',
   'mumbai_usdc': '0xF09F0369aB0a875254fB565E52226c88f10Bc839',
+  'goerli_arbitrum_usdc': '0x1d573274E19174260c5aCE3f2251598959d24456',
   'goerli_optimism_usdc': '0xb8F2f9C84ceD7bBCcc1Db6FB7bb1F19A9a4adfF4',
   'fuji_usdc': '0x59BF4753899C20EA152dEefc6f6A14B2a5CC3021',
 };
@@ -30,9 +35,11 @@ const instanceNetworkMap = {
   'mainnet_usdc': 'mainnet',
   'mainnet_weth': 'mainnet',
   'polygon_usdc': 'matic',
+  'arbitrum_usdc': 'arbitrum',
   'goerli_usdc': 'goerli',
   'goerli_weth': 'goerli',
   'mumbai_usdc': 'maticmum',
+  'goerli_arbitrum_usdc': 'optimism-arbitrum',
   'goerli_optimism_usdc': 'optimism-goerli',
   'fuji_usdc': 'ava-fuji',
 };
