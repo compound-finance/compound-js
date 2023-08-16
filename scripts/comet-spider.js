@@ -9,11 +9,15 @@ const providers = {
   'mainnet_weth': process.env.MAINNET_PROVIDER_URL,
   'polygon_usdc': process.env.POLYGON_PROVIDER_URL,
   'arbitrum_usdc': process.env.ARBITRUM_PROVIDER_URL,
+  'base_usdbc': process.env.BASE_PROVIDER_URL,
+  'base_weth': process.env.BASE_PROVIDER_URL,
   'goerli_usdc': process.env.GOERLI_PROVIDER_URL,
   'goerli_weth': process.env.GOERLI_PROVIDER_URL,
   'mumbai_usdc': process.env.MUMBAI_PROVIDER_URL,
   'goerli_arbitrum_usdc': process.env.GOERLI_ARBITRUM_PROVIDER_URL,
   'goerli_optimism_usdc': process.env.GOERLI_OPTIMISM_PROVIDER_URL,
+  'goerli_base_usdc': process.env.GOERLI_BASE_PROVIDER_URL,
+  'goerli_base_weth': process.env.GOERLI_BASE_PROVIDER_URL,
   'fuji_usdc': process.env.FUJI_PROVIDER_URL,
 };
 
@@ -22,11 +26,15 @@ const cometInstances = {
   'mainnet_weth': '0xA17581A9E3356d9A858b789D68B4d866e593aE94',
   'polygon_usdc': '0xF25212E676D1F7F89Cd72fFEe66158f541246445',
   'arbitrum_usdc': '0xA5EDBDD9646f8dFF606d7448e414884C7d905dCA',
+  'base_usdbc': '0x9c4ec768c28520B50860ea7a15bd7213a9fF58bf',
+  'base_weth': '0x46e6b214b524310239732D51387075E0e70970bf',
   'goerli_usdc': '0x3EE77595A8459e93C2888b13aDB354017B198188',
   'goerli_weth': '0x9A539EEc489AAA03D588212a164d0abdB5F08F5F',
   'mumbai_usdc': '0xF09F0369aB0a875254fB565E52226c88f10Bc839',
   'goerli_arbitrum_usdc': '0x1d573274E19174260c5aCE3f2251598959d24456',
   'goerli_optimism_usdc': '0xb8F2f9C84ceD7bBCcc1Db6FB7bb1F19A9a4adfF4',
+  'goerli_base_usdc': '0xe78Fc55c884704F9485EDa042fb91BfE16fD55c1',
+  'goerli_base_weth': '0xED94f3052638620fE226a9661ead6a39C2a265bE',
   'fuji_usdc': '0x59BF4753899C20EA152dEefc6f6A14B2a5CC3021',
 };
 
@@ -36,11 +44,15 @@ const instanceNetworkMap = {
   'mainnet_weth': 'mainnet',
   'polygon_usdc': 'matic',
   'arbitrum_usdc': 'arbitrum',
+  'base_usdbc': 'base',
+  'base_weth': 'base',
   'goerli_usdc': 'goerli',
   'goerli_weth': 'goerli',
   'mumbai_usdc': 'maticmum',
   'goerli_arbitrum_usdc': 'optimism-arbitrum',
   'goerli_optimism_usdc': 'optimism-goerli',
+  'goerli_base_usdc': 'base-goerli',
+  'goerli_base_weth': 'base-goerli',
   'fuji_usdc': 'ava-fuji',
 };
 
